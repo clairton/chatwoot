@@ -556,6 +556,9 @@ GEM
       activesupport (>= 5.2)
     pgvector (0.1.1)
     prism (1.4.0)
+    phonelib (0.7.1)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
     procore-sift (1.0.0)
       activerecord (>= 6.1)
     pry (0.14.2)
@@ -961,7 +964,7 @@ DEPENDENCIES
   omniauth-rails_csrf_protection (~> 1.0, >= 1.0.2)
   pg
   pg_search
-  pgvector
+  phonelib
   procore-sift
   pry-rails
   puma
