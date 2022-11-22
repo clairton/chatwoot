@@ -82,12 +82,17 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
         messaging_product: 'whatsapp',
         context: whatsapp_reply_context(message),
         to: phone_number,
-        text: { body: message.outgoing_content },
+        text: { body: format_content(message) },
         type: 'text'
       }.to_json
     )
 
     process_response(response)
+  end
+
+  def format_content(message)
+    sender = message&.sender&.try(:available_name) || message&.sender&.name
+    sender ? "*#{sender}*: #{message.content}" : message.content
   end
 
   def send_attachment_message(phone_number, message)
