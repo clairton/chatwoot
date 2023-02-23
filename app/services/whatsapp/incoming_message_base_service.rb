@@ -29,6 +29,7 @@ class Whatsapp::IncomingMessageBaseService
     return if find_message_by_source_id(@processed_params[:messages].first[:id]) || message_under_process?
 
     cache_message_source_id_in_redis
+    set_message_type
     set_contact
     return unless @contact
 
@@ -91,11 +92,12 @@ class Whatsapp::IncomingMessageBaseService
     contact_inbox = ::ContactInboxWithContactBuilder.new(
       source_id: waid,
       inbox: inbox,
-      contact_attributes: { name: contact_params.dig(:profile, :name), phone_number: "+#{@processed_params[:messages].first[:from]}" }
+      contact_attributes: { name: contact_params.dig(:profile, :name), phone_number: "+#{waid}" }
     ).perform
 
     @contact_inbox = contact_inbox
     @contact = contact_inbox.contact
+    @sender = contact_inbox.contact
   end
 
   def set_conversation
@@ -149,8 +151,8 @@ class Whatsapp::IncomingMessageBaseService
       content: message_content(message),
       account_id: @inbox.account_id,
       inbox_id: @inbox.id,
-      message_type: :incoming,
-      sender: @contact,
+      message_type: @message_type,
+      sender: @sender,
       source_id: message[:id].to_s,
       in_reply_to_external_id: @in_reply_to_external_id
     )
@@ -167,5 +169,9 @@ class Whatsapp::IncomingMessageBaseService
         fallback_title: phone[:phone].to_s
       )
     end
+  end
+
+  def set_message_type
+    @message_type = :incoming
   end
 end

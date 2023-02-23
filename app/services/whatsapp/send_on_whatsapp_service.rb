@@ -6,6 +6,8 @@ class Whatsapp::SendOnWhatsappService < Base::SendOnChannelService
   end
 
   def perform_reply
+    return if message.message_type == :outgoing && message.source_id&.is_present? # is message send by own
+
     should_send_template_message = template_params.present? || !message.conversation.can_reply?
     if should_send_template_message
       send_template_message
