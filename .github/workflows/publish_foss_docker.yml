@@ -16,7 +16,8 @@ on:
   workflow_dispatch:
 
 env:
-  DOCKER_REPO: chatwoot/chatwoot
+  DOCKER_REPO: clairton/chatwoot
+  REGISTRY: docker.io
 
 jobs:
   build:
@@ -68,6 +69,7 @@ jobs:
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: docker/login-action@v3
         with:
+          registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
@@ -127,7 +129,7 @@ jobs:
           else
             TAG="${DOCKER_REPO}:${SANITIZED_REF}-ce"
           fi
-          
+
           docker buildx imagetools create -t $TAG \
             $(printf '${{ env.DOCKER_REPO }}@sha256:%s ' *)
 
@@ -141,5 +143,5 @@ jobs:
           else
             TAG="${DOCKER_REPO}:${SANITIZED_REF}-ce"
           fi
-          
+
           docker buildx imagetools inspect $TAG
