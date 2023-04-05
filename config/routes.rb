@@ -112,6 +112,7 @@ Rails.application.routes.draw do
                 member do
                   post :translate
                   post :retry
+                  post :forward
                 end
               end
               resources :assignments, only: [:create]

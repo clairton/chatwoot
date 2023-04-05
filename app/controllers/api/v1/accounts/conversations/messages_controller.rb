@@ -54,6 +54,13 @@ class Api::V1::Accounts::Conversations::MessagesController < Api::V1::Accounts::
     render json: { content: translated_content }
   end
 
+  def forward
+    ::Conversations::ForwardMessageJob.perform_later(forward_message_params)
+    head :ok
+    rescue StandardError => e
+      render e
+  end
+
   private
 
   def message

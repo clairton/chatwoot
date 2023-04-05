@@ -56,6 +56,7 @@ export default {
     return {
       isCannedResponseModalOpen: false,
       showDeleteModal: false,
+      showForwardModal: false,
     };
   },
   computed: {
@@ -148,6 +149,14 @@ export default {
     },
     closeDeleteModal() {
       this.showDeleteModal = false;
+    },
+
+    handleForward() {
+      this.handleClose();
+      this.showForwardModal = true;
+    },
+    onCloseForwardModal() {
+      this.showForwardModal = false;
     },
   },
 };
