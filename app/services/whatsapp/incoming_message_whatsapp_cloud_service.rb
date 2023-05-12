@@ -69,6 +69,7 @@ class Whatsapp::IncomingMessageWhatsappCloudService < Whatsapp::IncomingMessageB
     contact_params = @processed_params[:contacts]&.first
     return if contact_params.blank?
 
-    !group_message? && @processed_params['metadata']['display_phone_number'].sub('+', '') == contact_params[:wa_id] && contact_params[:wa_id] == message[:from]
+    !group_message? && @processed_params['metadata']['display_phone_number'].sub('+',
+                                                                                 '') == contact_params[:wa_id] && contact_params[:wa_id] == message[:from]
   end
 end

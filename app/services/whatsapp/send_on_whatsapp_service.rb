@@ -111,7 +111,13 @@ class Whatsapp::SendOnWhatsappService < Base::SendOnChannelService
   end
 
   def send_session_message
-    message_id = channel.send_message(message.conversation.contact_inbox.source_id, message)
+    uuid_regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+    phone_number = if uuid_regex.match?(message.conversation.contact_inbox.source_id)
+        message.conversation.contact_inbox.contact.phone_number.sub('+', '')
+      else
+        message.conversation.contact_inbox.source_id
+      end
+    message_id = channel.send_message(phone_number, message)
     message.update!(source_id: message_id) if message_id.present?
   end
 
