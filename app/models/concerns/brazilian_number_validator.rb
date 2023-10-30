@@ -8,6 +8,10 @@ class BrazilianNumberValidator < ActiveModel::EachValidator
 
     return if phone.country != 'BR' || phone.valid? || phone.type != :mobile || phone.local_number.scan(/\d/).join.length >= 11
 
-    record.errors.add(attribute, (options[:message] || 'Número esta inválido ou é um celular e precisa ter o nono digito!'))
+    nine_digit = 'Número esta inválido, se for um número de telefone móvel, acrescente o nono digito!'
+    with_zero_in_ddd = 'Número esta inválido, retire o zero da frente do DDD!'
+    message = value.starts_with?('+550') ? with_zero_in_ddd : (options[:message] || nine_digit)
+
+    record.errors.add(attribute, message)
   end
 end
