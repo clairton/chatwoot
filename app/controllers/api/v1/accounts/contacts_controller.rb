@@ -95,7 +95,16 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
 
   def update
     @contact.assign_attributes(contact_update_params)
-    @contact.save!
+    # 'Channel::TwilioSms', 'Channel::Whatsapp', 'Channel::Sms'
+    Contact.transaction do
+      @contact.contact_inboxes
+        .select{ |ci| ['Channel::Whatsapp'].include?(ci.inbox.channel_type) }
+        .map{ |ci|
+          ci.source_id = @contact.phone_number.delete('+').to_s
+          ci.save!
+        }
+      @contact.save!
+    end
     process_avatar_from_url
   end
 
