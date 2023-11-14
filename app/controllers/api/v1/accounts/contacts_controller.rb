@@ -99,10 +99,7 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
     Contact.transaction do
       @contact.contact_inboxes
         .select{ |ci| ['Channel::Whatsapp'].include?(ci.inbox.channel_type) }
-        .map{ |ci|
-          ci.source_id = @contact.phone_number.delete('+').to_s
-          ci.save!
-        }
+        .each{ |ci| ci.update_attribute(:source_id, @contact.phone_number.delete('+').to_s) }
       @contact.save!
     end
     process_avatar_from_url
