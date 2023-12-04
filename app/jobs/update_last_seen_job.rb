@@ -2,11 +2,11 @@ class UpdateLastSeenJob < ApplicationJob
   queue_as :default
 
   def perform(conversation_id, user, agent_last_seen_at)
-    key = "conversation:last_seen:#{conversation_id}:#{user.id}"
+    key = "conversation:last_seen:#{conversation_id}"
     conversation = Conversation.find(conversation_id)
-    unless ::Redis::Alfred.get(key)
+    unless ::Redis::Alfred.get(key) != user.id
       # Set the cache key to prevent further execution of this action
-      ::Redis::Alfred.setex(key, true, 1.hour)
+      ::Redis::Alfred.set(key, user.id, 1.day)
       params = {
         message_type: :activity,
         content_type: :text,
