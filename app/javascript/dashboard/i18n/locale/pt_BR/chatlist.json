@@ -59,6 +59,9 @@
       "last_activity_at_desc": {
         "TEXT": "Última atividade: Recentes primeiro"
       },
+      "sort_on_created_at": {
+        "TEXT": "Criado em"
+      },
       "created_at_desc": {
         "TEXT": "Criado em: Recentes primeiro"
       },
