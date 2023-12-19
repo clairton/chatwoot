@@ -18,7 +18,8 @@ class Whatsapp::IncomingMessageWhatsappCloudService < Whatsapp::IncomingMessageB
         inbox: inbox,
         contact_attributes: {
           email: contact_params[:group_id],
-          name: contact_params[:group_subject] || contact_params[:group_id]
+          name: contact_params[:group_subject] || contact_params[:group_id],
+          avatar_url: contact_params[:group_picture]
         }
       ).perform
 
