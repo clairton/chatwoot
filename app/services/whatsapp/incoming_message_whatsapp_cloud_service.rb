@@ -41,7 +41,7 @@ class Whatsapp::IncomingMessageWhatsappCloudService < Whatsapp::IncomingMessageB
 
   def message_content(message)
     content = super(message)
-    group_message? && !outgoing_message_type? ? "*#{@sender.name}*: #{content}" : content
+    group_message? && !outgoing_message_type? && @sender ? "*#{@sender.name}*: #{content}" : content
   end
 
   def group_message?
