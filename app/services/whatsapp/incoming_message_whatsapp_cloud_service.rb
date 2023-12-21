@@ -12,7 +12,6 @@ class Whatsapp::IncomingMessageWhatsappCloudService < Whatsapp::IncomingMessageB
 
     if group_message?
       @sender = @contact
-
       contact_inbox = ::ContactInboxWithContactBuilder.new(
         source_id: contact_params[:group_id],
         inbox: inbox,
