@@ -16,6 +16,7 @@ class UpdateLastSeenJob < ApplicationJob
     messages = conversation.messages.to_read(agent_last_seen_at)
     Rails.logger.debug { "Conversation #{conversation_id} with #{messages.size} message(s) to update status to read" }
     messages.each do |message|
+      Rails.logger.debug { "Update message id #{message.id} source #{message.source_id} status to read" }
       message.update(status: :read)
     end
   end
