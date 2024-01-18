@@ -169,3 +169,5 @@
 - name: crm_integration
   display_name: CRM Integration
   enabled: false
+- name: hide_all_chats_for_agent
+  enabled: false
