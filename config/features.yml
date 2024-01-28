@@ -171,5 +171,7 @@
   enabled: false
 - name: hide_all_chats_for_agent
   enabled: false
+- name: hide_contacts_for_agent
+  enabled: false
 - name: send_agent_name_in_whatsapp_message
   enabled: true
