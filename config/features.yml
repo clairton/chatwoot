@@ -177,3 +177,5 @@
   enabled: false
 - name: send_agent_name_in_whatsapp_message
   enabled: true
+- name: read_message
+  enabled: true
