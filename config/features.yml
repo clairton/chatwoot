@@ -179,3 +179,5 @@
   enabled: true
 - name: read_message
   enabled: true
+- name: disable_whatsapp_messaging_window
+  enabled: false
