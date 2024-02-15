@@ -147,7 +147,7 @@ class Whatsapp::IncomingMessageBaseService
   end
 
   def create_message(message)
-    timestamp = message[:timestamp] || Time.now.to_i
+    timestamp = message[:timestamp] ? message[:timestamp].to_i : Time.now.to_i
     @message = @conversation.messages.build(
       content: message_content(message),
       account_id: @inbox.account_id,
