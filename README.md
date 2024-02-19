@@ -3,6 +3,22 @@
 
 ___
 
+
+# Chatwoot Uno
+  - essa versão do chatwoot que esta sendo usada aqui tem algumas customizações que ainda não foram aceitas pelo time do chatwoot e para um melhor uso com a unoapi(http://github.com/clairton/unoapi-cloud):
+    - funciona as conversas em grupo
+    - trata a mensagem enviadas por outras conexões, inclusive o aplicativo
+    - desabilita a janela de 24 horas do whatsapp cloud oficial
+    - sincroniza as imagens de perfil dos grupos e usuarios
+    - possibilidade de editar o endereço da caixa de entrada do whatsapp, assim pode usar a oficial e a unoapi na mesma instalação(não usar a env WHATSAPP_CLOUD_BASE_URL)
+    - opção no superadmin de habilitar para colocar o nome do agente na mensagem
+    - opção no superadmin de habilitar para marcar as mensagem no whatsapp como lido quando o agente visualiza a conversa
+    - opção no superadmin de esconder para a aba de todas as conversas
+    - opção no superadmin de esconder para o filtro de conversas
+    - opção no superadmin de esconder a parte de contatos
+    - da opção de alterar logo e nome da empresa
+  Exemplo de stack com os dois projetos integrados: https://github.com/clairton/unoapi-cloud/tree/main/examples/unochat
+
 # Chatwoot
 
 The modern customer support platform, an open-source alternative to Intercom, Zendesk, Salesforce Service Cloud etc.
