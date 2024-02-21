@@ -10,7 +10,7 @@ on:
   push:
     branches:
       - develop
-      - master
+      - uno
     tags:
       - v*
   workflow_dispatch:

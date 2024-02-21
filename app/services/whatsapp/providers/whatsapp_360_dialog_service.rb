@@ -10,7 +10,7 @@ class Whatsapp::Providers::Whatsapp360DialogService < Whatsapp::Providers::BaseS
     end
   end
 
-  def send_template(phone_number, template_info)
+  def send_template(message, phone_number, template_info)
     response = HTTParty.post(
       "#{api_base_path}/messages",
       headers: api_headers,
