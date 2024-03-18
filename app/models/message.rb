@@ -166,6 +166,10 @@ class Message < ApplicationRecord
     data
   end
 
+  def sender_name
+    sender&.try(:available_name) || sender&.try(:name)
+  end
+
   def webhook_data
     data = {
       account: account.webhook_data,
