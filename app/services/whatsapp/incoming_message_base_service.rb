@@ -183,8 +183,10 @@ class Whatsapp::IncomingMessageBaseService
   end
 
   def microsecond
-    @microsecond = 0 if !@microsecond || @microsecond > 999_999
-    @microsecond += 1
-    @microsecond
+    # rubocop:disable Style/ClassVars
+    @@microsecond = 0 if !@@microsecond || @@microsecond > 999_999
+    @@microsecond += 1
+    @@microsecond
+    # rubocop:enable Style/ClassVars
   end
 end
