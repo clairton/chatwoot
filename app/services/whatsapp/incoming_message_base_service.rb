@@ -1,13 +1,13 @@
 # Mostly modeled after the intial implementation of the service based on 360 Dialog
 # https://docs.360dialog.com/whatsapp-api/whatsapp-api/media
 # https://developers.facebook.com/docs/whatsapp/api/media/
-
 class Whatsapp::IncomingMessageBaseService
+  include ::Whatsapp::IncomingMessageServiceHelpers
+
   # rubocop:disable Style/ClassVars
   @@microsecond = 0
   # rubocop:enable Style/ClassVars
 
-  include ::Whatsapp::IncomingMessageServiceHelpers
   pattr_initialize [:inbox!, :params!]
 
   def perform
