@@ -28,6 +28,7 @@ module Enterprise::SuperAdmin::AppConfigsController
       TERMS_URL
       PRIVACY_URL
       DISPLAY_MANIFEST
+      CONVERSATION_STYLE_CSS
     ]
   end
 

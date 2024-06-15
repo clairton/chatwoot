@@ -18,6 +18,8 @@ import { mapGetters } from 'vuex';
 
 // mixins
 import inboxMixin, { INBOX_FEATURES } from 'shared/mixins/inboxMixin';
+import aiMixin from 'dashboard/mixins/aiMixin';
+import globalConfigMixin from 'shared/mixins/globalConfigMixin';
 
 // utils
 import { emitter } from 'shared/helpers/mitt';
@@ -118,6 +120,7 @@ export default {
       currentUserId: 'getCurrentUserID',
       listLoadingStatus: 'getAllMessagesLoaded',
       currentAccountId: 'getCurrentAccountId',
+      globalConfig: 'globalConfig/get',
     }),
     isOpen() {
       return this.currentChat?.status === wootConstants.STATUS_TYPE.OPEN;
@@ -515,6 +518,7 @@ export default {
       :first-unread-id="unReadMessages[0]?.id"
       :is-an-email-channel="isAnEmailChannel"
       :inbox-supports-reply-to="inboxSupportsReplyTo"
+      :style="globalConfig.conversationStyleCss"
       :messages="getMessages"
     >
       <template #beforeAll>

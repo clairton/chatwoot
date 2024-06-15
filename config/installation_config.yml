@@ -341,3 +341,10 @@
   value: 'v22.0'
   locked: true
 # ------- End of Instagram Channel Related Config ------- #
+
+## ------ Configs custom ------ ##
+- name: CONVERSATION_STYLE_CSS
+  display_title: 'Conversation Style CSS'
+  value:
+  description: 'Customize conversation, put your valid css'
+## ------ End of Configs custom ------ ##
