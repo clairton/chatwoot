@@ -203,8 +203,8 @@ export default {
     </span>
     <span v-else-if="showProgressIndicator" class="read-indicator-wrap">
       <fluent-icon 
-        icon="clockwise" 
-        class="action--icon  read-tick" 
+        icon="clock" 
+        class="action--icon read-tick" 
         size="14" 
       />
     </span>
