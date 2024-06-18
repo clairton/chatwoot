@@ -12,6 +12,7 @@ import NextButton from 'dashboard/components-next/button/Button.vue';
 
 const props = defineProps({
   pageTitle: { type: String, required: true },
+  hasHideFiltersForAgents: { type: Boolean, required: true },
   hasAppliedFilters: { type: Boolean, required: true },
   hasActiveFolders: { type: Boolean, required: true },
   activeStatus: { type: String, required: true },
@@ -154,6 +155,7 @@ const toggleConversationLayout = () => {
       </template>
       <div v-else class="relative">
         <NextButton
+          v-if="!hasHideFiltersForAgents"
           id="toggleConversationFilterButton"
           v-tooltip.right="$t('FILTER.TOOLTIP_LABEL')"
           icon="i-lucide-list-filter"
