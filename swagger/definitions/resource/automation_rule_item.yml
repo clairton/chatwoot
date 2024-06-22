@@ -16,10 +16,11 @@ properties:
     example: Add label support and sales on message create event if incoming message content contains text help
   event_name:
     type: string
-    description: Automation Rule event, on which we call the actions(conversation_created, conversation_updated, message_created)
+    description: Automation Rule event, on which we call the actions(conversation_created, conversation_updated, conversation_resolved, message_created)
     enum:
       - conversation_created
       - conversation_updated
+      - conversation_resolved
       - message_created
     example: message_created
   conditions:
@@ -66,4 +67,4 @@ properties:
     description: The timestamp when the rule was created
   active:
     type: boolean
-    description: Enable/disable automation rule 
+    description: Enable/disable automation rule

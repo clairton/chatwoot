@@ -10383,6 +10383,7 @@
             "example": "message_created",
             "description": "The event when you want to execute the automation actions"
           },
+<<<<<<< HEAD
           "active": {
             "type": "boolean",
             "description": "Enable/disable automation rule"
@@ -10398,6 +10399,76 @@
                   "support"
                 ]
               }
+=======
+          "description": "The events you want to subscribe to."
+        }
+      }
+    },
+    "integrations_hook_create_payload": {
+      "type": "object",
+      "properties": {
+        "app_id": {
+          "type": "string",
+          "description": "The ID of app for which integration hook is being created"
+        },
+        "inbox_id": {
+          "type": "string",
+          "description": "The inbox ID, if the hook is an inbox hook"
+        },
+        "settings": {
+          "type": "object",
+          "description": "The settings required by the integration"
+        }
+      }
+    },
+    "integrations_hook_update_payload": {
+      "type": "object",
+      "properties": {
+        "settings": {
+          "type": "object",
+          "description": "The settings required by the integration"
+        }
+      }
+    },
+    "automation_rule_create_update_payload": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Rule name",
+          "example": "Add label on message create event"
+        },
+        "description": {
+          "type": "string",
+          "description": "The description about the automation and actions",
+          "example": "Add label support and sales on message create event if incoming message content contains text help"
+        },
+        "event_name": {
+          "type": "string",
+          "enum": [
+            "conversation_created",
+            "conversation_updated",
+            "conversation_resolved",
+            "message_created"
+          ],
+          "example": "message_created",
+          "description": "The event when you want to execute the automation actions"
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Enable/disable automation rule"
+        },
+        "actions": {
+          "type": "array",
+          "description": "Array of actions which you want to perform when condition matches, e.g add label support if message contains content help.",
+          "items": {
+            "type": "object",
+            "example": {
+              "action_name": "add_label",
+              "action_params": [
+                "support"
+              ]
+>>>>>>> 956a60286c (feat: add automation rule event conversation resolved)
             }
           },
           "conditions": {
