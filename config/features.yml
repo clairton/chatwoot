@@ -183,3 +183,5 @@
   enabled: false
 - name: agent_conversation_viewed
   enabled: true
+- name: hide_unassigned_for_agent
+  enabled: false

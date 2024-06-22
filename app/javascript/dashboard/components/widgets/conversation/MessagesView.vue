@@ -18,7 +18,6 @@ import { mapGetters } from 'vuex';
 
 // mixins
 import inboxMixin, { INBOX_FEATURES } from 'shared/mixins/inboxMixin';
-import aiMixin from 'dashboard/mixins/aiMixin';
 import globalConfigMixin from 'shared/mixins/globalConfigMixin';
 
 // utils
@@ -48,7 +47,7 @@ export default {
     Banner,
     ConversationLabelSuggestion,
   },
-  mixins: [inboxMixin],
+  mixins: [inboxMixin, globalConfigMixin],
   setup() {
     const isPopOutReplyBox = ref(false);
     const conversationPanelRef = ref(null);
