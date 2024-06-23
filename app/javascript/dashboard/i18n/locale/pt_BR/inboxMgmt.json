@@ -224,7 +224,23 @@
           "LABEL": "Provedor de API",
           "TWILIO": "Twilio",
           "WHATSAPP_CLOUD": "Cloud do WhatsApp",
-          "360_DIALOG": "360Dialog"
+          "360_DIALOG": "360Dialog",
+          "UNOAPI": "Unoapi"
+        },
+        "SEND_AGENT_NAME": {
+          "LABEL": "Enviar nome do agent",
+          "PLACEHOLDER": "Selecione para enviar o nome do agent.",
+          "ERROR": "Selecione para enviar o nome do agent."
+        },
+        "IGNORE_HISTORY": {
+          "LABEL": "Ignorar histórico ao connectar",
+          "PLACEHOLDER": "Selecione para ignorar histórico ao conectar.",
+          "ERROR": "Selecione para ignorar histórico ao conectar."
+        },
+        "IGNORE_GROUPS": {
+          "LABEL": "Ignorar mensagens de grupos",
+          "PLACEHOLDER": "Selecione para ignorar mensagens de grupos.",
+          "ERROR": "Selecione para ignorar mensagens de grupos."
         },
         "INBOX_NAME": {
           "LABEL": "Nome da Caixa de Entrada",
@@ -482,7 +498,8 @@
       "BUSINESS_HOURS": "Horário de funcionamento",
       "WIDGET_BUILDER": "Construtor de Widget",
       "BOT_CONFIGURATION": "Configuração do Bot",
-      "CSAT": "CSAT"
+      "CSAT": "CSAT",
+      "UNOAPI_CONFIGURATION": "Configuração da Unoapi"
     },
     "SETTINGS": "Configurações",
     "FEATURES": {
@@ -531,6 +548,8 @@
       "WHATSAPP_SECTION_UPDATE_BUTTON": "Atualizar",
       "WHATSAPP_WEBHOOK_TITLE": "Token de verificação Webhook",
       "WHATSAPP_WEBHOOK_SUBHEADER": "Este token é usado para verificar a autenticidade do webhook endpoint.",
+      "WHATSAPP_CONNECT": "Conectar",
+      "WHATSAPP_DISCONNECT": "Desconectar",
       "UPDATE_PRE_CHAT_FORM_SETTINGS": "Atualizar configurações do Formulário Pre Chat"
     },
     "HELP_CENTER": {

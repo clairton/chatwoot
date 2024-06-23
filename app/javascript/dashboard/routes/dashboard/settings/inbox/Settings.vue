@@ -19,6 +19,7 @@ import CustomerSatisfactionPage from './settingsPage/CustomerSatisfactionPage.vu
 import CollaboratorsPage from './settingsPage/CollaboratorsPage.vue';
 import WidgetBuilder from './WidgetBuilder.vue';
 import BotConfiguration from './components/BotConfiguration.vue';
+import UnoapiConfiguration from './settingsPage/UnoapiConfiguration.vue';
 import { FEATURE_FLAGS } from '../../../../featureFlags';
 import SenderNameExamplePreview from './components/SenderNameExamplePreview.vue';
 import NextButton from 'dashboard/components-next/button/Button.vue';
@@ -46,6 +47,7 @@ export default {
     InstagramReauthorize,
     DuplicateInboxBanner,
     Editor,
+    UnoapiConfiguration,
   },
   mixins: [inboxMixin],
   setup() {
@@ -96,6 +98,9 @@ export default {
       if (this.isATwilioWhatsAppChannel) {
         return this.$t('INBOX_MGMT.ADD.WHATSAPP.PROVIDERS.TWILIO');
       }
+      if (this.isAUnoapiChannel) {
+        return this.$t('INBOX_MGMT.ADD.WHATSAPP.PROVIDERS.UNOAPI');
+      }
       return '';
     },
     tabs() {
@@ -132,13 +137,24 @@ export default {
         ];
       }
 
+      if (this.isAUnoapiChannel) {
+        visibleToAllChannelTabs = [
+          ...visibleToAllChannelTabs,
+          {
+            key: 'unoApiConfiguration',
+            name: this.$t('INBOX_MGMT.TABS.UNOAPI_CONFIGURATION'),
+          },
+        ];
+      }
+
       if (
         this.isATwilioChannel ||
         this.isALineChannel ||
         this.isAPIInbox ||
         (this.isAnEmailChannel && !this.inbox.provider) ||
         this.isAWhatsAppChannel ||
-        this.isAWebWidgetInbox
+        this.isAWebWidgetInbox ||
+        this.isAUnoapiChannel
       ) {
         visibleToAllChannelTabs = [
           ...visibleToAllChannelTabs,
@@ -810,6 +826,9 @@ export default {
       </div>
       <div v-if="selectedTabKey === 'botConfiguration'">
         <BotConfiguration :inbox="inbox" />
+      </div>
+      <div v-if="selectedTabKey === 'unoApiConfiguration'">
+        <unoapi-configuration :inbox="inbox" />
       </div>
     </section>
   </div>
