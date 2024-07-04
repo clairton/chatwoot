@@ -185,3 +185,5 @@
   enabled: true
 - name: hide_unassigned_for_agent
   enabled: false
+- name: hide_delete_message_for_agent
+  enabled: false

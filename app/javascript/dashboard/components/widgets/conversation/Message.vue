@@ -26,6 +26,8 @@ import { useTrack } from 'dashboard/composables';
 import { emitter } from 'shared/helpers/mitt';
 
 import NextButton from 'dashboard/components-next/button/Button.vue';
+// stores and apis
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -93,6 +95,11 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      isFeatureEnabledonAccount: 'accounts/isFeatureEnabledonAccount',
+      currentRole: 'getCurrentRole',
+      accountId: 'getCurrentAccountId',
+    }),
     attachments() {
       // Here it is used to get sender and created_at for each attachment
       return this.data?.attachments.map(attachment => ({
@@ -188,7 +195,8 @@ export default {
         delete:
           (this.hasText || this.hasAttachments) &&
           !this.isMessageDeleted &&
-          !this.isFailed,
+          !this.isFailed &&
+          !this.hideDeleteMessageForAgents,
         cannedResponse:
           this.isOutgoing && this.hasText && !this.isMessageDeleted,
         copyLink: !this.isFailed || !this.isProcessing,
@@ -198,6 +206,15 @@ export default {
           this.hasText,
         replyTo: !this.data.private && this.inboxSupportsReplyTo.outgoing,
       };
+    },
+    hideDeleteMessageForAgents() {
+      return (
+        this.currentRole !== 'administrator' &&
+        this.isFeatureEnabledonAccount(
+          this.accountId,
+          'hide_delete_message_for_agent'
+        )
+      );
     },
     contentAttributes() {
       return this.data.content_attributes || {};
