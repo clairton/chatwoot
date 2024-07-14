@@ -34,7 +34,7 @@
 
       <div class="w-3/4 pb-4 config-helptext">
         <label
-          :class="'switch-label ' + { error: $v.ignoreHistoryMessages.$error }"
+          :class="'switch-label ' + { error: $v.sendAgentName.$error }"
         >
           <woot-switch
             v-model="sendAgentName"
@@ -42,7 +42,7 @@
             class="switch"
           />
           {{ $t('INBOX_MGMT.ADD.WHATSAPP.SEND_AGENT_NAME.LABEL') }}
-          <span v-if="$v.url.$error" class="message">
+          <span v-if="$v.sendAgentName.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.SEND_AGENT_NAME.ERROR') }}
           </span>
         </label>
@@ -50,7 +50,7 @@
 
       <div class="w-3/4 pb-4 config-helptext">
         <label
-          :class="'switch-label ' + { error: $v.ignoreHistoryMessages.$error }"
+          :class="'switch-label ' + { error: $v.ignoreGroupMessages.$error }"
         >
           <woot-switch
             v-model="ignoreGroupMessages"
@@ -81,6 +81,22 @@
       </div>
 
       <div class="w-3/4 pb-4 config-helptext">
+        <label
+          :class="'switch-label ' + { error: $v.webhookSendNewMessages.$error }"
+        >
+          <woot-switch
+            v-model="webhookSendNewMessages"
+            :value="webhookSendNewMessages"
+            class="switch"
+          />
+          {{ $t('INBOX_MGMT.ADD.WHATSAPP.WEBWOOK_SEND_NEW_MESSAGES.LABEL') }}
+          <span v-if="$v.webhookSendNewMessages.$error" class="message">
+            {{ $t('INBOX_MGMT.ADD.WHATSAPP.WEBWOOK_SEND_NEW_MESSAGES.ERROR') }}
+          </span>
+        </label>
+      </div>
+
+      <div class="w-3/4 pb-4 config-helptext">
         <img v-if="qrcode" :src="qrcode" />
         <div v-if="notice">{{ notice }}</div>
       </div>
@@ -88,13 +104,9 @@
       <div class="my-4 w-auto">
         <woot-submit-button
           :loading="uiFlags.isUpdating"
-          :button-text="
-            $t('INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_SECTION_UPDATE_BUTTON')
-          "
-        />
-        <woot-submit-button
-          :loading="uiFlags.isUpdating"
-          :button-text="$t('INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_CONNECT')"
+          :button-text="`${$t(
+            'INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_SECTION_UPDATE_BUTTON'
+          )} and ${$t('INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_CONNECT')}`"
           @click="connect = true"
         />
         <!-- <woot-submit-button
@@ -129,6 +141,7 @@ export default {
       url: 'https://unoapi.cloud',
       ignoreGroupMessages: true,
       ignoreHistoryMessages: true,
+      webhookSendNewMessages: true,
       sendAgentName: true,
       connect: false,
       disconect: false,
@@ -144,6 +157,7 @@ export default {
     ignoreGroupMessages: { required },
     generateQrcode: { required },
     ignoreHistoryMessages: { required },
+    webhookSendNewMessages: { required },
     sendAgentName: { required },
     url: { required },
   },
@@ -164,6 +178,8 @@ export default {
         this.inbox.provider_config.ignore_group_messages;
       this.ignoreHistoryMessages =
         this.inbox.provider_config.ignore_history_messages;
+      this.webhookSendNewMessages =
+        this.inbox.provider_config.webhook_send_new_messages;
       this.sendAgentName = this.inbox.provider_config.send_agent_name;
       this.connect = false;
       this.disconect = false;
@@ -219,6 +235,7 @@ export default {
               ignore_history_messages: this.ignoreHistoryMessages,
               ignore_group_messages: this.ignoreGroupMessages,
               send_agent_name: this.sendAgentName,
+              webhook_send_new_messages: this.webhookSendNewMessages,
               url: this.url,
               connect: this.connect,
               disconect: this.disconect,

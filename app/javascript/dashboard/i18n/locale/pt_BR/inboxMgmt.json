@@ -237,6 +237,11 @@
           "PLACEHOLDER": "Selecione para ignorar histórico ao conectar.",
           "ERROR": "Selecione para ignorar histórico ao conectar."
         },
+        "WEBWOOK_SEND_NEW_MESSAGES": {
+          "LABEL": "Enviar mensagens para o webhook",
+          "PLACEHOLDER": "Selecione para enviar mensagens para o webhook.",
+          "ERROR": "Selecione para enviar mensagens para o webhook."
+        },
         "IGNORE_GROUPS": {
           "LABEL": "Ignorar mensagens de grupos",
           "PLACEHOLDER": "Selecione para ignorar mensagens de grupos.",
