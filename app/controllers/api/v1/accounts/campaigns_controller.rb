@@ -28,7 +28,13 @@ class Api::V1::Accounts::CampaignsController < Api::V1::Accounts::BaseController
   end
 
   def campaign_params
-    params.require(:campaign).permit(:title, :description, :message, :enabled, :trigger_only_during_business_hours, :inbox_id, :sender_id,
-                                     :scheduled_at, audience: [:type, :id], trigger_rules: {})
+    fields = [:title, :description, :message, :enabled, :trigger_only_during_business_hours, :inbox_id, :sender_id, :scheduled_at]
+    fields << { trigger_rules: {} }
+    fields << if Inbox.find(params[:inbox_id])&.channel&.provider == 'unoapi'
+                { audience: [] }
+              else
+                { audience: [:type, :id] }
+              end
+    params.require(:campaign).permit(fields)
   end
 end

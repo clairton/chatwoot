@@ -150,6 +150,25 @@ RSpec.describe 'Campaigns API', type: :request do
         expect(response_data[:scheduled_at]).to eq(scheduled_at.to_i)
         expect(response_data[:audience].pluck(:id)).to include(label1.id, label2.id)
       end
+
+      it 'creates a new oneoff unoapi campaign' do
+        unoapi_channel = create(:channel_whatsapp, provider: 'unoapi', sync_templates: false, validate_provider_config: false)
+        unoapi_inbox = create(:inbox, channel: unoapi_channel)
+        phone_number = '+12345678991'
+        phone_numbers = [phone_number]
+
+        post "/api/v1/accounts/#{account.id}/campaigns",
+             params: {
+               inbox_id: unoapi_inbox.id, title: 'test', message: 'test message', audience: phone_numbers
+             },
+             headers: administrator.create_new_auth_token,
+             as: :json
+
+        expect(response).to have_http_status(:success)
+        response_data = JSON.parse(response.body, symbolize_names: true)
+        expect(response_data[:campaign_type]).to eq('one_off')
+        expect(response_data[:audience]).to include(phone_number)
+      end
     end
   end
 
