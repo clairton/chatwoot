@@ -1,8 +1,8 @@
 class CampaignMessageJob < ApplicationJob
   queue_as :high
-  retry_on ActiveRecord::RecordNotFound, wait: 30.seconds, attempts: 5
 
-  def perform(account_id, inbox_id, phone_number, content)
+  def perform(account_id, inbox_id, content, audience)
+    phone_number = audience[:phone_number]
     contact = Contact.find_by(phone_number: phone_number, account_id: account_id)
 
     contact = Contact.create!(phone_number: phone_number, account_id: account_id) if contact.blank?
@@ -14,9 +14,16 @@ class CampaignMessageJob < ApplicationJob
     ).perform
 
     conversation = ConversationBuilder.new(params: {}, contact_inbox: contact_inbox).perform
+    audience[:first_name] = audience[:name] || '' if audience[:name]
+
+    m = content
+    [:identifier, :first_name, :name, :due_at, :value, :scheduled_at].each do |f|
+      k = f.to_sym
+      m = m.gsub("##{f}", audience[k]) if audience[k]
+    end
 
     Messages::MessageBuilder.new(nil, conversation, {
-                                   content: content,
+                                   content: m,
                                    message_type: :outgoing
                                  }).perform
   end

@@ -8,9 +8,11 @@ describe Whatsapp::OneoffUnoapiCampaignService do
   let!(:unoapi_inbox) { create(:inbox, channel: unoapi_channel) }
   let!(:contact) { create(:contact, phone_number: Faker::PhoneNumber.cell_phone_in_e164, account: account) }
   let(:phone_number) { Faker::PhoneNumber.cell_phone_in_e164 }
-  let(:phone_numbers) { [phone_number, contact.phone_number] }
+  let(:audience_1) { { phone_number: phone_number } }
+  let(:audience_2) { { phone_number: contact.phone_number } }
+  let(:audience) { [audience_1, audience_2] }
   let!(:campaign) do
-    create(:campaign, inbox: unoapi_inbox, account: account, audience: phone_numbers)
+    create(:campaign, inbox: unoapi_inbox, account: account, audience: audience)
   end
 
   describe 'perform' do
@@ -40,8 +42,8 @@ describe Whatsapp::OneoffUnoapiCampaignService do
         .with(
           campaign.account_id,
           campaign.inbox_id,
-          phone_number,
-          campaign.message
+          campaign.message,
+          audience_1
         )
 
       expect(CampaignMessageJob)
@@ -49,8 +51,8 @@ describe Whatsapp::OneoffUnoapiCampaignService do
         .with(
           campaign.account_id,
           campaign.inbox_id,
-          contact.phone_number,
-          campaign.message
+          campaign.message,
+          audience_2
         )
     end
   end

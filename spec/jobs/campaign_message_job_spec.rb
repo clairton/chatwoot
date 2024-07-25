@@ -14,8 +14,11 @@ RSpec.describe CampaignMessageJob do
   let!(:unoapi_channel) { create(:channel_whatsapp, provider: 'unoapi', sync_templates: false, validate_provider_config: false) }
   let!(:unoapi_inbox) { create(:inbox, channel: unoapi_channel) }
   let(:phone_number) { Faker::PhoneNumber.cell_phone_in_e164 }
+  let(:name) { Faker::Name.name }
+  let(:audience_1) { { phone_number: phone_number, name: name } }
+  let(:audience) { [audience_1] }
   let!(:campaign) do
-    create(:campaign, inbox: unoapi_inbox, account: account, audience: [phone_number])
+    create(:campaign, inbox: unoapi_inbox, account: account, audience: [audience], message: 'hello #name')
   end
 
   it 'enqueues the job' do
@@ -41,10 +44,20 @@ RSpec.describe CampaignMessageJob do
       described_class.perform_now(
         campaign.account_id,
         campaign.inbox_id,
-        phone_number,
-        campaign.message
+        campaign.message,
+        audience_1
       )
       expect(Message.count).to be count + 1
+    end
+
+    it 'bind message content' do
+      described_class.perform_now(
+        campaign.account_id,
+        campaign.inbox_id,
+        campaign.message,
+        audience_1
+      )
+      expect(Message.last.content).to eq("hello #{name}")
     end
   end
 end

@@ -155,11 +155,13 @@ RSpec.describe 'Campaigns API', type: :request do
         unoapi_channel = create(:channel_whatsapp, provider: 'unoapi', sync_templates: false, validate_provider_config: false)
         unoapi_inbox = create(:inbox, channel: unoapi_channel)
         phone_number = Faker::PhoneNumber.cell_phone_in_e164
-        phone_numbers = [phone_number]
+        audience = [
+          { phone_number: phone_number, name: Faker::Name.name, identifier: rand(1000...1100) }
+        ]
 
         post "/api/v1/accounts/#{account.id}/campaigns",
              params: {
-               inbox_id: unoapi_inbox.id, title: 'test', message: 'test message', audience: phone_numbers
+               inbox_id: unoapi_inbox.id, title: 'test', message: 'test message', audience: audience
              },
              headers: administrator.create_new_auth_token,
              as: :json
@@ -167,7 +169,7 @@ RSpec.describe 'Campaigns API', type: :request do
         expect(response).to have_http_status(:success)
         response_data = JSON.parse(response.body, symbolize_names: true)
         expect(response_data[:campaign_type]).to eq('one_off')
-        expect(response_data[:audience]).to include(phone_number)
+        expect(response_data[:audience]).to eq(audience)
       end
     end
   end

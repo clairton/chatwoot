@@ -16,15 +16,15 @@ class Whatsapp::OneoffUnoapiCampaignService
   delegate :inbox, to: :campaign
   delegate :channel, to: :inbox
 
-  def process_audience(phone_numbers)
+  def process_audience(audience)
     interval = 0.seconds
-    phone_numbers.each do |phone_number|
+    audience.each do |a|
       interval += rand(1..10).seconds
       CampaignMessageJob.set(wait_until: DateTime.current + interval.seconds).perform_later(
         campaign.account_id,
         campaign.inbox_id,
-        phone_number,
-        campaign.message
+        campaign.message,
+        a.symbolize_keys
       )
     end
   end
