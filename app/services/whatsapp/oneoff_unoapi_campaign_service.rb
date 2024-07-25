@@ -20,9 +20,20 @@ class Whatsapp::OneoffUnoapiCampaignService
     phone_numbers.each do |phone_number|
       contact = Contact.find_by(phone_number: phone_number, account_id: campaign.account_id)
 
-      Contact.create!(phone_number: phone_number, account_id: account_id) if contact.blank?
+      contact = Contact.create!(phone_number: phone_number, account_id: campaign.account_id) if contact.blank?
 
-      channel.send_message(to, content)
+      contact_inbox = ContactInboxBuilder.new(
+        contact: contact,
+        inbox: campaign.inbox,
+        source_id: contact.phone_number.delete('+').to_s
+      ).perform
+
+      conversation = ConversationBuilder.new(params: {}, contact_inbox: contact_inbox).perform
+
+      Messages::MessageBuilder.new(nil, conversation, {
+                                     content: campaign.message,
+                                     message_type: :outgoing
+                                   }).perform
     end
   end
 end

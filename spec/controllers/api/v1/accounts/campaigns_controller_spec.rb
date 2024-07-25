@@ -154,7 +154,7 @@ RSpec.describe 'Campaigns API', type: :request do
       it 'creates a new oneoff unoapi campaign' do
         unoapi_channel = create(:channel_whatsapp, provider: 'unoapi', sync_templates: false, validate_provider_config: false)
         unoapi_inbox = create(:inbox, channel: unoapi_channel)
-        phone_number = '+12345678991'
+        phone_number = Faker::PhoneNumber.cell_phone_in_e164
         phone_numbers = [phone_number]
 
         post "/api/v1/accounts/#{account.id}/campaigns",
