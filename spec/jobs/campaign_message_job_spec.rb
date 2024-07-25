@@ -5,6 +5,7 @@ RSpec.describe CampaignMessageJob do
     described_class.perform_later(
       campaign.account_id,
       campaign.inbox_id,
+      campaign.id,
       phone_number,
       campaign.message
     )
@@ -26,6 +27,7 @@ RSpec.describe CampaignMessageJob do
       .with(
         campaign.account_id,
         campaign.inbox_id,
+        campaign.id,
         phone_number,
         campaign.message
       )
@@ -44,6 +46,7 @@ RSpec.describe CampaignMessageJob do
       described_class.perform_now(
         campaign.account_id,
         campaign.inbox_id,
+        campaign.id,
         campaign.message,
         audience_1
       )
@@ -54,6 +57,7 @@ RSpec.describe CampaignMessageJob do
       described_class.perform_now(
         campaign.account_id,
         campaign.inbox_id,
+        campaign.id,
         campaign.message,
         audience_1
       )

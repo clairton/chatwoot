@@ -42,6 +42,7 @@ describe Whatsapp::OneoffUnoapiCampaignService do
         .with(
           campaign.account_id,
           campaign.inbox_id,
+          campaign.id,
           campaign.message,
           audience_1
         )
@@ -51,6 +52,7 @@ describe Whatsapp::OneoffUnoapiCampaignService do
         .with(
           campaign.account_id,
           campaign.inbox_id,
+          campaign.id,
           campaign.message,
           audience_2
         )

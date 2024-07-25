@@ -23,6 +23,7 @@ class Whatsapp::OneoffUnoapiCampaignService
       CampaignMessageJob.set(wait_until: DateTime.current + interval.seconds).perform_later(
         campaign.account_id,
         campaign.inbox_id,
+        campaign.id,
         campaign.message,
         a.symbolize_keys
       )
