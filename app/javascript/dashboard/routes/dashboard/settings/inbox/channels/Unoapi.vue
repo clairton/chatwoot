@@ -108,13 +108,32 @@
         </span>
       </label>
     </div>
-
+    
+    <div class="w-[65%] flex-shrink-0 flex-grow-0 max-w-[65%] config-helptext">
+      <label :class="{ error: $v.webhookSendNewMessages.$error }" style="display: flex; align-items: center;">
+        <woot-switch
+          v-model="webhookSendNewMessages"
+          :value="webhookSendNewMessages"
+          style="flex: 0 0 auto; margin-right: 10px;"
+        />
+        {{ $t('INBOX_MGMT.ADD.WHATSAPP.WEBWOOK_SEND_NEW_MESSAGES.LABEL') }}
+        <span v-if="$v.webhookSendNewMessages.$error" class="message">
+          {{ $t('INBOX_MGMT.ADD.WHATSAPP.WEBWOOK_SEND_NEW_MESSAGES.ERROR') }}
+        </span>
+      </label>
+    </div>
+    
     <div class="w-full" style="margin-top: 20px">
       <woot-submit-button
         :loading="uiFlags.isCreating"
         :button-text="$t('INBOX_MGMT.ADD.WHATSAPP.SUBMIT_BUTTON')"
       />
-    </div>
+      <woot-submit-button
+        :loading="uiFlags.isUpdating"          
+        :button-text="$t('INBOX_MGMT.ADD.WHATSAPP.GENERATE_API_KEY.LABEL')"
+        @click="generateToken"
+      /> 
+    </div>    
   </form>
 </template>
 
@@ -136,6 +155,7 @@ export default {
       ignoreGroupMessages: true,
       ignoreHistoryMessages: true,
       sendAgentName: true,
+      webhookSendNewMessages: true,
     };
   },
   computed: {
@@ -148,9 +168,25 @@ export default {
     ignoreGroupMessages: { required },
     ignoreHistoryMessages: { required },
     sendAgentName: { required },
+    webhookSendNewMessages: { required },
     url: { required },
   },
   methods: {
+    generateToken() {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let token = '';
+      for (let i = 0; i < 64; i++) {
+        token += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+
+      if (this.apiKey) {
+        if (confirm('A token already exists. Do you want to replace it?')) {
+          this.apiKey = token;
+        }
+      } else {
+        this.apiKey = token;
+      }
+    },
     async createChannel() {
       this.$v.$touch();
       if (this.$v.$invalid) {
@@ -174,6 +210,7 @@ export default {
                 ignore_history_messages: this.ignoreHistoryMessages,
                 ignore_group_messages: this.ignoreGroupMessages,
                 send_agent_name: this.sendAgentName,
+                webhook_send_new_messages: this.webhookSendNewMessages,
                 url: this.url,
               },
             },
