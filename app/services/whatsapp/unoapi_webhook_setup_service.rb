@@ -25,16 +25,16 @@ class Whatsapp::UnoapiWebhookSetupService
     Rails.logger.debug { "Connecting #{phone_number} from unoapi" }
     body = {
       ignoreGroupMessages: whatsapp_channel.provider_config['ignore_group_messages'],
-      ignoreBroadcastStatuses: whatsapp_channel.provider_config['ignore_Broadcast_Statuses'],
-      ignoreBroadcastMessages: whatsapp_channel.provider_config['ignore_Broadcast_Messages'],
+      ignoreBroadcastStatuses: whatsapp_channel.provider_config['ignore_broadcast_statuses'],
+      ignoreBroadcastMessages: whatsapp_channel.provider_config['ignore_broadcast_messages'],
       ignoreHistoryMessages: whatsapp_channel.provider_config['ignore_history_messages'],
-      ignoreOwnMessages: whatsapp_channel.provider_config['ignore_Own_Messages'],
-      ignoreYourselfMessages: whatsapp_channel.provider_config['ignore_Yourself_Messages'],
-      sendConnectionStatus: whatsapp_channel.provider_config['send_Connection_Status'],
-      notifyFailedMessages: whatsapp_channel.provider_config['notify_Failed_Messages'],
-      composingMessage: whatsapp_channel.provider_config['composing_Message'],
-      rejectCalls: whatsapp_channel.provider_config['reject_Calls'],
-      messageCallsWebhook: whatsapp_channel.provider_config['message_Calls_Webhook'],
+      ignoreOwnMessages: whatsapp_channel.provider_config['ignore_own_messages'],
+      ignoreYourselfMessages: whatsapp_channel.provider_config['ignore_yourself_messages'],
+      sendConnectionStatus: whatsapp_channel.provider_config['send_connection_status'],
+      notifyFailedMessages: whatsapp_channel.provider_config['notify_failed_messages'],
+      composingMessage: whatsapp_channel.provider_config['composing_message'],
+      rejectCalls: whatsapp_channel.provider_config['reject_calls'],
+      messageCallsWebhook: whatsapp_channel.provider_config['message_calls_webhook'],
       webhooks: [
         sendNewMessages: whatsapp_channel.provider_config['webhook_send_new_messages'],
         id: 'default',
@@ -42,8 +42,8 @@ class Whatsapp::UnoapiWebhookSetupService
         token: whatsapp_channel.provider_config['webhook_verify_token'],
         header: :Authorization
       ],
-      sendReactionAsReply: whatsapp_channel.provider_config['send_Reaction_As_Reply'],
-      sendProfilePicture: whatsapp_channel.provider_config['send_Profile_Picture'],      
+      sendReactionAsReply: whatsapp_channel.provider_config['send_reaction_as_reply'],
+      sendProfilePicture: whatsapp_channel.provider_config['send_profile_picture'],      
       authToken: whatsapp_channel.provider_config['api_key']
     }
     response = HTTParty.post("#{url(whatsapp_channel)}/register", headers: headers(whatsapp_channel), body: body.to_json)
