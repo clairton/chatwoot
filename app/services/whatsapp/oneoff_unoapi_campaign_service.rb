@@ -17,6 +17,7 @@ class Whatsapp::OneoffUnoapiCampaignService
   delegate :channel, to: :inbox
 
   def process_audience(audience)
+    Rails.logger.debug { "Process campaign #{campaign.id} and #{audience.length} audience record(s)" }
     interval = 0.seconds
     audience.each do |a|
       interval += rand(1..10).seconds
