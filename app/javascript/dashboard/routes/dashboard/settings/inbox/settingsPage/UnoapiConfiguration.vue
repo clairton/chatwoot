@@ -331,7 +331,7 @@ export default {
       sendAgentName: true,
       ignoreBroadcastStatuses: true,
       ignoreBroadcastMessages: true,
-      ignoreOwnMessages: false,
+      ignoreOwnMessages: true,
       ignoreYourselfMessages: true,
       sendConnectionStatus: true,
       notifyFailedMessages: true,
