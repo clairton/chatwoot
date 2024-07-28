@@ -33,10 +33,8 @@ describe Whatsapp::OneoffUnoapiCampaignService do
     it 'send messages to contacts in the audience and marks the campaign completed' do
       allow(CampaignMessageJob).to receive(:perform_later)
       allow(CampaignMessageJob).to receive(:set).and_return(CampaignMessageJob)
-
       unoapi_campaign_service.perform
       expect(campaign.reload.completed?).to be true
-
       expect(CampaignMessageJob)
         .to have_received(:perform_later)
         .with(

@@ -31,7 +31,7 @@ RSpec.describe CampaignMessageJob do
         phone_number,
         campaign.message
       )
-      .on_queue('high')
+      .on_queue('low')
   end
 
   context 'when the job is triggered on a new message' do

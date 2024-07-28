@@ -1,5 +1,5 @@
 class CampaignMessageJob < ApplicationJob
-  queue_as :high
+  queue_as :low
 
   # rubocop:disable Metrics/AbcSize
   def perform(account_id, inbox_id, campaign_id, content, audience)

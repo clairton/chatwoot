@@ -1,5 +1,5 @@
 class OneoffUnoapiCampaignJob < ApplicationJob
-  queue_as :high
+  queue_as :low
 
   def perform(campaign_id)
     campaign = Campaign.find(campaign_id)

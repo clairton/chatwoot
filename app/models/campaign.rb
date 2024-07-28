@@ -67,7 +67,7 @@ class Campaign < ApplicationRecord
   def one_off_unoapi
     return unless inbox.channel_type == 'Channel::Whatsapp' && inbox&.channel&.provider == 'unoapi'
 
-    OneoffUnoapiCampaignJob.perfom_later(id)
+    Whatsapp::OneoffUnoapiCampaignService.new(campaign: self).perform
   end
 
   def load_attributes_created_by_db_triggers
@@ -76,6 +76,8 @@ class Campaign < ApplicationRecord
     # We can't use reload because it will clear the previous changes, which we need for the dispatcher
     obj_from_db = self.class.find(id)
     self[:display_id] = obj_from_db[:display_id]
+  rescue ActiveRecord::RecordNotFound
+    Rails.logger.error("Ignore raise ActiveRecord::RecordNotFound on load campaign id #{id}")
   end
 
   def validate_campaign_inbox
