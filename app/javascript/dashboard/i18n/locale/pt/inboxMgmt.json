@@ -252,6 +252,71 @@
           "PLACEHOLDER": "Por favor, insira um nome para a caixa de entrada",
           "ERROR": "Este campo é obrigatório"
         },
+        "GENERATE_API_KEY": {
+          "LABEL": "Generate API Key",
+          "PLACEHOLDER": "Generate API Key",
+          "ERROR": "Generate API Key"
+        },
+        "REJECT_CALLS": {
+          "LABEL": "Rejeitar chamada",
+          "PLACEHOLDER": "Rejeitar chamada.",
+          "ERROR": "Rejeitar chamada."
+        },
+        "MESSAGE_CALLS_WEBHOOK": {
+          "LABEL": "Mensagem ao rejeitar chamada",
+          "PLACEHOLDER": "Mensagem ao rejeitar chamada.",
+          "ERROR": "Mensagem ao rejeitar chamada."
+        },
+        "IGNORE_BROADCAST_STATUSES": {
+          "LABEL": "Ignorar transmissão de status",
+          "PLACEHOLDER": "Selecione para ignorar transmissão de status.",
+          "ERROR": "Selecione para ignorar transmissão de status."
+        },
+        "IGNORE_BROADCAST_MESSAGES": {
+          "LABEL": "Ignorar mensagens de transmissão",
+          "PLACEHOLDER": "Selecione para ignorar mensagens de transmissão.",
+          "ERROR": "Selecione para ignorar mensagens de transmissão."
+        },
+        "IGNORE_OWN_MESSAGES": {
+          "LABEL": "Ignorar próprias mensagens",
+          "PLACEHOLDER": "Selecione para ignorar próprias mensagens.",
+          "ERROR": "Selecione para ignorar próprias mensagens."
+        },
+        "IGNORE_YOURSELF_MESSAGES": {
+          "LABEL": "Ignorar suas mensagens",
+          "PLACEHOLDER": "Selecione para ignorar suas mensagens.",
+          "ERROR": "Selecione para ignorar suas mensagens."
+        },
+        "SEND_CONNECTION_STATUS": {
+          "LABEL": "Exibir status de conexão",
+          "PLACEHOLDER": "Selecione para exibir status de conexão.",
+          "ERROR": "Selecione para exibir status de conexão."
+        },
+        "NOTIFY_FAILED_MESSAGES": {
+          "LABEL": "Notificar mensagens com falha",
+          "PLACEHOLDER": "Selecione para notificar mensagens com falha.",
+          "ERROR": "Selecione para notificar mensagens com falha."
+        },
+        "COMPOSING_MESSAGE": {
+          "LABEL": "Compor mensagem",
+          "PLACEHOLDER": "Selecione para compor mensagem.",
+          "ERROR": "Selecione para compor mensagem."
+        },
+        "SEND_REACTION_AS_REPLY": {
+          "LABEL": "Mostrar reação como resposta",
+          "PLACEHOLDER": "Selecione para mostrar reação como resposta.",
+          "ERROR": "Selecione para mostrar reação como resposta."
+        },
+        "SEND_PROFILE_PICTURE": {
+          "LABEL": "Exibir foto de perfil",
+          "PLACEHOLDER": "Selecione para exibir foto de perfil.",
+          "ERROR": "Selecione para exibir foto de perfil."
+        },
+        "URL": {
+          "LABEL": "Unoapi URL",
+          "PLACEHOLDER": "Insira um URL Unoapi",
+          "ERROR": "Este campo é obrigatório"
+        },
         "PHONE_NUMBER": {
           "LABEL": "Número de telefone",
           "PLACEHOLDER": "Por favor, insira o número de telefone a partir do qual a mensagem será enviada.",
