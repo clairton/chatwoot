@@ -321,6 +321,14 @@ class Message < ApplicationRecord
     return if previous_changes.blank?
 
     send_update_event
+
+    if additional_attributes['campaign_id'].present?
+      CampaignMessageUpdateJob.perform_later(
+        additional_attributes['campaign_id'],
+        additional_attributes['audience_id'],
+        status
+      )
+    end
   end
 
   def send_reply
