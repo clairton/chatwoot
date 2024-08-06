@@ -1,4 +1,5 @@
 class CampaignMessageJob < ApplicationJob
+  include Whatsapp::IncomingMessageServiceHelpers
   queue_as :low
   retry_on ActiveRecord::RecordNotFound, wait: 30.seconds, attempts: 5
 
@@ -29,12 +30,16 @@ class CampaignMessageJob < ApplicationJob
   end
 
   def create_contact_inbox(inbox_id, params)
+    phone_number = params[:phone_number].delete('+').to_s
+    phone_number = brazil_phone_number?(phone_number) ? normalised_brazil_mobile_number(phone_number) : phone_number
+    phone_number = processed_waid(phone_number)
+
     contact_inbox = ContactInboxWithContactBuilder.new(
-      source_id: params[:phone_number].delete('+').to_s,
+      source_id: phone_number,
       inbox: Inbox.find(inbox_id),
       contact_attributes: {
         name: params[:name],
-        phone_number: params[:phone_number]
+        phone_number: "+#{phone_number}"
       }
     ).perform
     raise ActiveRecord::RecordNotFound if contact_inbox.nil?
