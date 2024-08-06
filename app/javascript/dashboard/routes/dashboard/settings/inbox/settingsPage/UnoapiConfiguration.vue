@@ -2,7 +2,7 @@
   <div class="my-2 mx-8 text-base">
     <form class="flex flex-col" @submit.prevent="updateInbox()">
       <div class="w-1/4">
-        <label :class="{ error: $v.url.$error }">
+        <label :class="{ error: v$.url.$error }">
           <span>
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.URL.LABEL') }}
           </span>
@@ -10,16 +10,16 @@
             v-model.trim="url"
             type="text"
             :placeholder="$t('INBOX_MGMT.ADD.WHATSAPP.URL.PLACEHOLDER')"
-            @blur="$v.url.$touch"
+            @blur="v$.url.$touch"
           />
-          <span v-if="$v.url.$error" class="message">
+          <span v-if="v$.url.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.URL.ERROR') }}
           </span>
         </label>
       </div>
 
       <div class="w-1/4">
-        <label :class="{ error: $v.apiKey.$error }">
+        <label :class="{ error: v$.apiKey.$error }">
           <span>
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.API_KEY.LABEL') }}
           </span>
@@ -27,16 +27,16 @@
             v-model.trim="apiKey"
             type="text"
             :placeholder="$t('INBOX_MGMT.ADD.WHATSAPP.API_KEY.PLACEHOLDER')"
-            @blur="$v.apiKey.$touch"
+            @blur="v$.apiKey.$touch"
           />
-          <span v-if="$v.apiKey.$error" class="message">
+          <span v-if="v$.apiKey.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.API_KEY.ERROR') }}
           </span>
         </label>
       </div>
 
       <div class="w-1/4">
-        <label :class="{ error: $v.rejectCalls.$error }">
+        <label :class="{ error: v$.rejectCalls.$error }">
           <span>
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.REJECT_CALLS.LABEL') }}
           </span>
@@ -44,16 +44,16 @@
             v-model.trim="rejectCalls"
             type="text"
             :placeholder="$t('INBOX_MGMT.ADD.WHATSAPP.REJECT_CALLS.PLACEHOLDER')"
-            @blur="$v.rejectCalls.$touch"
+            @blur="v$.rejectCalls.$touch"
           />
-          <span v-if="$v.rejectCalls.$error" class="message">
+          <span v-if="v$.rejectCalls.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.REJECT_CALLS.ERROR') }}
           </span>
         </label>
       </div>
 
       <div class="w-1/4">
-        <label :class="{ error: $v.messageCallsWebhook.$error }">
+        <label :class="{ error: v$.messageCallsWebhook.$error }">
           <span>
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.MESSAGE_CALLS_WEBHOOK.LABEL') }}
           </span>
@@ -61,222 +61,196 @@
             v-model.trim="messageCallsWebhook"
             type="text"
             :placeholder="$t('INBOX_MGMT.ADD.WHATSAPP.MESSAGE_CALLS_WEBHOOK.PLACEHOLDER')"
-            @blur="$v.messageCallsWebhook.$touch"
+            @blur="v$.messageCallsWebhook.$touch"
           />
-          <span v-if="$v.messageCallsWebhook.$error" class="message">
+          <span v-if="v$.messageCallsWebhook.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.MESSAGE_CALLS_WEBHOOK.ERROR') }}
           </span>
         </label>
-      </div>      
-      
+      </div>
+
       <div class="w-3/4 pb-4 config-helptext">
-        <label
-          :class="'switch-label ' + { error: $v.sendAgentName.$error }"
-        >
+        <label :class="{ error: v$.sendAgentName.$error }" style="display: flex; align-items: center;">
           <woot-switch
             v-model="sendAgentName"
             :value="sendAgentName"
-            class="switch"
+            style="flex: 0 0 auto; margin-right: 10px;"
           />
           {{ $t('INBOX_MGMT.ADD.WHATSAPP.SEND_AGENT_NAME.LABEL') }}
-          <span v-if="$v.sendAgentName.$error" class="message">
+          <span v-if="v$.sendAgentName.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.SEND_AGENT_NAME.ERROR') }}
           </span>
         </label>
       </div>
 
       <div class="w-3/4 pb-4 config-helptext">
-        <label
-          :class="'switch-label ' + { error: $v.ignoreGroupMessages.$error }"
-        >
+        <label :class="{ error: v$.ignoreGroupMessages.$error }" style="display: flex; align-items: center;">
           <woot-switch
             v-model="ignoreGroupMessages"
             :value="ignoreGroupMessages"
-            class="switch"
+            style="flex: 0 0 auto; margin-right: 10px;"
           />
           {{ $t('INBOX_MGMT.ADD.WHATSAPP.IGNORE_GROUPS.LABEL') }}
-          <span v-if="$v.ignoreGroupMessages.$error" class="message">
+          <span v-if="v$.ignoreGroupMessages.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.IGNORE_GROUPS.ERROR') }}
           </span>
         </label>
       </div>
 
       <div class="w-3/4 pb-4 config-helptext">
-        <label
-          :class="'switch-label ' + { error: $v.ignoreHistoryMessages.$error }"
-        >
+        <label :class="{ error: v$.ignoreHistoryMessages.$error }" style="display: flex; align-items: center;">
           <woot-switch
             v-model="ignoreHistoryMessages"
             :value="ignoreHistoryMessages"
-            class="switch"
+            style="flex: 0 0 auto; margin-right: 10px;"
           />
           {{ $t('INBOX_MGMT.ADD.WHATSAPP.IGNORE_HISTORY.LABEL') }}
-          <span v-if="$v.ignoreHistoryMessages.$error" class="message">
+          <span v-if="v$.ignoreHistoryMessages.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.IGNORE_HISTORY.ERROR') }}
           </span>
         </label>
       </div>
 
       <div class="w-3/4 pb-4 config-helptext">
-        <label
-          :class="'switch-label ' + { error: $v.webhookSendNewMessages.$error }"
-        >
+        <label :class="{ error: v$.webhookSendNewMessages.$error }" style="display: flex; align-items: center;">
           <woot-switch
             v-model="webhookSendNewMessages"
             :value="webhookSendNewMessages"
-            class="switch"
+            style="flex: 0 0 auto; margin-right: 10px;"
           />
           {{ $t('INBOX_MGMT.ADD.WHATSAPP.WEBWOOK_SEND_NEW_MESSAGES.LABEL') }}
-          <span v-if="$v.webhookSendNewMessages.$error" class="message">
+          <span v-if="v$.webhookSendNewMessages.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.WEBWOOK_SEND_NEW_MESSAGES.ERROR') }}
           </span>
         </label>
       </div>
 
       <div class="w-3/4 pb-4 config-helptext">
-        <label
-          :class="'switch-label ' + { error: $v.ignoreBroadcastStatuses.$error }"
-        >
+        <label :class="{ error: v$.ignoreBroadcastStatuses.$error }" style="display: flex; align-items: center;">
           <woot-switch
             v-model="ignoreBroadcastStatuses"
             :value="ignoreBroadcastStatuses"
-            class="switch"
+            style="flex: 0 0 auto; margin-right: 10px;"
           />
           {{ $t('INBOX_MGMT.ADD.WHATSAPP.IGNORE_BROADCAST_STATUSES.LABEL') }}
-          <span v-if="$v.ignoreBroadcastStatuses.$error" class="message">
+          <span v-if="v$.ignoreBroadcastStatuses.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.IGNORE_BROADCAST_STATUSES.ERROR') }}
           </span>
         </label>
       </div>
 
       <div class="w-3/4 pb-4 config-helptext">
-        <label
-          :class="'switch-label ' + { error: $v.ignoreBroadcastMessages.$error }"
-        >
+        <label :class="{ error: v$.ignoreBroadcastMessages.$error }" style="display: flex; align-items: center;">
           <woot-switch
             v-model="ignoreBroadcastMessages"
             :value="ignoreBroadcastMessages"
-            class="switch"
+            style="flex: 0 0 auto; margin-right: 10px;"
           />
           {{ $t('INBOX_MGMT.ADD.WHATSAPP.IGNORE_BROADCAST_MESSAGES.LABEL') }}
-          <span v-if="$v.ignoreBroadcastMessages.$error" class="message">
+          <span v-if="v$.ignoreBroadcastMessages.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.IGNORE_BROADCAST_MESSAGES.ERROR') }}
           </span>
         </label>
       </div>
 
       <div class="w-3/4 pb-4 config-helptext">
-        <label
-          :class="'switch-label ' + { error: $v.ignoreOwnMessages.$error }"
-        >
+        <label :class="{ error: v$.ignoreOwnMessages.$error }" style="display: flex; align-items: center;">
           <woot-switch
             v-model="ignoreOwnMessages"
             :value="ignoreOwnMessages"
-            class="switch"
+            style="flex: 0 0 auto; margin-right: 10px;"
           />
           {{ $t('INBOX_MGMT.ADD.WHATSAPP.IGNORE_OWN_MESSAGES.LABEL') }}
-          <span v-if="$v.ignoreOwnMessages.$error" class="message">
+          <span v-if="v$.ignoreOwnMessages.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.IGNORE_OWN_MESSAGES.ERROR') }}
           </span>
         </label>
       </div>
 
       <div class="w-3/4 pb-4 config-helptext">
-        <label
-          :class="'switch-label ' + { error: $v.ignoreYourselfMessages.$error }"
-        >
+        <label :class="{ error: v$.ignoreYourselfMessages.$error }" style="display: flex; align-items: center;">
           <woot-switch
             v-model="ignoreYourselfMessages"
             :value="ignoreYourselfMessages"
-            class="switch"
+            style="flex: 0 0 auto; margin-right: 10px;"
           />
           {{ $t('INBOX_MGMT.ADD.WHATSAPP.IGNORE_YOURSELF_MESSAGES.LABEL') }}
-          <span v-if="$v.ignoreYourselfMessages.$error" class="message">
+          <span v-if="v$.ignoreYourselfMessages.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.IGNORE_YOURSELF_MESSAGES.ERROR') }}
           </span>
         </label>
       </div>
 
       <div class="w-3/4 pb-4 config-helptext">
-        <label
-          :class="'switch-label ' + { error: $v.sendConnectionStatus.$error }"
-        >
+        <label :class="{ error: v$.sendConnectionStatus.$error }" style="display: flex; align-items: center;">
           <woot-switch
             v-model="sendConnectionStatus"
             :value="sendConnectionStatus"
-            class="switch"
+            style="flex: 0 0 auto; margin-right: 10px;"
           />
           {{ $t('INBOX_MGMT.ADD.WHATSAPP.SEND_CONNECTION_STATUS.LABEL') }}
-          <span v-if="$v.sendConnectionStatus.$error" class="message">
+          <span v-if="v$.sendConnectionStatus.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.SEND_CONNECTION_STATUS.ERROR') }}
           </span>
         </label>
       </div>
 
       <div class="w-3/4 pb-4 config-helptext">
-        <label
-          :class="'switch-label ' + { error: $v.notifyFailedMessages.$error }"
-        >
+        <label :class="{ error: v$.notifyFailedMessages.$error }" style="display: flex; align-items: center;">
           <woot-switch
             v-model="notifyFailedMessages"
             :value="notifyFailedMessages"
-            class="switch"
+            style="flex: 0 0 auto; margin-right: 10px;"
           />
           {{ $t('INBOX_MGMT.ADD.WHATSAPP.NOTIFY_FAILED_MESSAGES.LABEL') }}
-          <span v-if="$v.notifyFailedMessages.$error" class="message">
+          <span v-if="v$.notifyFailedMessages.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.NOTIFY_FAILED_MESSAGES.ERROR') }}
           </span>
         </label>
       </div>
 
       <div class="w-3/4 pb-4 config-helptext">
-        <label
-          :class="'switch-label ' + { error: $v.composingMessage.$error }"
-        >
+        <label :class="{ error: v$.composingMessage.$error }" style="display: flex; align-items: center;">
           <woot-switch
             v-model="composingMessage"
             :value="composingMessage"
-            class="switch"
+            style="flex: 0 0 auto; margin-right: 10px;"
           />
           {{ $t('INBOX_MGMT.ADD.WHATSAPP.COMPOSING_MESSAGE.LABEL') }}
-          <span v-if="$v.composingMessage.$error" class="message">
+          <span v-if="v$.composingMessage.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.COMPOSING_MESSAGE.ERROR') }}
           </span>
         </label>
       </div>
 
       <div class="w-3/4 pb-4 config-helptext">
-        <label
-          :class="'switch-label ' + { error: $v.sendReactionAsReply.$error }"
-        >
+        <label :class="{ error: v$.sendReactionAsReply.$error }" style="display: flex; align-items: center;">
           <woot-switch
             v-model="sendReactionAsReply"
             :value="sendReactionAsReply"
-            class="switch"
+            style="flex: 0 0 auto; margin-right: 10px;"
           />
           {{ $t('INBOX_MGMT.ADD.WHATSAPP.SEND_REACTION_AS_REPLY.LABEL') }}
-          <span v-if="$v.sendReactionAsReply.$error" class="message">
+          <span v-if="v$.sendReactionAsReply.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.SEND_REACTION_AS_REPLY.ERROR') }}
           </span>
         </label>
       </div>
 
       <div class="w-3/4 pb-4 config-helptext">
-        <label
-          :class="'switch-label ' + { error: $v.sendProfilePicture.$error }"
-        >
+        <label :class="{ error: v$.sendProfilePicture.$error }" style="display: flex; align-items: center;">
           <woot-switch
             v-model="sendProfilePicture"
             :value="sendProfilePicture"
-            class="switch"
+            style="flex: 0 0 auto; margin-right: 10px;"
           />
           {{ $t('INBOX_MGMT.ADD.WHATSAPP.SEND_PROFILE_PICTURE.LABEL') }}
-          <span v-if="$v.sendProfilePicture.$error" class="message">
+          <span v-if="v$.sendProfilePicture.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.SEND_PROFILE_PICTURE.ERROR') }}
           </span>
         </label>
-      </div>      
-      
+      </div>
+
       <div class="w-3/4 pb-4 config-helptext">
         <img v-if="qrcode" :src="qrcode" />
         <div v-if="notice">{{ notice }}</div>
@@ -286,7 +260,7 @@
         <woot-submit-button
           :loading="uiFlags.isUpdating"
           :button-text="`${$t(
-            'INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_SECTION_UPDATE_BUTTON'
+          'INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_SECTION_UPDATE_BUTTON'
           )} and ${$t('INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_CONNECT')}`"
           @click="connect = true"
         />
@@ -304,17 +278,22 @@
     </form>
   </div>
 </template>
+
 <script type="module">
 import { io } from 'socket.io-client';
-import alertMixin from 'shared/mixins/alertMixin';
+import { useVuelidate } from '@vuelidate/core';
+import { useAlert } from 'dashboard/composables';
 import inboxMixin from 'shared/mixins/inboxMixin';
-import { required } from 'vuelidate/lib/validators';
+import { required } from '@vuelidate/validators';
 import { mapGetters } from 'vuex';
 // import { createConsumer } from '@rails/actioncable';
 
 export default {
+  setup() {
+    return { v$: useVuelidate() };
+  },
   components: {},
-  mixins: [inboxMixin, alertMixin],
+  mixins: [inboxMixin],
   props: {
     inbox: {
       type: Object,
@@ -468,7 +447,6 @@ export default {
               send_agent_name: this.sendAgentName,
               webhook_send_new_messages: this.webhookSendNewMessages,
               url: this.url,
-              webhook_send_new_messages: this.webhookSendNewMessages,
               ignore_broadcast_statuses: this.ignoreBroadcastStatuses,
               ignore_broadcast_messages: this.ignoreBroadcastMessages,
               ignore_own_messages: this.ignoreOwnMessages,
@@ -479,21 +457,22 @@ export default {
               send_reaction_as_reply: this.sendReactionAsReply,
               send_profile_picture: this.sendProfilePicture,
               reject_calls: this.rejectCalls,
-              message_calls_Webhook: this.messageCallsWebhook,              
+              message_calls_webhook: this.messageCallsWebhook,              
               connect: this.connect,
               disconect: this.disconect,
             },
           },
         };
         await this.$store.dispatch('inboxes/updateInbox', payload);
-        this.showAlert(this.$t('INBOX_MGMT.EDIT.API.SUCCESS_MESSAGE'));
+        useAlert(this.$t('INBOX_MGMT.EDIT.API.SUCCESS_MESSAGE'));
       } catch (error) {
-        this.showAlert(this.$t('INBOX_MGMT.EDIT.API.ERROR_MESSAGE'));
+        useAlert(this.$t('INBOX_MGMT.EDIT.API.ERROR_MESSAGE'));
       }
     },
   },
 };
 </script>
+
 <style lang="scss" scoped>
 .whatsapp-settings--content {
   ::v-deep input {
@@ -509,5 +488,47 @@ export default {
 .switch-label {
   display: flex;
   align-items: center;
+}
+
+.flex-shrink div .messagingServiceHelptext{
+ width:343px;
+ max-width:343px;
+ margin-bottom:8px;
+}
+
+.flex-shrink div .w-1\/4{
+ min-width:700px;
+ height:77px;
+}
+
+#app .flex .w-full{
+ transform:translatex(0px) translatey(0px);
+}
+
+/* Config helptext */
+#app .flex-grow-0 .overflow-hidden .justify-between .flex-shrink div .text-base .flex-col .config-helptext{
+ width:100% !important;
+}
+
+.flex-shrink div .config-helptext{
+ min-height:2px;
+ height:30px;
+}
+
+.flex-shrink .messagingServiceHelptext label{
+ width:204%;
+ transform:translatex(0px) translatey(0px);
+ position:relative;
+ top:6px;
+}
+
+.flex-shrink .config-helptext div{
+ margin-top:10px;
+}
+
+.flex-shrink div img{
+ transform:translatex(407px) translatey(-347px);
+ width:300px;
+ height:300px;
 }
 </style>

@@ -228,9 +228,9 @@
           "UNOAPI": "Unoapi"
         },
         "SEND_AGENT_NAME": {
-          "LABEL": "Enviar nome do agent",
-          "PLACEHOLDER": "Selecione para enviar o nome do agent.",
-          "ERROR": "Selecione para enviar o nome do agent."
+          "LABEL": "Enviar nome do agente",
+          "PLACEHOLDER": "Selecione para enviar o nome do agente.",
+          "ERROR": "Selecione para enviar o nome do agente."
         },
         "IGNORE_HISTORY": {
           "LABEL": "Ignorar histórico ao connectar",
@@ -258,14 +258,14 @@
           "ERROR": "Generate API Key"
         },
         "REJECT_CALLS": {
-          "LABEL": "Rejeitar chamada",
-          "PLACEHOLDER": "Rejeitar chamada.",
-          "ERROR": "Rejeitar chamada."
+          "LABEL": "Mensagem ao rejeitar chamada",
+          "PLACEHOLDER": "Mensagem enviada ao rejeitar chamada.",
+          "ERROR": "Para rejeitar chamadas esse campo é obrigatório."
         },
         "MESSAGE_CALLS_WEBHOOK": {
-          "LABEL": "Mensagem ao rejeitar chamada",
-          "PLACEHOLDER": "Mensagem ao rejeitar chamada.",
-          "ERROR": "Mensagem ao rejeitar chamada."
+          "LABEL": "Mensagem de retorno ao rejeitar chamada",
+          "PLACEHOLDER": "Mensagem de retorno ao rejeitar chamada.",
+          "ERROR": "Para obter retorno ao rejeitar chamada esse campo é obrigatório."
         },
         "IGNORE_BROADCAST_STATUSES": {
           "LABEL": "Ignorar transmissão de status",
@@ -298,9 +298,9 @@
           "ERROR": "Selecione para notificar mensagens com falha."
         },
         "COMPOSING_MESSAGE": {
-          "LABEL": "Compor mensagem",
-          "PLACEHOLDER": "Selecione para compor mensagem.",
-          "ERROR": "Selecione para compor mensagem."
+          "LABEL": "Enviar digitando mensagem",
+          "PLACEHOLDER": "Selecione para enviar digitando mensagem.",
+          "ERROR": "Selecione para enviar digitando mensagem."
         },
         "SEND_REACTION_AS_REPLY": {
           "LABEL": "Mostrar reação como resposta",
