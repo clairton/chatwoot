@@ -32,7 +32,6 @@ class CampaignMessageJob < ApplicationJob
   def create_contact_inbox(inbox_id, params)
     phone_number = params[:phone_number].delete('+').to_s
     phone_number = brazil_phone_number?(phone_number) ? normalised_brazil_mobile_number(phone_number) : phone_number
-    phone_number = processed_waid(phone_number)
 
     contact_inbox = ContactInboxWithContactBuilder.new(
       source_id: phone_number,
