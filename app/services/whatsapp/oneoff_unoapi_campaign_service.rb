@@ -18,7 +18,7 @@ class Whatsapp::OneoffUnoapiCampaignService
 
   def process_audience(audience)
     Rails.logger.debug { "Process campaign #{campaign.id} and #{audience.length} audience record(s)" }
-    interval = 0.seconds
+    interval = 0
     new_audience = audience.map do |a|
       aa = update_audience(a)
       interval = schedule_job(campaign, aa, interval)
@@ -30,19 +30,19 @@ class Whatsapp::OneoffUnoapiCampaignService
   end
 
   def update_audience(audience)
-    audience[:status] = 'scheduled'
+    audience[:status] = :scheduled
     audience[:audience_id] = SecureRandom.uuid
-    audience
+    audience.symbolize_keys
   end
 
   def schedule_job(campaign, audience, interval)
-    interval += rand(1..10).seconds
-    CampaignMessageJob.set(wait_until: DateTime.current + interval.seconds).perform_later(
+    interval = audience[:wait_for_seconds] || (interval + rand(1..10))
+    CampaignMessageJob.set(wait: interval.seconds).perform_later(
       campaign.account_id,
       campaign.inbox_id,
       campaign.id,
       campaign.message,
-      audience.symbolize_keys
+      audience
     )
     interval
   end
