@@ -33,13 +33,16 @@ class CampaignMessageJob < ApplicationJob
     phone_number = params[:phone_number].delete('+').to_s
     phone_number = brazil_phone_number?(phone_number) ? normalised_brazil_mobile_number(phone_number) : phone_number
 
+    attributes = {
+      name: params[:name],
+      phone_number: "+#{phone_number}"
+    }
+    attributes[:email] = params[:email] if params[:email]
+
     contact_inbox = ContactInboxWithContactBuilder.new(
       source_id: phone_number,
       inbox: Inbox.find(inbox_id),
-      contact_attributes: {
-        name: params[:name],
-        phone_number: "+#{phone_number}"
-      }
+      contact_attributes: attributes
     ).perform
     raise ActiveRecord::RecordNotFound if contact_inbox.nil?
 

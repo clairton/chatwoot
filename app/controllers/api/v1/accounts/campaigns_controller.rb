@@ -31,7 +31,7 @@ class Api::V1::Accounts::CampaignsController < Api::V1::Accounts::BaseController
     fields = [:title, :description, :message, :enabled, :trigger_only_during_business_hours, :inbox_id, :sender_id, :scheduled_at]
     fields << { trigger_rules: {} }
     fields << if Inbox.find(params[:inbox_id])&.channel.try(:provider) == 'unoapi'
-                { audience: [:name, :phone_number, :identifier, :due_at, :value, :scheduled_at] }
+                { audience: [:name, :phone_number, :identifier, :due_at, :value, :scheduled_at, :email] }
               else
                 { audience: [:type, :id] }
               end
