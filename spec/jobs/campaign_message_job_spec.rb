@@ -16,6 +16,7 @@ RSpec.describe CampaignMessageJob do
   let!(:unoapi_inbox) { create(:inbox, channel: unoapi_channel) }
   let(:phone_number) { Faker::PhoneNumber.cell_phone_in_e164 }
   let(:name) { Faker::Name.name }
+  let(:identifier) { rand(999..1000).to_s }
   let(:audience_1) { { phone_number: phone_number, name: name } }
   let(:audience) { [audience_1] }
   let!(:campaign) do
@@ -62,6 +63,27 @@ RSpec.describe CampaignMessageJob do
         audience_1
       )
       expect(Message.last.content).to eq("hello #{name}")
+    end
+
+    it 'update contact with identifier' do
+      described_class.perform_now(
+        campaign.account_id,
+        campaign.inbox_id,
+        campaign.id,
+        campaign.message,
+        audience_1
+      )
+      expect(Contact.where(identifier: identifier).count).to eq(0)
+      expect(Message.last.content).to eq("hello #{name}")
+      audience = { phone_number: phone_number, name: name, identifier: identifier }
+      described_class.perform_now(
+        campaign.account_id,
+        campaign.inbox_id,
+        campaign.id,
+        campaign.message,
+        audience
+      )
+      expect(Contact.where(identifier: identifier).count).to eq(1)
     end
   end
 end

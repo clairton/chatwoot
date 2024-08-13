@@ -44,7 +44,16 @@ class CampaignMessageJob < ApplicationJob
       inbox: Inbox.find(inbox_id),
       contact_attributes: attributes
     ).perform
+
     raise ActiveRecord::RecordNotFound if contact_inbox.nil?
+
+    [:email, :identifier].each do |field|
+      next if contact_inbox.contact[field] || !params[field]
+
+      # rubocop:disable Rails/SkipsModelValidations
+      contact_inbox.contact.update_column(field, params[field])
+      # rubocop:enable Rails/SkipsModelValidations
+    end
 
     contact_inbox
   end
