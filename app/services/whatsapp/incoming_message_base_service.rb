@@ -63,6 +63,7 @@ class Whatsapp::IncomingMessageBaseService
     if status[:status] == 'failed' && status[:errors].present?
       error = status[:errors]&.first
       message.external_error = "#{error[:code]}: #{error[:title]}"
+      message.conversation.open! unless message.conversation.open?
     end
     message.save!
   end
