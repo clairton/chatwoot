@@ -28,9 +28,10 @@ class Whatsapp::UnoapiWebhookSetupService
 
   def connect(whatsapp_channel)
     phone_number = whatsapp_channel.provider_config['business_account_id']
-    Rails.logger.debug { "Connecting #{phone_number} from unoapi" }
-    body = params(provider_config, phone_number)
-    response = HTTParty.post("#{url(whatsapp_channel)}/register", headers: headers(whatsapp_channel), body: body.to_json)
+    url = url(whatsapp_channel)
+    Rails.logger.debug { "Connecting #{phone_number} from unoapi with url #{url}" }
+    body = params(whatsapp_channel.provider_config, phone_number)
+    response = HTTParty.post("#{url}/register", headers: headers(whatsapp_channel), body: body.to_json)
     Rails.logger.debug { "Response #{response}" }
     return send_message(whatsapp_channel) if response.success?
 
