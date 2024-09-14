@@ -274,7 +274,8 @@ export default {
         this.isASmsInbox ||
         this.isATelegramChannel ||
         this.isALineChannel ||
-        this.isAnInstagramChannel
+        this.isAnInstagramChannel ||
+        this.isANotificaMeChannel
       );
     },
     replyButtonLabel() {
@@ -372,7 +373,11 @@ export default {
       return `draft-${this.conversationIdByRoute}-${this.replyType}`;
     },
     audioRecordFormat() {
-      if (this.isAWhatsAppChannel || this.isATelegramChannel) {
+      if (
+        this.isAWhatsAppChannel ||
+        this.isATelegramChannel ||
+        this.isANotificaMeChannel
+      ) {
         return AUDIO_FORMATS.MP3;
       }
       if (this.isAPIInbox) {

@@ -15,6 +15,7 @@ class SendReplyJob < ApplicationJob
       'Channel::Whatsapp' => ::Whatsapp::SendOnWhatsappService,
       'Channel::Sms' => ::Sms::SendOnSmsService,
       'Channel::Instagram' => ::Instagram::SendOnInstagramService
+      'Channel::NotificaMe' => ::NotificaMe::SendOnNotificaMeService
     }
 
     case channel_name

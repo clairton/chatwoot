@@ -9,7 +9,8 @@ export const INBOX_TYPES = {
   TELEGRAM: 'Channel::Telegram',
   LINE: 'Channel::Line',
   SMS: 'Channel::Sms',
-  INSTAGRAM: 'Channel::Instagram',
+  INSTAGRAM: 'Channel::Instagram',,
+  NOTIFICA_ME: 'Channel::NotificaMe',
 };
 
 const INBOX_ICON_MAP_FILL = {
@@ -81,6 +82,9 @@ export const getReadableInboxByType = (type, phoneNumber) => {
 
     case INBOX_TYPES.TELEGRAM:
       return 'telegram';
+
+    case INBOX_TYPES.NOTIFICA_ME:
+      return 'notifica_me';
 
     case INBOX_TYPES.LINE:
       return 'line';

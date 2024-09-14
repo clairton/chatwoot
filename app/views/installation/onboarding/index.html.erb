@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>SuperAdmin | Chatwoot</title>
+    <title><%= (@global_config && @global_config['INSTALLATION_NAME']) || 'SuperAdmin | Chatwoot' %></title>
     <%= vite_client_tag %>
     <%= vite_javascript_tag 'superadmin' %>
   </head>

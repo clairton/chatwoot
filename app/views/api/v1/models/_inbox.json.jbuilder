@@ -117,3 +117,6 @@ if resource.whatsapp?
   json.message_templates resource.channel.try(:message_templates)
   json.provider_config resource.channel.try(:provider_config) if Current.account_user&.administrator?
 end
+
+### NotificaMe Channel
+json.message_templates resource.channel.try(:message_templates) if resource.notifica_me? && resource.channel.try(:whatsapp?)

@@ -50,6 +50,7 @@ export default {
         'telegram',
         'line',
         'instagram',
+        'notifica_me',
       ].includes(key);
     },
   },
