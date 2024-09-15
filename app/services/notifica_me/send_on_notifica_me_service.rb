@@ -19,14 +19,22 @@ class NotificaMe::SendOnNotificaMeService < Base::SendOnChannelService
         },
         format: :json
       )
-      Rails.logger.error("Response form NotificaMe #{response}")
+      Rails.logger.error("Response from NotificaMe #{response}, code: #{response.code}")
       if response.success?
-        message.update!(source_id: response.parsed_response["id"])
+        # {"error":{"message":"Unknown path components: ","type":"OAuthException","code":"Hub404"}}
+        if response.parsed_response['error']
+          error = "message: #{response.parsed_response['error']['message']}"
+          error = "#{error}, code: #{response.parsed_response['error']['code']}"
+          error = "#{error}, type: #{response.parsed_response['error']['type']}"
+          message.update!(status: :failed, external_error: error)
+        else
+          message.update!(source_id: response.parsed_response['id'])
+        end
       else
         raise "Error on send mensagem to NotificaMe: #{response.parsed_response}"
       end
     rescue StandardError => e
-      Rails.logger.error("Error on send do NotificaMe")
+      Rails.logger.error('Error on send do NotificaMe')
       Rails.logger.error(e)
       message.update!(status: :failed, external_error: e.message)
     end

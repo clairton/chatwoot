@@ -36,8 +36,15 @@ class Channel::NotificaMe < ApplicationRecord
     notifica_me_type == 'whatsapp_business_account'
   end
 
+  def mercado_livre?
+    notifica_me_type == 'mercado_livre'
+  end
+
   def notifica_me_path
-    whatsapp? ? 'whatsapp' : notifica_me_type
+    return 'whatsapp' if whatsapp?
+    return 'mercadolivre' if  mercado_livre?
+
+    notifica_me_type
   end
 
   def sync_templates
@@ -51,7 +58,6 @@ class Channel::NotificaMe < ApplicationRecord
       format: :json
     )
     templates = response.parsed_response['data'] || {}
-    puts "url >>> #{url} templates >>> #{templates}"
     update(message_templates: templates, message_templates_last_updated: Time.now.utc) if templates.present?
   end
 end

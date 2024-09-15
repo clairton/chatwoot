@@ -258,6 +258,46 @@
 #    }
 # }
 
+# {
+#   "type":"MESSAGE_STATUS",
+#   "timestamp":"2024-09-14 11:37:34 pm",
+#   "subscriptionId":"db3abe8f-1b4e-4523-a8af-48a69e18d283",
+#   "channel":"mercadolivre",
+#   "messageId":"f1948709-a8de-4915-a9a2-ac76a05e03ea",
+#   "contentIndex":0,
+#   "messageStatus":{
+#     "timestamp":"2024-09-14 11:37:34 pm",
+#     "code":"REJECTED",
+#     "description":"The message was rejected by the provider",
+#     "error":{
+#       "code":400,
+#       "message":"Item must be active"
+#     }
+#   },
+#   "hub_access_token":"84ce7e18-6ea4-11ee-a8c4-02e634721ec1.db3abe8f-1b4e-4523-a8af-48a69e18d283",
+#   "controller":"webhooks/notifica_me",
+#   "action":"process_payload",
+#   "channel_id":"db3abe8f-1b4e-4523-a8af-48a69e18d283",
+#   "notifica_me":{
+#     "type":"MESSAGE_STATUS",
+#     "timestamp":"2024-09-14 11:37:34 pm",
+#     "subscriptionId":"db3abe8f-1b4e-4523-a8af-48a69e18d283",
+#     "channel":"mercadolivre",
+#     "messageId":"f1948709-a8de-4915-a9a2-ac76a05e03ea",
+#     "contentIndex":0,
+#     "messageStatus":{
+#       "timestamp":"2024-09-14 11:37:34 pm",
+#       "code":"REJECTED",
+#       "description":"The message was rejected by the provider",
+#       "error":{
+#         "code":400,
+#         "message":"Item must be active"
+#       }
+#     }
+#   },
+#   "retried":true
+# }
+
 class Webhooks::NotificaMeEventsJob < ApplicationJob
   include ::FileTypeHelper
   queue_as :default
