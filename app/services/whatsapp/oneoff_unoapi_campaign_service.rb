@@ -20,8 +20,8 @@ class Whatsapp::OneoffUnoapiCampaignService
     Rails.logger.debug { "Process campaign #{campaign.id} and #{audience.length} audience record(s)" }
     interval = 0
     new_audience = audience.map do |a|
-      aa = update_audience(a)
-      interval = schedule_job(campaign, aa, interval)
+      aa = update_audience(a.symbolize_keys)
+      interval = schedule_job(campaign, aa, interval) if aa[:status] == :scheduled
       aa
     end
     # rubocop:disable Rails/SkipsModelValidations
@@ -30,8 +30,8 @@ class Whatsapp::OneoffUnoapiCampaignService
   end
 
   def update_audience(audience)
-    audience[:status] = :scheduled
-    audience[:audience_id] = SecureRandom.uuid
+    audience[:status] = audience[:phone_number].present? ? :scheduled : :error
+    audience[:audience_id] = audience[:audience_id] || SecureRandom.uuid
     audience.symbolize_keys
   end
 
