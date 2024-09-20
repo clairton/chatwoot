@@ -340,7 +340,6 @@ export default {
         this.isAnEmailChannel ||
         this.isAWebWidgetInbox ||
         this.isAPIInbox ||
-        this.isAWhatsAppChannel ||
         this.isATelegramChannel
       );
     },
@@ -931,6 +930,10 @@ export default {
       });
     },
     attachFile({ blob, file }) {
+      if (!this.enableMultipleFileUpload && this.attachedFiles.length > 0) {
+        useAlert(this.$t('CONVERSATION.REPLYBOX.TIP_ATTACH_SINGLE'));
+        return;
+      }
       const reader = new FileReader();
       reader.readAsDataURL(file.file);
       reader.onloadend = () => {

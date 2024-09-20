@@ -176,6 +176,7 @@
       "TIP_FORMAT_ICON": "Mostrar editor de texto completo",
       "TIP_EMOJI_ICON": "Mostrar selecionador de emojis",
       "TIP_ATTACH_ICON": "Anexar ficheiros",
+      "TIP_ATTACH_SINGLE": "Você não pode adicionar mais de um arquivo para essa mensagem",
       "TIP_AUDIORECORDER_ICON": "Gravar áudio",
       "TIP_AUDIORECORDER_PERMISSION": "Permitir acesso ao áudio",
       "TIP_AUDIORECORDER_ERROR": "Não foi possível abrir o áudio",
