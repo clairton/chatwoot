@@ -311,7 +311,7 @@
           "LABEL": "Show profile picture",
           "PLACEHOLDER": "Select to show profile picture.",
           "ERROR": "Select to show profile picture."
-        },        
+        },
         "URL": {
           "LABEL": "Unoapi URL",
           "PLACEHOLDER": "Please enter an Unoapi URL or use default https://unoapi.cloud",
@@ -901,7 +901,8 @@
       "TELEGRAM": "Telegram",
       "LINE": "Line",
       "API": "API Channel",
-      "INSTAGRAM": "Instagram"
+      "INSTAGRAM": "Instagram",
+      "NOTIFICA_ME": "NotificaMe"
     }
   }
 }
