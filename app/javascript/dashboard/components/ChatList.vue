@@ -129,7 +129,9 @@ const currentAccountId = useMapGetter('getCurrentAccountId');
 // We can't useFunctionGetter here since it needs to be called on setup?
 const getTeamFn = useMapGetter('teams/getTeam');
 
-const isFeatureEnabledonAccount = useMapGetter('accounts/isFeatureEnabledonAccount');
+const isFeatureEnabledonAccount = useMapGetter(
+  'accounts/isFeatureEnabledonAccount'
+);
 const currentRole = useMapGetter('getCurrentRole');
 
 useChatListKeyboardEvents(conversationListRef);
@@ -233,19 +235,21 @@ const assigneeTabItems = computed(() => {
     ASSIGNEE_TYPE_TAB_PERMISSIONS,
     userPermissions.value,
     item => item.permissions
-  ).filter(({ key }) => {
-    if (hideAllChatsForAgents.value && key === 'all') {
-      return false;
-    }
-    if (hideUnassignedForAgents.value && key === 'unassigned') {
-      return false;
-    }
-    return true;
-  }).map(({ key, count: countKey }) => ({
-    key,
-    name: t(`CHAT_LIST.ASSIGNEE_TYPE_TABS.${key}`),
-    count: conversationStats.value[countKey] || 0,
-  }));
+  )
+    .filter(({ key }) => {
+      if (hideAllChatsForAgents.value && key === 'all') {
+        return false;
+      }
+      if (hideUnassignedForAgents.value && key === 'unassigned') {
+        return false;
+      }
+      return true;
+    })
+    .map(({ key, count: countKey }) => ({
+      key,
+      name: t(`CHAT_LIST.ASSIGNEE_TYPE_TABS.${key}`),
+      count: conversationStats.value[countKey] || 0,
+    }));
 });
 
 const showAssigneeInConversationCard = computed(() => {
