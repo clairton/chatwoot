@@ -103,3 +103,9 @@ shopify:
   enabled: true
   icon: 'icon-shopify'
   config_key: 'shopify'
+unoapi:
+  name: 'Unoapi'
+  description: 'Configuration for setting up Unoapi'
+  enabled: true
+  icon: 'icon-chat-smile-3-line'
+  config_key: 'unoapi'
