@@ -3,7 +3,7 @@ class Api::V1::Accounts::CampaignsController < Api::V1::Accounts::BaseController
   before_action :check_authorization
 
   def index
-    @campaigns = Current.account.campaigns.limit(50).order(created_at: :desc)
+    @campaigns = Current.account.campaigns.limit(200).order(created_at: :desc)
   end
 
   def show; end
