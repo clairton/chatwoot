@@ -35,6 +35,7 @@ import signup from './signup.json';
 import sla from './sla.json';
 import teamsSettings from './teamsSettings.json';
 import whatsappTemplates from './whatsappTemplates.json';
+import webphone from './webphone.json';
 
 export default {
   ...advancedFilters,
@@ -74,4 +75,5 @@ export default {
   ...sla,
   ...teamsSettings,
   ...whatsappTemplates,
+  ...webphone,
 };

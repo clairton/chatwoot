@@ -262,6 +262,11 @@
           "PLACEHOLDER": "Rejeitar chamada.",
           "ERROR": "Rejeitar chamada."
         },
+        "WAVOIP_TOKEN": {
+          "LABEL": "Token Wavoip",
+          "PLACEHOLDER": "Preencha com o token wavoip.",
+          "ERROR": "Para receber/fazer ligações pelo whatsapp preencha o token wavoip"
+        },
         "MESSAGE_CALLS_WEBHOOK": {
           "LABEL": "Mensagem ao rejeitar chamada",
           "PLACEHOLDER": "Mensagem ao rejeitar chamada.",

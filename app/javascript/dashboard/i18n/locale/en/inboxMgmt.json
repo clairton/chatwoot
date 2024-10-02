@@ -262,6 +262,11 @@
           "PLACEHOLDER": "Reject call.",
           "ERROR": "Reject call."
         },
+        "WAVOIP_TOKEN": {
+          "LABEL": "Wavoip Token",
+          "PLACEHOLDER": "Put the Wavoip token.",
+          "ERROR": "To make/receive whatsapp calls put the wavoip token"
+        },
         "MESSAGE_CALLS_WEBHOOK": {
           "LABEL": "Message on reject call",
           "PLACEHOLDER": "Message on reject call.",

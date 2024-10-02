@@ -36,6 +36,23 @@
       </div>
 
       <div class="w-1/4">
+        <label :class="{ error: v$.wavoipToken.$error }">
+          <span>
+            {{ $t('INBOX_MGMT.ADD.WHATSAPP.WAVOIP_TOKEN.LABEL') }}
+          </span>
+          <input
+            v-model.trim="wavoipToken"
+            type="text"
+            :placeholder="$t('INBOX_MGMT.ADD.WHATSAPP.WAVOIP_TOKEN.PLACEHOLDER')"
+            @blur="v$.wavoipToken.$touch"
+          />
+          <span v-if="v$.wavoipToken.$error" class="message">
+            {{ $t('INBOX_MGMT.ADD.WHATSAPP.WAVOIP_TOKEN.ERROR') }}
+          </span>
+        </label>
+      </div>
+
+      <div class="w-1/4">
         <label :class="{ error: v$.rejectCalls.$error }">
           <span>
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.REJECT_CALLS.LABEL') }}
@@ -303,6 +320,7 @@ export default {
   data() {
     return {
       apiKey: '',
+      wavoipToken: '',
       url: 'https://unoapi.cloud',
       ignoreGroupMessages: true,
       ignoreHistoryMessages: true,
@@ -347,6 +365,7 @@ export default {
     sendProfilePicture: { required },
     rejectCalls: { required },
     messageCallsWebhook: { required },
+    wavoipToken: { required },
   },
   watch: {
     inbox() {
@@ -442,6 +461,7 @@ export default {
             provider_config: {
               ...this.inbox.provider_config,
               api_key: this.apiKey,
+              wavoip_token: this.wavoipToken,
               ignore_history_messages: this.ignoreHistoryMessages,
               ignore_group_messages: this.ignoreGroupMessages,
               send_agent_name: this.sendAgentName,

@@ -93,7 +93,8 @@ class Whatsapp::UnoapiWebhookSetupService
       ],
       sendReactionAsReply: provider_config['send_reaction_as_reply'],
       sendProfilePicture: provider_config['send_profile_picture'],
-      authToken: provider_config['api_key']
+      authToken: provider_config['api_key'],
+      wavoipToken: provider_config['wavoip_token']
     }
   end
   # rubocop:enable Metrics/MethodLength

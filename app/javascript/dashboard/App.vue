@@ -19,6 +19,7 @@ import {
   verifyServiceWorkerExistence,
 } from './helper/pushHelper';
 import ReconnectService from 'dashboard/helper/ReconnectService';
+import Webphone from './components/layout/webphoneComponents/Webphone.vue';
 
 export default {
   name: 'App',
@@ -31,6 +32,7 @@ export default {
     PaymentPendingBanner,
     WootSnackbarBox,
     PendingEmailVerificationBanner,
+    Webphone,
   },
   setup() {
     const router = useRouter();
@@ -140,6 +142,7 @@ export default {
     :class="{ 'app-rtl--wrapper': isRTL }"
     :dir="isRTL ? 'rtl' : 'ltr'"
   >
+    <Webphone />
     <UpdateBanner :latest-chatwoot-version="latestChatwootVersion" />
     <template v-if="currentAccountId">
       <PendingEmailVerificationBanner v-if="hideOnOnboardingView" />

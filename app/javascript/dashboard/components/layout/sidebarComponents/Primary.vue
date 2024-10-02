@@ -8,6 +8,7 @@ import wootConstants from 'dashboard/constants/globals';
 import { frontendURL } from 'dashboard/helper/URLHelper';
 import { ACCOUNT_EVENTS } from '../../../helper/AnalyticsHelper/events';
 import { useTrack } from 'dashboard/composables';
+import WebphoneMinimized from './WebphoneMinimized.vue';
 
 export default {
   components: {
@@ -16,6 +17,7 @@ export default {
     OptionsMenu,
     AgentDetails,
     NotificationBell,
+    WebphoneMinimized,
   },
   props: {
     isACustomBrandedInstance: {
@@ -90,6 +92,7 @@ export default {
         :is-child-menu-active="menuItem.key === activeMenuItem"
       />
     </div>
+    <WebphoneMinimized />
     <div class="flex flex-col items-center justify-end pb-6">
       <a
         v-if="!isACustomBrandedInstance"

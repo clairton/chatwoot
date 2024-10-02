@@ -92,6 +92,37 @@ onUnmounted(() => {
 
 <template>
   <div class="relative flex items-center gap-2 actions--container">
+    <woot-button
+      v-tooltip="$t('WEBPHONE.CALL')"
+      variant="clear"
+      color-scheme="secondary"
+      icon="call"
+      :disabled="callInfo.id"
+      @click="startCall"
+    />
+    <woot-button
+      v-if="!currentChat.muted"
+      v-tooltip="$t('CONTACT_PANEL.MUTE_CONTACT')"
+      variant="clear"
+      color-scheme="secondary"
+      icon="speaker-mute"
+      @click="mute"
+    />
+    <woot-button
+      v-else
+      v-tooltip.left="$t('CONTACT_PANEL.UNMUTE_CONTACT')"
+      variant="clear"
+      color-scheme="secondary"
+      icon="speaker-1"
+      @click="unmute"
+    />
+    <woot-button
+      v-tooltip="$t('CONTACT_PANEL.SEND_TRANSCRIPT')"
+      variant="clear"
+      color-scheme="secondary"
+      icon="share"
+      @click="toggleEmailActionsModal"
+    />
     <ResolveAction
       :conversation-id="currentChat.id"
       :status="currentChat.status"
