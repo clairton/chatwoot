@@ -379,6 +379,7 @@ export default {
   methods: {
     setDefaults() {
       this.apiKey = this.inbox.provider_config.api_key;
+      this.wavoipToken = this.inbox.provider_config.wavoip_token;
       this.url = this.inbox.provider_config.url;
       this.ignoreGroupMessages = this.inbox.provider_config.ignore_group_messages;
       this.ignoreHistoryMessages = this.inbox.provider_config.ignore_history_messages;
