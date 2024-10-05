@@ -35,16 +35,16 @@ export default {
         return this.enabledFeatures.channel_email;
       }
       if (key === 'notifica_me') {
-        return this.enabledFeatures.notifica_me;
+        return this.enabledFeatures.channel_notifica_me;
       }
       if (key === 'whatsapp') {
-        return this.enabledFeatures.whatsapp;
+        return this.enabledFeatures.channel_whatsapp;
       }
       if (key === 'website') {
-        return this.enabledFeatures.website;
+        return this.enabledFeatures.channel_website;
       }
       if (key === 'api') {
-        return this.enabledFeatures.api;
+        return this.enabledFeatures.channel_api;
       }
 
       if (key === 'instagram') {
