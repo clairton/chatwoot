@@ -336,7 +336,7 @@ export default {
       sendReactionAsReply: true,
       sendProfilePicture: true,       
       connect: false,
-      disconect: false,
+      disconnect: false,
       qrcode: '',
       notice: '',
       rejectCalls: '',
@@ -397,7 +397,7 @@ export default {
       this.rejectCalls = this.inbox.provider_config.reject_calls;
       this.messageCallsWebhook = this.inbox.provider_config.message_calls_webhook;
       this.connect = false;
-      this.disconect = false;
+      this.disconnect = false;
     },
     listenerQrCode() {
       const url = `${this.inbox.provider_config.url}`
@@ -405,8 +405,9 @@ export default {
         .replace('http', 'ws');
       const socket = io(url, { path: '/ws' });
       socket.on('broadcast', data => {
+        console.log('data', data)
         if (data.phone !== this.inbox.provider_config.phone_number_id) {
-          this.notice = `Received qrcode from ${data.phone} but the current number in chatwoot is ${this.inbox.provider_config.phone_number_id}`;
+          this.notice = `Received message from ${data.phone} but the current number in chatwoot is ${this.inbox.provider_config.phone_number_id}`;
           this.qrcode = '';
           // broadcast phone is other
           return;
@@ -480,7 +481,7 @@ export default {
               reject_calls: this.rejectCalls,
               message_calls_webhook: this.messageCallsWebhook,              
               connect: this.connect,
-              disconect: this.disconect,
+              disconnect: this.disconnect,
             },
           },
         };
