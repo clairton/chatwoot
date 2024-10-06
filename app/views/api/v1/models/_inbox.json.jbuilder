@@ -117,9 +117,9 @@ if resource.whatsapp?
   json.message_templates resource.channel.try(:message_templates)
   json.provider_config resource.channel.try(:provider_config) if Current.account_user&.administrator?
   unless Current.account_user&.administrator?
-    json.provider_config = {
-      wavoip_token: resource.channel.try(:provider_config).try(:wavoip_token)
-    }
+    provider_config = { wavoip_token: (resource.channel.try(:provider_config) || {})['wavoip_token'] }
+    puts ">>>>>>>> 1 #{provider_config}"
+    json.provider_config provider_config
   end
 end
 
