@@ -68,6 +68,29 @@ const handleActionClick = ({ action }) => {
   }
 };
 
+const startCall = async () => {
+  try {
+    await this.$store.dispatch('webphone/outcomingCall', {
+      contact_name: this.currentContact.name,
+      profile_picture: this.currentContact.thumbnail,
+      phone: this.currentContact.phone_number,
+      chat_id: this.currentChat.id,
+    });
+  } catch (error) {
+    if (error.message === 'Numero não existe') {
+      useAlert(this.$t('WEBPHONE.CONTACT_INVALID'));
+    } else if (
+      error.message === 'Linha ocupada, tente mais tarde ou faça um upgrade'
+    ) {
+      useAlert(this.$t('WEBPHONE.ALL_INSTANCE_BUSY'));
+    } else if (error.message === 'Limite de ligações atingido') {
+      useAlert(this.$t('WEBPHONE.CALL_LIMIT'));
+    } else {
+      useAlert(`${this.$t('WEBPHONE.ERROR_TO_MADE_CALL')}: ${error.message}`);
+    }
+  }
+};
+
 // These functions are needed for the event listeners
 const mute = () => {
   store.dispatch('muteConversation', currentChat.value.id);
