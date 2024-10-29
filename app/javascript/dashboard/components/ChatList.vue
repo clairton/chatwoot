@@ -165,11 +165,13 @@ const intersectionObserverOptions = computed(() => {
   };
 });
 
-const isAdministrator = computed(() => currentRole.value === 'administrator');
+const isAdministrator = computed(() => {
+  return currentRole.value === 'administrator';
+});
 
 const hideAllChatsForAgents = computed(() => {
   return (
-    isFeatureEnabledonAccount.fn(
+    isFeatureEnabledonAccount.value(
       currentAccountId.value,
       'hide_all_chats_for_agent'
     ) && !isAdministrator.value
@@ -178,7 +180,7 @@ const hideAllChatsForAgents = computed(() => {
 
 const hideFiltersForAgents = computed(() => {
   return (
-    isFeatureEnabledonAccount.fn(
+    isFeatureEnabledonAccount.value(
       currentAccountId.value,
       'hide_filters_for_agent'
     ) && !isAdministrator.value
@@ -187,7 +189,7 @@ const hideFiltersForAgents = computed(() => {
 
 const hideUnassignedForAgents = computed(() => {
   return (
-    isFeatureEnabledonAccount.fn(
+    isFeatureEnabledonAccount.value(
       currentAccountId.value,
       'hide_unassigned_for_agent'
     ) && !isAdministrator.value
