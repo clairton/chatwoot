@@ -18,5 +18,6 @@ export default {
       v-dompurify-html="headerContent"
       class="text-sm w-full text-slate-600 dark:text-slate-300"
     />
+    <slot />
   </div>
 </template>
