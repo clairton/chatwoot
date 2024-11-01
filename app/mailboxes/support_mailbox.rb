@@ -90,4 +90,38 @@ class SupportMailbox < ApplicationMailbox
   def identify_contact_name
     processed_mail.sender_name || processed_mail.from.first.split('@').first
   end
+
+  def add_attachments_to_message
+    return if @message.blank?
+
+    mail.attachments.each do |attachment|
+      file = StringIO.new(attachment.body.decoded)
+      @message.attachments.new(
+        account_id: @account.id,
+        file: {
+          io: file,
+          filename: attachment.filename,
+          content_type: attachment.content_type
+        }
+      )
+    end
+    @message.save!
+  end
+
+  def create_message
+    @message = @conversation.messages.create!(
+      account_id: @conversation.account_id,
+      inbox_id: @conversation.inbox_id,
+      message_type: 'incoming',
+      content: processed_mail.text_content[:reply] || processed_mail.html_content[:reply],
+      content_type: 'incoming_email',
+      content_attributes: {
+        email: processed_mail.serialized_data,
+        cc_email: processed_mail.cc,
+        bcc_email: processed_mail.bcc
+      },
+      source_id: processed_mail.message_id,
+      sender: @contact
+    )
+  end
 end
