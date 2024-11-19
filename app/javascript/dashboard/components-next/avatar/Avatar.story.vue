@@ -33,10 +33,37 @@ import Avatar from './Avatar.vue';
       </div>
     </Variant>
 
+    <Variant title="Default with upload">
+      <div class="p-4 bg-white dark:bg-slate-900">
+        <Avatar
+          src="https://api.dicebear.com/9.x/thumbs/svg?seed=Amaya"
+          class="bg-ruby-300 dark:bg-ruby-900"
+          allow-upload
+        />
+      </div>
+    </Variant>
+
+    <Variant title="Invalid or empty SRC">
+      <div class="p-4 space-x-4 bg-white dark:bg-slate-900">
+        <Avatar src="https://example.com/ruby.png" name="Ruby" allow-upload />
+        <Avatar name="Bruce Wayne" allow-upload />
+      </div>
+    </Variant>
+
+    <Variant title="Rounded Full">
+      <div class="p-4 space-x-4 bg-white dark:bg-slate-900">
+        <Avatar
+          src="https://api.dicebear.com/9.x/thumbs/svg?seed=Amaya"
+          allow-upload
+          rounded-full
+        />
+      </div>
+    </Variant>
+
     <Variant title="Different Sizes">
       <div class="flex flex-wrap gap-4 p-4 bg-white dark:bg-slate-900">
         <Avatar
-          src="https://api.dicebear.com/9.x/avataaars/svg?seed=Felix"
+          src="https://api.dicebear.com/9.x/thumbs/svg?seed=Felix"
           :size="48"
           name=""
           allow-upload

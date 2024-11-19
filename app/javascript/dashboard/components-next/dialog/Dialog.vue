@@ -59,6 +59,8 @@ const emit = defineEmits(['confirm', 'close']);
 
 const { t } = useI18n();
 
+const isRTL = useMapGetter('accounts/isRTL');
+
 const dialogRef = ref(null);
 const dialogContentRef = ref(null);
 

@@ -187,3 +187,5 @@
   enabled: false
 - name: hide_delete_message_for_agent
   enabled: false
+- name: chatwoot_v4
+  enabled: false

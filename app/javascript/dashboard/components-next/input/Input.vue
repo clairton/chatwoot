@@ -105,6 +105,11 @@ onMounted(() => {
     });
   }
 });
+
+const handleInput = event => {
+  emit('update:modelValue', event.target.value);
+  emit('input', event);
+};
 </script>
 
 <template>

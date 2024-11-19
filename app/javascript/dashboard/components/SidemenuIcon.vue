@@ -27,6 +27,18 @@ export default {
       );
     },
   },
+  computed: {
+    ...mapGetters({
+      accountId: 'getCurrentAccountId',
+      isFeatureEnabledonAccount: 'accounts/isFeatureEnabledonAccount',
+    }),
+    hasNextSidebar() {
+      return this.isFeatureEnabledonAccount(
+        this.accountId,
+        FEATURE_FLAGS.CHATWOOT_V4
+      );
+    },
+  },
   methods: {
     onMenuItemClick() {
       emitter.emit(BUS_EVENTS.TOGGLE_SIDEMENU);

@@ -234,6 +234,11 @@ Rails.application.routes.draw do
           resources :webhooks, only: [:index, :create, :update, :destroy]
           namespace :integrations do
             resources :apps, only: [:index, :show]
+            resource :captain, controller: 'captain', only: [] do
+              collection do
+                post :proxy
+              end
+            end
             resources :hooks, only: [:show, :create, :update, :destroy] do
               member do
                 post :process_event
