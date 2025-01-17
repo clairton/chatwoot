@@ -32,7 +32,7 @@ export default {
       title: { required },
       content: {
         type: { required },
-        url: { required, url },
+        url: { required },
       },
     },
   },

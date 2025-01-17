@@ -20,7 +20,7 @@
 #  conversation_id           :integer          not null
 #  inbox_id                  :integer          not null
 #  sender_id                 :bigint
-#  source_id                 :string(510)
+#  source_id                 :string(512)
 #
 # Indexes
 #

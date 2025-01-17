@@ -349,7 +349,6 @@ export default {
   validations: {
     apiKey: { required },
     ignoreGroupMessages: { required },
-    generateQrcode: { required },
     ignoreHistoryMessages: { required },
     webhookSendNewMessages: { required },
     sendAgentName: { required },

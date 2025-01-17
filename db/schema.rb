@@ -815,7 +815,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_23_031839) do
     t.datetime "updated_at", precision: nil, null: false
     t.boolean "private", default: false, null: false
     t.integer "status", default: 0
-    t.string "source_id", limit: 510
+    t.string "source_id", limit: 512
     t.integer "content_type", default: 0, null: false
     t.json "content_attributes", default: {}
     t.string "sender_type"
