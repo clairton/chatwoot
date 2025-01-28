@@ -93,16 +93,20 @@ class Whatsapp::IncomingMessageBaseService
   end
 
   def set_contact
-    contact_params = @processed_params[:contacts]&.first
     return if contact_params.blank?
 
-    waid = brazil_phone_number?(contact_params[:wa_id]) ? normalised_brazil_mobile_number(contact_params[:wa_id]) : contact_params[:wa_id]
-    waid = processed_waid(waid)
-
+    contact_attributes = { name: contact_params.dig(:profile, :name), avatar_url: contact_params.dig(:profile, :picture) }
+    if lid_message?
+      contact_attributes = contact_attributes.merge({ email: contact_params[:wa_id] })
+    else
+      waid = brazil_phone_number?(contact_params[:wa_id]) ? normalised_brazil_mobile_number(contact_params[:wa_id]) : contact_params[:wa_id]
+      waid = processed_waid(waid)
+      contact_attributes = contact_attributes.merge({ phone_number: "+#{waid}" })
+    end
     contact_inbox = ::ContactInboxWithContactBuilder.new(
       source_id: waid,
       inbox: inbox,
-      contact_attributes: { name: contact_params.dig(:profile, :name), phone_number: "+#{waid}", avatar_url: contact_params.dig(:profile, :picture) }
+      contact_attributes: contact_attributes
     ).perform
 
     @contact_inbox = contact_inbox
@@ -194,5 +198,13 @@ class Whatsapp::IncomingMessageBaseService
     @@microsecond += 1
     @@microsecond
     # rubocop:enable Style/ClassVars
+  end
+
+  def contact_params
+    @contact_params ||= @processed_params[:contacts]&.first
+  end
+
+  def lid_message?
+    contact_params.present? && contact_params[:wa_id]&.include?('@lid')
   end
 end

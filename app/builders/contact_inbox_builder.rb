@@ -51,6 +51,8 @@ class ContactInboxBuilder
   end
 
   def wa_source_id
+    return @contact.email if @contact.email&.include?('@lid')
+
     raise ActionController::ParameterMissing, 'contact phone number' unless @contact.phone_number
 
     # whatsapp doesn't want the + in e164 format

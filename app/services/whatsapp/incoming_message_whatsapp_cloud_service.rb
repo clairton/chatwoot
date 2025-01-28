@@ -5,7 +5,6 @@ class Whatsapp::IncomingMessageWhatsappCloudService < Whatsapp::IncomingMessageB
   private
 
   def set_contact
-    contact_params = @processed_params[:contacts]&.first
     return if contact_params.blank?
 
     super
@@ -45,8 +44,15 @@ class Whatsapp::IncomingMessageWhatsappCloudService < Whatsapp::IncomingMessageB
   end
 
   def group_message?
-    contact_params = @processed_params[:contacts]&.first
     contact_params.present? && contact_params[:group_id].present?
+  end
+
+  def contact_params
+    @contact_params ||= @processed_params[:contacts]&.first
+  end
+
+  def lid_message?
+    contact_params.present? && contact_params[:wa_id]&.include?('@lid')
   end
 
   def set_message_type
@@ -67,7 +73,6 @@ class Whatsapp::IncomingMessageWhatsappCloudService < Whatsapp::IncomingMessageB
     message = @processed_params[:messages]&.first
     return if message.blank?
 
-    contact_params = @processed_params[:contacts]&.first
     return if contact_params.blank?
 
     !group_message? &&
