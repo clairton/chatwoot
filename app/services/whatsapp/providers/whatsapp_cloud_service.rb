@@ -66,7 +66,7 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
       messaging_product: 'whatsapp',
       status: message[:status],
       message_id: message[:source_id],
-      recipient_id: message[:sender][:phone_number]
+      recipient_id: (message[:sender] || {})[:phone_number]
     }
     if message[:conversation][:contact_inbox][:source_id].include?('@g.us')
       payload.merge({ group_id: message[:conversation][:contact_inbox][:source_id] })
