@@ -125,15 +125,18 @@ class WebhookListener < BaseListener
   def deliver_whatsapp_inbox_webhooks(payload, inbox)
     payload = payload.deep_symbolize_keys
 
-    return unless inbox.channel_type == 'Channel::Whatsapp' && payload[:event] == 'message_updated' && payload[:message_type] == 'incoming'
+    return if inbox.channel_type != 'Channel::Whatsapp' ||
+              payload[:event] != 'message_updated'
 
-    WebhookJob.perform_later(
-      inbox.channel.message_path(payload),
-      inbox.channel.message_update_payload(payload),
-      :account_webhook,
-      inbox.channel.message_update_http_method,
-      inbox.channel.api_headers
-    )
+    if (payload[:message_type] == 'outgoing' && payload[:status] == 'deleted') || payload[:message_type] == 'incoming'
+      WebhookJob.perform_later(
+        inbox.channel.message_path(payload),
+        inbox.channel.message_update_payload(payload),
+        :account_webhook,
+        inbox.channel.message_update_http_method,
+        inbox.channel.api_headers
+      )
+    end
   end
 
   def deliver_webhook_payloads(payload, inbox)
