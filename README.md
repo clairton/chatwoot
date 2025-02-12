@@ -10,7 +10,13 @@ ___
     - trata a mensagem enviadas por outras conexões, inclusive o aplicativo
     - desabilita a janela de 24 horas do whatsapp cloud oficial
     - sincroniza as imagens de perfil dos grupos e usuarios
+    - suporte a conversas em grupo e com lid pela unoapi
     - possibilidade de editar o endereço da caixa de entrada do whatsapp, assim pode usar a oficial e a unoapi na mesma instalação(não usar a env WHATSAPP_CLOUD_BASE_URL)
+    - ler qrcode para conectar na unoapi diretamente pelo chatwoot
+    - opção de por um imagem de fundo das conversas
+    - canal do notificame hub
+    - integração da unoapi com wavoip
+    - envia os anexos de email, a versão padrão envia como anexo
     - opção no superadmin de habilitar para colocar o nome do agente na mensagem
     - opção no superadmin de habilitar para marcar as mensagem no whatsapp como lido quando o agente visualiza a conversa
     - opção no superadmin de esconder para a aba de todas as conversas
