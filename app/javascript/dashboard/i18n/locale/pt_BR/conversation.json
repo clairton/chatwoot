@@ -218,7 +218,8 @@
         "TITLE": "Você tem certeza que deseja excluir esta mensagem?",
         "MESSAGE": "Você não pode desfazer essa ação",
         "DELETE": "Excluir",
-        "CANCEL": "Cancelar"
+        "CANCEL": "Cancelar",
+        "FORWARD": "Encaminhar"
       }
     }
   },

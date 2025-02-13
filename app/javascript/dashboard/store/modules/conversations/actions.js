@@ -25,6 +25,7 @@ export const hasMessageFailedWithExternalError = pendingMessage => {
   return status === MESSAGE_STATUS.FAILED && externalError !== '';
 };
 
+import messageForwardActions from './actions/messageForwardActions';
 // actions
 const actions = {
   getConversation: async ({ commit }, conversationId) => {
@@ -491,6 +492,7 @@ const actions = {
 
   ...messageReadActions,
   ...messageTranslateActions,
+  ...messageForwardActions,
 };
 
 export default actions;

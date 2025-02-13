@@ -13,6 +13,7 @@ import {
 import TranslateModal from 'dashboard/components/widgets/conversation/bubble/TranslateModal.vue';
 import MenuItem from '../../../components/widgets/conversation/contextMenu/menuItem.vue';
 import { useTrack } from 'dashboard/composables';
+import ForwardModal from 'dashboard/components/widgets/conversation/bubble/ForwardModal';
 
 export default {
   components: {
@@ -20,6 +21,7 @@ export default {
     TranslateModal,
     MenuItem,
     ContextMenu,
+    ForwardModal,
   },
   props: {
     message: {
@@ -51,6 +53,7 @@ export default {
       isCannedResponseModalOpen: false,
       showTranslateModal: false,
       showDeleteModal: false,
+      showForwardModal: false,
     };
   },
   computed: {
@@ -146,6 +149,13 @@ export default {
     closeDeleteModal() {
       this.showDeleteModal = false;
     },
+    handleForward() {
+      this.handleClose();
+      this.showForwardModal = true;
+    },
+    onCloseForwardModal() {
+      this.showForwardModal = false;
+    },
   },
 };
 </script>
@@ -169,6 +179,12 @@ export default {
       :content="messageContent"
       :content-attributes="contentAttributes"
       @close="onCloseTranslateModal"
+    />
+    <!-- Forward Content -->
+    <ForwardModal
+      v-if="showForwardModal"
+      :message="message"
+      @close="onCloseForwardModal"
     />
     <!-- Confirm Deletion -->
     <woot-delete-modal
@@ -241,6 +257,14 @@ export default {
           }"
           variant="icon"
           @click.stop="showCannedResponseModal"
+        />
+        <MenuItem
+          :option="{
+            icon: 'share',
+            label: $t('CONVERSATION.CONTEXT_MENU.FORWARD'),
+          }"
+          variant="icon"
+          @click="handleForward"
         />
         <hr v-if="enabledOptions['delete']" />
         <MenuItem
