@@ -92,26 +92,25 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    class="overflow-y-auto bg-white border-l dark:bg-slate-900 text-slate-900 dark:text-slate-300 border-slate-50 dark:border-slate-800/50 rtl:border-l-0 rtl:border-r contact--panel"
-  >
+  <div class="w-full">
     <ContactInfo
       :contact="contact"
       :channel-type="channelType"
       @toggle-panel="onPanelToggle"
     />
-    <div class="list-group">
+    <div class="list-group pb-8">
       <Draggable
         :list="conversationSidebarItems"
         animation="200"
         ghost-class="ghost"
         handle=".drag-handle"
         item-key="name"
+        class="flex flex-col gap-3"
         @start="dragging = true"
         @end="onDragEnd"
       >
         <template #item="{ element }">
-          <div :key="element.name" class="bg-white dark:bg-gray-800">
+          <div :key="element.name" class="px-2">
             <div
               v-if="element.name === 'conversation_actions'"
               class="conversation--actions"
@@ -229,10 +228,12 @@ onMounted(() => {
   .contact--profile {
     @apply pb-3 border-b border-solid border-slate-75 dark:border-slate-700;
   }
+
   .conversation--actions .multiselect-wrap--small {
     .multiselect {
       @apply box-border pl-6;
     }
+
     .multiselect__element {
       span {
         @apply w-full;

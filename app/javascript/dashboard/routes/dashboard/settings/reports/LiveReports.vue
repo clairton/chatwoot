@@ -3,20 +3,20 @@ import { mapGetters } from 'vuex';
 import AgentTable from './components/overview/AgentTable.vue';
 import MetricCard from './components/overview/MetricCard.vue';
 import { OVERVIEW_METRICS } from './constants';
-import ReportHeatmap from './components/Heatmap.vue';
 
 import endOfDay from 'date-fns/endOfDay';
 import getUnixTime from 'date-fns/getUnixTime';
-import startOfDay from 'date-fns/startOfDay';
-import subDays from 'date-fns/subDays';
-import { emitter } from 'shared/helpers/mitt';
+import ReportHeader from './components/ReportHeader.vue';
+import HeatmapContainer from './components/HeatmapContainer.vue';
+export const FETCH_INTERVAL = 60000;
 
 export default {
   name: 'LiveReports',
   components: {
+    ReportHeader,
     AgentTable,
     MetricCard,
-    ReportHeatmap,
+    HeatmapContainer,
   },
   data() {
     return {
@@ -31,7 +31,6 @@ export default {
       agents: 'agents/getAgents',
       accountConversationMetric: 'getAccountConversationMetric',
       agentConversationMetric: 'getAgentConversationMetric',
-      accountConversationHeatmap: 'getAccountConversationHeatmapData',
       uiFlags: 'getOverviewUIFlags',
     }),
     agentStatusMetrics() {
@@ -57,17 +56,27 @@ export default {
   },
   mounted() {
     this.$store.dispatch('agents/get');
-    this.fetchAllData();
-
-    emitter.on('fetch_overview_reports', () => {
-      this.fetchAllData();
-    });
+    this.initalizeReport();
+  },
+  beforeUnmount() {
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
   },
   methods: {
+    initalizeReport() {
+      this.fetchAllData();
+      this.scheduleReportRefresh();
+    },
+    scheduleReportRefresh() {
+      this.timeoutId = setTimeout(async () => {
+        await this.fetchAllData();
+        this.scheduleReportRefresh();
+      }, FETCH_INTERVAL);
+    },
     fetchAllData() {
       this.fetchAccountConversationMetric();
       this.fetchAgentConversationMetric();
-      this.fetchHeatmapData();
     },
     downloadHeatmapData() {
       let to = endOfDay(new Date());
@@ -76,33 +85,7 @@ export default {
         to: getUnixTime(to),
       });
     },
-    fetchHeatmapData() {
-      if (this.uiFlags.isFetchingAccountConversationsHeatmap) {
-        return;
-      }
 
-      // the data for the last 6 days won't ever change,
-      // so there's no need to fetch it again
-      // but we can write some logic to check if the data is already there
-      // if it is there, we can refetch data only for today all over again
-      // and reconcile it with the rest of the data
-      // this will reduce the load on the server doing number crunching
-      let to = endOfDay(new Date());
-      let from = startOfDay(subDays(to, 6));
-
-      if (this.accountConversationHeatmap.length) {
-        to = endOfDay(new Date());
-        from = startOfDay(to);
-      }
-
-      this.$store.dispatch('fetchAccountConversationHeatmap', {
-        metric: 'conversations_count',
-        from: getUnixTime(from),
-        to: getUnixTime(to),
-        groupBy: 'hour',
-        businessHours: false,
-      });
-    },
     fetchAccountConversationMetric() {
       this.$store.dispatch('fetchAccountConversationMetric', {
         type: 'account',
@@ -123,8 +106,9 @@ export default {
 </script>
 
 <template>
-  <div class="flex-1 p-4 overflow-auto">
-    <div class="flex flex-col items-center md:flex-row">
+  <ReportHeader :header-title="$t('OVERVIEW_REPORTS.HEADER')" />
+  <div class="flex flex-col gap-4 pb-6">
+    <div class="flex flex-col items-center md:flex-row gap-4">
       <div
         class="flex-1 w-full max-w-full md:w-[65%] md:max-w-[65%] conversation-metric"
       >
@@ -140,10 +124,10 @@ export default {
             :key="index"
             class="flex-1 min-w-0 pb-2"
           >
-            <h3 class="text-base text-slate-700 dark:text-slate-100">
+            <h3 class="text-base text-n-slate-11">
               {{ name }}
             </h3>
-            <p class="text-woot-800 dark:text-woot-300 text-3xl mb-0 mt-1">
+            <p class="text-n-slate-12 text-3xl mb-0 mt-1">
               {{ metric }}
             </p>
           </div>
@@ -156,36 +140,18 @@ export default {
             :key="index"
             class="flex-1 min-w-0 pb-2"
           >
-            <h3 class="text-base text-slate-700 dark:text-slate-100">
+            <h3 class="text-base text-n-slate-11">
               {{ name }}
             </h3>
-            <p class="text-woot-800 dark:text-woot-300 text-3xl mb-0 mt-1">
+            <p class="text-n-slate-12 text-3xl mb-0 mt-1">
               {{ metric }}
             </p>
           </div>
         </MetricCard>
       </div>
     </div>
-    <div class="flex flex-row flex-wrap max-w-full ml-auto mr-auto">
-      <MetricCard :header="$t('OVERVIEW_REPORTS.CONVERSATION_HEATMAP.HEADER')">
-        <template #control>
-          <woot-button
-            icon="arrow-download"
-            size="small"
-            variant="smooth"
-            color-scheme="secondary"
-            @click="downloadHeatmapData"
-          >
-            {{ $t('OVERVIEW_REPORTS.CONVERSATION_HEATMAP.DOWNLOAD_REPORT') }}
-          </woot-button>
-        </template>
-        <ReportHeatmap
-          :heat-data="accountConversationHeatmap"
-          :is-loading="uiFlags.isFetchingAccountConversationsHeatmap"
-        />
-      </MetricCard>
-    </div>
-    <div class="flex flex-row flex-wrap max-w-full ml-auto mr-auto">
+    <HeatmapContainer />
+    <div class="flex flex-row flex-wrap max-w-full">
       <MetricCard :header="$t('OVERVIEW_REPORTS.AGENT_CONVERSATIONS.HEADER')">
         <AgentTable
           :agents="agents"

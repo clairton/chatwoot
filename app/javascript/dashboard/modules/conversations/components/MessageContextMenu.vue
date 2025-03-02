@@ -4,6 +4,7 @@ import { mapGetters } from 'vuex';
 import { useMessageFormatter } from 'shared/composables/useMessageFormatter';
 import ContextMenu from 'dashboard/components/ui/ContextMenu.vue';
 import AddCannedModal from 'dashboard/routes/dashboard/settings/canned/AddCanned.vue';
+import { useSnakeCase } from 'dashboard/composables/useTransformKeys';
 import { copyTextToClipboard } from 'shared/helpers/clipboard';
 import { conversationUrl, frontendURL } from '../../../helper/URLHelper';
 import {
@@ -13,7 +14,7 @@ import {
 import TranslateModal from 'dashboard/components/widgets/conversation/bubble/TranslateModal.vue';
 import MenuItem from '../../../components/widgets/conversation/contextMenu/menuItem.vue';
 import { useTrack } from 'dashboard/composables';
-import ForwardModal from 'dashboard/components/widgets/conversation/bubble/ForwardModal';
+import ForwardModal from 'dashboard/components/widgets/conversation/bubble/ForwardModal.vue';
 
 export default {
   components: {
@@ -40,6 +41,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    hideButton: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['open', 'close', 'replyTo'],
   setup() {
@@ -65,7 +70,7 @@ export default {
       return this.getPlainText(this.messageContent);
     },
     conversationId() {
-      return this.message.conversation_id;
+      return this.message.conversation_id ?? this.message.conversationId;
     },
     messageId() {
       return this.message.id;
@@ -74,7 +79,9 @@ export default {
       return this.message.content;
     },
     contentAttributes() {
-      return this.message.content_attributes;
+      return useSnakeCase(
+        this.message.content_attributes ?? this.message.contentAttributes
+      );
     },
   },
   methods: {
@@ -199,6 +206,7 @@ export default {
       :reject-text="$t('CONVERSATION.CONTEXT_MENU.DELETE_CONFIRMATION.CANCEL')"
     />
     <woot-button
+      v-if="!hideButton"
       icon="more-vertical"
       color-scheme="secondary"
       variant="clear"
@@ -290,7 +298,7 @@ export default {
   }
 
   hr {
-    @apply m-1 border-b border-solid border-slate-50 dark:border-slate-800/50;
+    @apply m-1 border-b border-solid border-n-strong;
   }
 }
 

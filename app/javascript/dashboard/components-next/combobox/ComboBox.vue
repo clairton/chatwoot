@@ -13,37 +13,17 @@ const props = defineProps({
     validator: value =>
       value.every(option => 'value' in option && 'label' in option),
   },
-  placeholder: {
-    type: String,
-    default: '',
-  },
-  modelValue: {
-    type: [String, Number],
-    default: '',
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-  searchPlaceholder: {
-    type: String,
-    default: '',
-  },
-  emptyState: {
-    type: String,
-    default: '',
-  },
-  message: {
-    type: String,
-    default: '',
-  },
-  hasError: {
-    type: Boolean,
-    default: false,
-  },
+  placeholder: { type: String, default: '' },
+  modelValue: { type: [String, Number], default: '' },
+  disabled: { type: Boolean, default: false },
+  searchPlaceholder: { type: String, default: '' },
+  emptyState: { type: String, default: '' },
+  message: { type: String, default: '' },
+  hasError: { type: Boolean, default: false },
+  useApiResults: { type: Boolean, default: false }, // useApiResults prop to determine if search is handled by API
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'search']);
 
 const { t } = useI18n();
 
@@ -54,6 +34,12 @@ const dropdownRef = ref(null);
 const comboboxRef = ref(null);
 
 const filteredOptions = computed(() => {
+  // For API search, don't filter options locally
+  if (props.useApiResults && search.value) {
+    return props.options;
+  }
+
+  // For local search, filter options based on search term
   const searchTerm = search.value.toLowerCase();
   return props.options.filter(option =>
     option.label.toLowerCase().includes(searchTerm)
@@ -118,13 +104,13 @@ watch(
 
       <ComboBoxDropdown
         ref="dropdownRef"
+        v-model:search-value="search"
         :open="open"
         :options="filteredOptions"
-        :search-value="search"
         :search-placeholder="searchPlaceholder"
         :empty-state="emptyState"
         :selected-values="selectedValue"
-        @update:search-value="search = $event"
+        @search="emit('search', $event)"
         @select="selectOption"
       />
 

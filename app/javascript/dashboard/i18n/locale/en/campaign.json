@@ -145,58 +145,6 @@
         "SUCCESS_MESSAGE": "Campaign deleted successfully",
         "ERROR_MESSAGE": "There was an error. Please try again."
       }
-    },
-    "EDIT": {
-      "TITLE": "Edit campaign",
-      "UPDATE_BUTTON_TEXT": "Update",
-      "API": {
-        "SUCCESS_MESSAGE": "Campaign updated successfully",
-        "ERROR_MESSAGE": "There was an error, please try again"
-      }
-    },
-    "LIST": {
-      "LOADING_MESSAGE": "Loading campaigns...",
-      "404": "There are no campaigns created for this inbox.",
-      "TABLE_HEADER": {
-        "TITLE": "Title",
-        "MESSAGE": "Message",
-        "INBOX": "Inbox",
-        "STATUS": "Status",
-        "SENDER": "Sender",
-        "URL": "URL",
-        "SCHEDULED_AT": "Scheduled time",
-        "TIME_ON_PAGE": "Time(Seconds)",
-        "CREATED_AT": "Created at"
-      },
-      "BUTTONS": {
-        "ADD": "Add",
-        "EDIT": "Edit",
-        "DELETE": "Delete"
-      },
-      "STATUS": {
-        "ENABLED": "Enabled",
-        "DISABLED": "Disabled",
-        "COMPLETED": "Completed",
-        "ACTIVE": "Active"
-      },
-      "SENDER": {
-        "BOT": "Bot"
-      }
-    },
-    "ONE_OFF": {
-      "HEADER": "One off campaigns",
-      "404": "There are no one off campaigns created",
-      "INBOXES_NOT_FOUND": "Please create an sms inbox and start adding campaigns"
-    },
-    "ONGOING": {
-      "HEADER": "Ongoing campaigns",
-      "404": "There are no ongoing campaigns created",
-      "INBOXES_NOT_FOUND": "Please create an website inbox and start adding campaigns"
-    },
-    "AUDIENCE": {
-      "REPORT": "Report",
-      "ERROR": "Error",
-      "FAILED": "Failed"
     }
   }
 }

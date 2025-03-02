@@ -8,6 +8,7 @@ import TwilioChannel from '../../api/channel/twilioChannel';
 import NotificaMeChannel from '../../api/channel/notificaMeChannel';
 import { throwErrorMessage } from '../utils/api';
 import AnalyticsHelper from '../../helper/AnalyticsHelper';
+import camelcaseKeys from 'camelcase-keys';
 import { ACCOUNT_EVENTS } from '../../helper/AnalyticsHelper/events';
 
 const buildInboxData = inboxParams => {
@@ -92,6 +93,12 @@ export const getters = {
       record => record.id === Number(inboxId)
     );
     return inbox || {};
+  },
+  getInboxById: $state => inboxId => {
+    const [inbox] = $state.records.filter(
+      record => record.id === Number(inboxId)
+    );
+    return camelcaseKeys(inbox || {}, { deep: true });
   },
   getUIFlags($state) {
     return $state.uiFlags;

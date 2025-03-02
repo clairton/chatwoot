@@ -105,6 +105,7 @@ export default {
       currentUser: 'getCurrentUser',
       globalConfig: 'globalConfig/get',
       messageSignature: 'getMessageSignature',
+      inboxesList: 'inboxes/getInboxes',
     }),
     sendWithSignature() {
       return this.fetchSignatureFlagFromUISettings(this.channelType);
@@ -138,21 +139,37 @@ export default {
     },
     selectedInbox: {
       get() {
-        const inboxList = this.contact.contactableInboxes || [];
-        return (
-          inboxList.find(inbox => {
-            return inbox.inbox?.id && inbox.inbox?.id === this.targetInbox?.id;
-          }) || {
-            inbox: {},
-          }
+        const inboxList = this.contact.contact_inboxes || [];
+        const selectedContactInbox = inboxList.find(
+          inbox => inbox.inbox?.id && inbox.inbox?.id === this.targetInbox?.id
         );
+
+        if (!selectedContactInbox) {
+          return { inbox: {} };
+        }
+
+        // Find the matching inbox from the inboxesList
+        const matchingInbox =
+          this.inboxesList.find(
+            item => item.id === selectedContactInbox.inbox?.id
+          ) || {};
+
+        // The entire inbox payload is not available in this object, so we need to patch it from the store
+        return {
+          ...selectedContactInbox,
+          inbox: {
+            ...matchingInbox,
+            ...selectedContactInbox.inbox,
+            sourceId: selectedContactInbox.source_id || matchingInbox.sourceId,
+          },
+        };
       },
       set(value) {
         this.targetInbox = value.inbox;
       },
     },
     showNoInboxAlert() {
-      if (!this.contact.contactableInboxes) {
+      if (!this.contact.contact_inboxes) {
         return false;
       }
       return this.inboxes.length === 0 && !this.uiFlags.isFetchingInboxes;
@@ -165,12 +182,22 @@ export default {
         ? this.$t('CONVERSATION.FOOTER.DISABLE_SIGN_TOOLTIP')
         : this.$t('CONVERSATION.FOOTER.ENABLE_SIGN_TOOLTIP');
     },
+
     inboxes() {
-      const inboxList = this.contact.contactableInboxes || [];
-      return inboxList.map(inbox => ({
-        ...inbox.inbox,
-        sourceId: inbox.source_id,
-      }));
+      const inboxList = this.contact.contact_inboxes || [];
+      if (!inboxList.length) return [];
+
+      return inboxList.map(inbox => {
+        const matchingInbox =
+          this.inboxesList.find(item => item.id === inbox.inbox?.id) || {};
+
+        // Create merged object with a clear property order
+        return {
+          ...matchingInbox,
+          ...inbox.inbox,
+          sourceId: inbox.source_id,
+        };
+      });
     },
     isAnEmailInbox() {
       return (

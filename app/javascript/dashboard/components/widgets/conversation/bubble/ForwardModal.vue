@@ -64,13 +64,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import alertMixin from 'shared/mixins/alertMixin';
-import TimeAgo from 'dashboard/components/ui/TimeAgo';
+import { useAlert } from 'dashboard/composables';
+import TimeAgo from 'dashboard/components/ui/TimeAgo.vue';
 
 const DEFAULT_PAGE = 1;
 
 export default {
-    mixins: [alertMixin],
     components: {
         TimeAgo,
     },
@@ -152,7 +151,7 @@ export default {
                 contacts: contactIds
             });
 
-            this.showAlert("Encaminhando mensagem...");
+            useAlert("Encaminhando mensagem...");
             this.onClose();
         }
     }

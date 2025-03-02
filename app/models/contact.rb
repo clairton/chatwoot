@@ -42,6 +42,7 @@ class Contact < ApplicationRecord
   include Avatarable
   include AvailabilityStatusable
   include Labelable
+  include LlmFormattable
 
   validates :account_id, presence: true
   validates :email, allow_blank: true, uniqueness: { scope: [:account_id], case_sensitive: false },
@@ -142,6 +143,7 @@ class Contact < ApplicationRecord
       name: name,
       phone_number: phone_number,
       thumbnail: avatar_url,
+      blocked: blocked,
       type: 'contact'
     }
   end
@@ -157,7 +159,8 @@ class Contact < ApplicationRecord
       identifier: identifier,
       name: name,
       phone_number: phone_number,
-      thumbnail: avatar_url
+      thumbnail: avatar_url,
+      blocked: blocked
     }
   end
 

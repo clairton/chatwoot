@@ -1,6 +1,7 @@
 import { MESSAGE_TYPE } from 'shared/constants/messages';
 import { applyPageFilters, sortComparator } from './helpers';
 import filterQueryGenerator from 'dashboard/helper/filterQueryGenerator';
+import camelcaseKeys from 'camelcase-keys';
 
 export const getSelectedChatConversation = ({
   allConversations,
@@ -26,18 +27,12 @@ const getters = {
     const selectedChat = _getters.getSelectedChat;
     const { messages = [] } = selectedChat;
     const lastEmail = [...messages].reverse().find(message => {
-      const {
-        content_attributes: contentAttributes = {},
-        message_type: messageType,
-      } = message;
-      const { email = {} } = contentAttributes;
-      const isIncomingOrOutgoing =
-        messageType === MESSAGE_TYPE.OUTGOING ||
-        messageType === MESSAGE_TYPE.INCOMING;
-      if (email.from && isIncomingOrOutgoing) {
-        return true;
-      }
-      return false;
+      const { message_type: messageType } = message;
+      if (message.private) return false;
+
+      return [MESSAGE_TYPE.OUTGOING, MESSAGE_TYPE.INCOMING].includes(
+        messageType
+      );
     });
 
     return lastEmail;
@@ -53,6 +48,10 @@ const getters = {
 
       return isChatMine;
     });
+  },
+  getAppliedConversationFiltersV2: _state => {
+    // TODO: Replace existing one with V2 after migrating the filters to use camelcase
+    return _state.appliedFilters.map(camelcaseKeys);
   },
   getAppliedConversationFilters: _state => {
     return _state.appliedFilters;

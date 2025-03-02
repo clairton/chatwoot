@@ -101,7 +101,7 @@ const actions = {
   },
 
   fetchAllAttachments: async ({ commit }, conversationId) => {
-    let attachments = null;
+    let attachments = [];
 
     try {
       const { data } = await ConversationApi.getAllAttachments(conversationId);

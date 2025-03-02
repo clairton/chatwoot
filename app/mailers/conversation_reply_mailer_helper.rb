@@ -19,7 +19,7 @@ module ConversationReplyMailerHelper
 
     Rails.logger.info("Email sent from #{email_from} to #{to_emails} with subject #{mail_subject}")
 
-    if @message.attachments.present?
+    if @message&.attachments&.present?
       @options[:attachments] = []
 
       @message.attachments.each do |attachment|
