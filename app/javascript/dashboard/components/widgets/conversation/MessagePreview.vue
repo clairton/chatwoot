@@ -2,11 +2,11 @@
 import { MESSAGE_TYPE } from 'widget/helpers/constants';
 import { useMessageFormatter } from 'shared/composables/useMessageFormatter';
 import { ATTACHMENT_ICONS } from 'shared/constants/messages';
-import BubbleImageAudioVideo from './bubble/ImageAudioVideo.vue';
-import InstagramStory from './bubble/InstagramStory.vue';
-import BubbleLocation from './bubble/Location.vue';
-import BubbleContact from './bubble/Contact.vue';
-import BubbleFile from './bubble/File.vue';
+import BubbleImageAudioVideo from 'next/message/bubbles/ImageAudioVideo.vue';
+import InstagramStory from 'next/message/bubbles/InstagramStory.vue';
+import BubbleLocation from 'next/message/bubbles/Location.vue';
+import BubbleContact from 'next/message/bubbles/Contact.vue';
+import BubbleFile from ' next/message/bubbles/File.vue';
 
 export default {
   name: 'MessagePreview',
@@ -114,26 +114,26 @@ export default {
       <fluent-icon
         v-if="isMessagePrivate"
         size="16"
-        class="-mt-0.5 align-middle text-slate-600 dark:text-slate-300 inline-block"
+        class="-mt-0.5 align-middle text-n-slate-11 inline-block"
         icon="lock-closed"
       />
       <fluent-icon
         v-else-if="messageByAgent"
         size="16"
-        class="-mt-0.5 align-middle text-slate-600 dark:text-slate-300 inline-block"
+        class="-mt-0.5 align-middle text-n-slate-11 inline-block"
         icon="arrow-reply"
       />
       <fluent-icon
         v-else-if="isMessageAnActivity"
         size="16"
-        class="-mt-0.5 align-middle text-slate-600 dark:text-slate-300 inline-block"
+        class="-mt-0.5 align-middle text-n-slate-11 inline-block"
         icon="info"
       />
     </template>
     <span v-if="message.content && isMessageSticker">
       <fluent-icon
         size="16"
-        class="-mt-0.5 align-middle inline-block text-slate-600 dark:text-slate-300"
+        class="-mt-0.5 align-middle inline-block text-n-slate-11"
         icon="image"
       />
       {{ $t('CHAT_LIST.ATTACHMENTS.image.CONTENT') }}
@@ -142,42 +142,13 @@ export default {
       {{ parsedLastMessage }}
     </span>
     <span v-else-if="message.attachments">
-      <div v-if="short">
-        <fluent-icon
-          v-if="attachmentIcon && showMessageType"
-          size="16"
-          class="-mt-0.5 align-middle inline-block text-slate-600 dark:text-slate-300"
-          :icon="attachmentIcon"
-        />
-        {{ $t(`${attachmentMessageContent}`) }}
-      </div>
-      <div v-else>
-        <div v-for="attachment in attachments" :key="attachment.id">
-          <InstagramStory
-            v-if="isAnInstagramStory"
-            :story-url="attachment.thumb_url"
-            @error="onMediaLoadError"
-          />
-          <BubbleImageAudioVideo
-            v-else-if="isAttachmentImageVideoAudio(attachment.file_type)"
-            :attachment="attachment"
-            url_type="thumb_url"
-            @error="onMediaLoadError"
-          />
-          <BubbleLocation
-            v-else-if="attachment.file_type === 'location'"
-            :latitude="attachment.coordinates_lat"
-            :longitude="attachment.coordinates_long"
-            :name="attachment.fallback_title"
-          />
-          <BubbleContact
-            v-else-if="attachment.file_type === 'contact'"
-            :name="message.content"
-            :phone-number="attachment.fallback_title"
-          />
-          <BubbleFile v-else :url="attachment.thumb_url" />
-        </div>
-      </div>
+      <fluent-icon
+        v-if="attachmentIcon && showMessageType"
+        size="16"
+        class="-mt-0.5 align-middle inline-block text-n-slate-11"
+        :icon="attachmentIcon"
+      />
+      {{ $t(`${attachmentMessageContent}`) }}
     </span>
     <span v-else>
       {{ defaultEmptyMessage || $t('CHAT_LIST.NO_CONTENT') }}

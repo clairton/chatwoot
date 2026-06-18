@@ -24,8 +24,6 @@ export function useAccount() {
   });
   const currentAccount = computed(() => getAccountFn.value(accountId.value));
 
-  const currentAccount = computed(() => getAccountFn.value(accountId.value));
-
   /**
    * Generates an account-scoped URL.
    * @param {string} url - The URL to be scoped to the account.
@@ -54,6 +52,10 @@ export function useAccount() {
     });
   };
 
+  const finishOnboarding = async data => {
+    await store.dispatch('accounts/finishOnboarding', data);
+  };
+
   return {
     accountId,
     route,
@@ -63,5 +65,6 @@ export function useAccount() {
     isCloudFeatureEnabled,
     isOnChatwootCloud,
     updateAccount,
+    finishOnboarding,
   };
 }

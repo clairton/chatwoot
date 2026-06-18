@@ -6,7 +6,7 @@
  * Badge - Chat source indication { fb / telegram }
  * Username - Username for avatar
  */
-import Avatar from './Avatar.vue';
+import Avatar from 'next/avatar/Avatar.vue';
 import { removeEmoji } from 'shared/helpers/emoji';
 
 export default {

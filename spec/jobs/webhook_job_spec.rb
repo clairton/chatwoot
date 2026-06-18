@@ -15,9 +15,8 @@ RSpec.describe WebhookJob do
       .on_queue('medium')
   end
 
-  it 'executes performm with default webhook type' do
-    expect(Webhooks::Trigger).to receive(:execute)
-      .with(url, payload, webhook_type, :post, { accept: :json, content_type: :json })
+  it 'executes perform with default webhook type' do
+    expect(Webhooks::Trigger).to receive(:execute).with(url, payload, webhook_type, secret: nil, delivery_id: nil)
     perform_enqueued_jobs { job }
   end
 
@@ -25,7 +24,7 @@ RSpec.describe WebhookJob do
     let(:webhook_type) { :api_inbox_webhook }
 
     it 'executes perform with inbox webhook type' do
-      expect(Webhooks::Trigger).to receive(:execute).with(url, payload, webhook_type)
+      expect(Webhooks::Trigger).to receive(:execute).with(url, payload, webhook_type, secret: nil, delivery_id: nil)
       perform_enqueued_jobs { job }
     end
   end

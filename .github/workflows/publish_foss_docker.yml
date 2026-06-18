@@ -19,6 +19,9 @@ env:
   DOCKER_REPO: clairton/chatwoot
   REGISTRY: docker.io
 
+permissions:
+  contents: read
+
 jobs:
   build:
     strategy:

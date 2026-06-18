@@ -27,7 +27,25 @@ class Twilio::CallbackController < ApplicationController
       *Array.new(10) { |i| :"MediaUrl#{i}" },
       *Array.new(10) { |i| :"MediaContentType#{i}" },
       :MessagingServiceSid,
-      :NumMedia
+      :NumMedia,
+      :Latitude,
+      :Longitude,
+      :MessageType,
+      :ProfileName,
+      :ExternalUserId,
+      :ParentExternalUserId,
+      :ProfileUsername,
+      :Username,
+      :ReferralBody,
+      :ReferralHeadline,
+      :ReferralSourceId,
+      :ReferralSourceType,
+      :ReferralSourceUrl,
+      :ReferralMediaId,
+      :ReferralMediaContentType,
+      :ReferralMediaUrl,
+      :ReferralNumMedia,
+      :ReferralCtwaClid
     )
   end
 end

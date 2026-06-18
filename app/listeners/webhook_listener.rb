@@ -68,7 +68,7 @@ class WebhookListener < BaseListener
 
   def inbox_created(event)
     inbox, account = extract_inbox_and_account(event)
-    inbox_webhook_data = Inbox::EventDataPresenter.new(inbox).push_data
+    inbox_webhook_data = Inbox::EventDataPresenter.new(inbox).webhook_data
     payload = inbox_webhook_data.merge(event: __method__.to_s)
     deliver_account_webhooks(payload, account)
   end
@@ -78,7 +78,7 @@ class WebhookListener < BaseListener
     changed_attributes = extract_changed_attributes(event)
     return if changed_attributes.blank?
 
-    inbox_webhook_data = Inbox::EventDataPresenter.new(inbox).push_data
+    inbox_webhook_data = Inbox::EventDataPresenter.new(inbox).webhook_data
     payload = inbox_webhook_data.merge(event: __method__.to_s, changed_attributes: changed_attributes)
     deliver_account_webhooks(payload, account)
   end
@@ -111,7 +111,9 @@ class WebhookListener < BaseListener
     account.webhooks.account_type.each do |webhook|
       next unless webhook.subscriptions.include?(payload[:event])
 
-      WebhookJob.perform_later(webhook.url, payload)
+      WebhookJob.perform_later(webhook.url, payload, :account_webhook,
+                               secret: webhook.secret,
+                               delivery_id: SecureRandom.uuid)
     end
   end
 
@@ -119,7 +121,8 @@ class WebhookListener < BaseListener
     return unless inbox.channel_type == 'Channel::Api'
     return if inbox.channel.webhook_url.blank?
 
-    WebhookJob.perform_later(inbox.channel.webhook_url, payload, :api_inbox_webhook)
+    WebhookJob.perform_later(inbox.channel.webhook_url, payload, :api_inbox_webhook,
+                             secret: inbox.channel.secret, delivery_id: SecureRandom.uuid)
   end
 
   def deliver_whatsapp_inbox_webhooks(payload, inbox)
@@ -133,8 +136,10 @@ class WebhookListener < BaseListener
         inbox.channel.message_path(payload),
         inbox.channel.message_update_payload(payload),
         :account_webhook,
-        inbox.channel.message_update_http_method,
-        inbox.channel.api_headers
+        secret: agent_bot.secret,
+        delivery_id: SecureRandom.uuid,
+        method: inbox.channel.message_update_http_method,
+        headers: inbox.channel.api_headers
       )
     end
   end
