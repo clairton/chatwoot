@@ -128,9 +128,6 @@ export default {
       );
       const menuItems = this.sideMenuConfig.primaryMenu;
       return menuItems.filter(menuItem => {
-        if (menuItem.key === 'contacts' && this.hideContactsForAgents) {
-          return false;
-        }
         const isAvailableForTheUser = hasPermissions(
           routesWithPermissions[menuItem.toStateName],
           userPermissions
@@ -180,14 +177,6 @@ export default {
       // if it is explicitly stated to show and it has secondary menu items to show
       // showSecondarySidebar corresponds to the UI settings, indicating if the user has toggled it
       return this.showSecondarySidebar && this.hasSecondaryMenu;
-    },
-    hideContactsForAgents() {
-      return (
-        this.isFeatureEnabledonAccount(
-          this.accountId,
-          'hide_contacts_for_agent'
-        ) && this.currentRole !== 'administrator'
-      );
     },
   },
 

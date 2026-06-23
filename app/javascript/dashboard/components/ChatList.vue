@@ -146,33 +146,6 @@ const isAdministrator = computed(() => {
   return currentRole.value === 'administrator';
 });
 
-const hideAllChatsForAgents = computed(() => {
-  return (
-    isFeatureEnabledonAccount.value(
-      currentAccountId.value,
-      'hide_all_chats_for_agent'
-    ) && !isAdministrator.value
-  );
-});
-
-const hideFiltersForAgents = computed(() => {
-  return (
-    isFeatureEnabledonAccount.value(
-      currentAccountId.value,
-      'hide_filters_for_agent'
-    ) && !isAdministrator.value
-  );
-});
-
-const hideUnassignedForAgents = computed(() => {
-  return (
-    isFeatureEnabledonAccount.value(
-      currentAccountId.value,
-      'hide_unassigned_for_agent'
-    ) && !isAdministrator.value
-  );
-});
-
 const hasAppliedFilters = computed(() => {
   return appliedFilters.value.length !== 0;
 });
@@ -218,15 +191,6 @@ const assigneeTabItems = computed(() => {
     userPermissions.value,
     item => item.permissions
   )
-    .filter(({ key }) => {
-      if (hideAllChatsForAgents.value && key === 'all') {
-        return false;
-      }
-      if (hideUnassignedForAgents.value && key === 'unassigned') {
-        return false;
-      }
-      return true;
-    })
     .map(({ key, count: countKey }) => ({
       key,
       name: t(`CHAT_LIST.ASSIGNEE_TYPE_TABS.${key}`),
@@ -941,7 +905,6 @@ watch(conversationFilters, (newVal, oldVal) => {
     <ChatListHeader
       :page-title="pageTitle"
       :has-applied-filters="hasAppliedFilters"
-      :has-hide-filters-for-agents="hideFiltersForAgents"
       :has-active-folders="hasActiveFolders"
       :active-status="activeStatus"
       :is-on-expanded-layout="isOnExpandedLayout"
