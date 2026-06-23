@@ -248,7 +248,8 @@
           "360_DIALOG": "360Dialog",
           "UNOAPI": "Unoapi",
           "WHATSAPP_CLOUD_DESC": "Quick setup through Meta",
-          "TWILIO_DESC": "Connect via Twilio credentials"
+          "TWILIO_DESC": "Connect via Twilio credentials",
+          "UNOAPI_DESC": "Connect via Unoapi"
         },
         "SELECT_PROVIDER": {
           "TITLE": "Select your API provider",

@@ -269,7 +269,8 @@
           "ERROR": "Selecione para ignorar mensagens de grupos.",
           "WHATSAPP_CLOUD_DESC": "Configuração rápida via Meta",
           "TWILIO_DESC": "Conectar através de credenciais Twilio",
-          "360_DIALOG": "360Dialog"
+          "360_DIALOG": "360Dialog",
+          "UNOAPI_DESC": "Conectar através Unoapi"
         },
         "SELECT_PROVIDER": {
           "TITLE": "Selecione seu provedor de API",

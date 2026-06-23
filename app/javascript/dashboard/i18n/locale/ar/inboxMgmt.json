@@ -247,7 +247,8 @@
           "WHATSAPP_CLOUD": "واتساب السحابة",
           "WHATSAPP_CLOUD_DESC": "Quick setup through Meta",
           "TWILIO_DESC": "Connect via Twilio credentials",
-          "360_DIALOG": "360dialog"
+          "360_DIALOG": "360dialog",
+          "UNOAPI_DESC": "Connect via Unoapi"
         },
         "SELECT_PROVIDER": {
           "TITLE": "Select your API provider",
