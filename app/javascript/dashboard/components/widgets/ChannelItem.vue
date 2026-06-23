@@ -57,7 +57,7 @@ const isActive = computed(() => {
   }
 
   if (key === 'notifica_me') {
-    return this.enabledFeatures.channel_notifica_me;
+    return props.enabledFeatures.channel_notifica_me;
   }
 
   if (key === 'whatsapp_call') {

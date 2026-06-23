@@ -6,6 +6,7 @@ import {
   useMapGetter,
   useFunctionGetter,
 } from 'dashboard/composables/store.js';
+import { useChatListKeyboardEvents } from 'dashboard/composables/chatlist/useChatListKeyboardEvents';
 
 import ChatListHeader from './ChatListHeader.vue';
 import ConversationList from './ConversationList.vue';
