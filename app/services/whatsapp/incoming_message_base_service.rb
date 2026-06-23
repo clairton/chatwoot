@@ -180,12 +180,12 @@ class Whatsapp::IncomingMessageBaseService
       content: message_content(message),
       account_id: @inbox.account_id,
       inbox_id: @inbox.id,
-      in_reply_to_external_id: @in_reply_to_external_id
+      in_reply_to_external_id: @in_reply_to_external_id,
       created_at: timestamp,
       message_type: @message_type,
       # Set status to :delivered for echo messages to prevent SendReplyJob from trying to send them
       status: outgoing_echo ? :delivered : :sent,
-      sender: outgoing_echo || || outgoing_message_type? ? nil : @contact,
+      sender: outgoing_echo || outgoing_message_type? ? nil : @contact,
       source_id: (source_id || message[:id]).to_s,
       content_attributes: message_content_attributes(content_attributes_source)
     )
