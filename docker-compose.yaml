@@ -80,7 +80,8 @@ services:
       - NODE_ENV=development
       - RAILS_ENV=development
     entrypoint: docker/entrypoints/vite.sh
-    command: bin/vite dev
+    # command: bin/vite dev
+    command: bin/vite build --clear --mode=development
 
   postgres:
     image: pgvector/pgvector:pg16
@@ -88,7 +89,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - postgres:/data/postgres
+      - postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}

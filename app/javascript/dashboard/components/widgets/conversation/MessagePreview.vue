@@ -2,21 +2,9 @@
 import { MESSAGE_TYPE } from 'widget/helpers/constants';
 import { useMessageFormatter } from 'shared/composables/useMessageFormatter';
 import { ATTACHMENT_ICONS } from 'shared/constants/messages';
-import BubbleImageAudioVideo from 'next/message/bubbles/ImageAudioVideo.vue';
-import InstagramStory from 'next/message/bubbles/InstagramStory.vue';
-import BubbleLocation from 'next/message/bubbles/Location.vue';
-import BubbleContact from 'next/message/bubbles/Contact.vue';
-import BubbleFile from ' next/message/bubbles/File.vue';
 
 export default {
   name: 'MessagePreview',
-  components: {
-    BubbleImageAudioVideo,
-    InstagramStory,
-    BubbleLocation,
-    BubbleContact,
-    BubbleFile,
-  },
   props: {
     message: {
       type: Object,
@@ -30,10 +18,6 @@ export default {
       type: String,
       default: '',
     },
-    short: {
-      type: Boolean,
-      default: true,
-    },
   },
   setup() {
     const { getPlainText } = useMessageFormatter();
@@ -41,21 +25,7 @@ export default {
       getPlainText,
     };
   },
-  data: () => {
-    return {
-      previewMessage: null,
-    };
-  },
   computed: {
-    contentAttributes() {
-      return this.message.content_attributes || {};
-    },
-    isAnInstagramStory() {
-      return this.contentAttributes.image_type === 'story_mention';
-    },
-    attachments() {
-      return this.message?.attachments || [];
-    },
     messageByAgent() {
       const { message_type: messageType } = this.message;
       return messageType === MESSAGE_TYPE.OUTGOING;
@@ -85,24 +55,6 @@ export default {
     },
     isMessageSticker() {
       return this.message && this.message.content_type === 'sticker';
-    },
-  },
-  watch: {
-    data() {
-      this.hasMediaLoadError = false;
-    },
-  },
-  mounted() {
-    this.hasMediaLoadError = false;
-  },
-  methods: {
-    isAttachmentImageVideoAudio(fileType) {
-      return ['image', 'audio', 'video', 'story_mention', 'ig_reel'].includes(
-        fileType
-      );
-    },
-    onMediaLoadError() {
-      this.hasMediaLoadError = true;
     },
   },
 };
