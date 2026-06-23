@@ -27,7 +27,7 @@ class SendReplyJob < ApplicationJob
       'Channel::Telegram' => ::Telegram::SendOnTelegramService,
       'Channel::Whatsapp' => ::Whatsapp::SendOnWhatsappService,
       'Channel::Sms' => ::Sms::SendOnSmsService,
-      'Channel::Instagram' => ::Instagram::SendOnInstagramService
+      'Channel::Instagram' => ::Instagram::SendOnInstagramService,
       'Channel::NotificaMe' => ::NotificaMe::SendOnNotificaMeService
     }
     return send_on_facebook_page(message) if channel_name == 'Channel::FacebookPage'
