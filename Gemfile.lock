@@ -15,10 +15,10 @@ GIT
 
 GIT
   remote: https://github.com/chatwoot/devise-secure_password
-  revision: adcc85fe1babfe40feae73dbcae64d14fff86e69
+  revision: 479987594b576dbf23aed8dbd962e78342bc683c
   branch: chatwoot
   specs:
-    devise-secure_password (2.0.1)
+    devise-secure_password (2.1.0)
       devise (>= 4.0.0, < 5.0.0)
       railties (>= 5.0.0, < 8.0.0)
 
@@ -336,9 +336,6 @@ GEM
       faraday (>= 1.0.0, < 3.0)
       googleauth (~> 1)
     ffi (1.17.2)
-    ffi (1.17.2-arm64-darwin)
-    ffi (1.17.2-x86_64-darwin)
-    ffi (1.17.2-x86_64-linux-gnu)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -418,15 +415,6 @@ GEM
     groupdate (6.2.1)
       activesupport (>= 5.2)
     grpc (1.72.0)
-      google-protobuf (>= 3.25, < 5.0)
-      googleapis-common-protos-types (~> 1.0)
-    grpc (1.72.0-arm64-darwin)
-      google-protobuf (>= 3.25, < 5.0)
-      googleapis-common-protos-types (~> 1.0)
-    grpc (1.72.0-x86_64-darwin)
-      google-protobuf (>= 3.25, < 5.0)
-      googleapis-common-protos-types (~> 1.0)
-    grpc (1.72.0-x86_64-linux)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
     gserver (0.0.1)
@@ -523,14 +511,7 @@ GEM
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
     libdatadog (18.1.0.1.0)
-    libdatadog (18.1.0.1.0-x86_64-linux)
     libddwaf (1.24.1.0.3)
-      ffi (~> 1.0)
-    libddwaf (1.24.1.0.3-arm64-darwin)
-      ffi (~> 1.0)
-    libddwaf (1.24.1.0.3-x86_64-darwin)
-      ffi (~> 1.0)
-    libddwaf (1.24.1.0.3-x86_64-linux)
       ffi (~> 1.0)
     line-bot-api (1.28.0)
     lint_roller (1.1.0)
@@ -600,12 +581,6 @@ GEM
     nio4r (2.7.5)
     nokogiri (1.19.3)
       mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
-    nokogiri (1.19.3-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.19.3-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.19.3-x86_64-linux-gnu)
       racc (~> 1.4)
     oauth (1.1.6)
       auth-sanitizer (~> 0.2, >= 0.2.1)
@@ -1042,15 +1017,7 @@ GEM
     zeitwerk (2.7.5)
 
 PLATFORMS
-  arm64-darwin-20
-  arm64-darwin-21
-  arm64-darwin-22
   ruby
-  x86_64-darwin-18
-  x86_64-darwin-20
-  x86_64-darwin-21
-  x86_64-darwin-22
-  x86_64-linux
 
 DEPENDENCIES
   active_record_query_trace
@@ -1104,7 +1071,7 @@ DEPENDENCIES
   google-cloud-storage (>= 1.48.0)
   google-cloud-translate-v3 (>= 0.7.0)
   groupdate
-  grpc
+  grpc (>= 1.31)
   haikunator
   hairtrigger
   hashie
@@ -1210,4 +1177,4 @@ RUBY VERSION
    ruby 3.4.4p34
 
 BUNDLED WITH
-   2.5.16
+   2.7.2
