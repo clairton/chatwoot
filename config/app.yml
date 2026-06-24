@@ -1,5 +1,5 @@
 shared: &shared
-  version: '4.15.1-uno'
+  version: '4.15.1-uno-beta'
 
 development:
   <<: *shared
