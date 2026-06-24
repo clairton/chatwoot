@@ -136,7 +136,7 @@ class WebhookListener < BaseListener
         inbox.channel.message_path(payload),
         inbox.channel.message_update_payload(payload),
         :account_webhook,
-        secret: agent_bot.secret,
+        secret: inbox.channel.secret,
         delivery_id: SecureRandom.uuid,
         method: inbox.channel.message_update_http_method,
         headers: inbox.channel.api_headers

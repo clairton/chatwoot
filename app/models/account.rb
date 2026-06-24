@@ -6,7 +6,7 @@
 #  auto_resolve_duration :integer
 #  custom_attributes     :jsonb
 #  domain                :string(100)
-#  feature_flags         :bigint           default(0), not null
+#  feature_flags         :decimal(100, )   default(0), not null
 #  internal_attributes   :jsonb            not null
 #  limits                :jsonb
 #  locale                :integer          default("en")
@@ -223,3 +223,10 @@ Account.prepend_mod_with('Account')
 Account.prepend_mod_with('Account::PlanUsageAndLimits')
 Account.include_mod_with('Concerns::Account')
 Account.include_mod_with('Audit::Account')
+
+
+# begin
+#   Account.create!(name: 'Acme Inc')
+# rescue => e
+#   puts e.backtrace.join("\n")
+# end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_06_11_184600) do
+ActiveRecord::Schema[7.1].define(version: 2026_06_13_131011) do
   # These extensions should be enabled to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -66,7 +66,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_06_11_184600) do
     t.integer "locale", default: 0
     t.string "domain", limit: 100
     t.string "support_email", limit: 100
-    t.decimal "feature_flags", default: 0, null: false, precision: 100, scale: 0
+    t.decimal "feature_flags", precision: 100, default: "0", null: false
     t.integer "auto_resolve_duration"
     t.jsonb "limits", default: {}
     t.jsonb "custom_attributes", default: {}

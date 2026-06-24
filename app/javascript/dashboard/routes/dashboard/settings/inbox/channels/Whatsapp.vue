@@ -139,9 +139,7 @@ const handleManualLinkClick = () => {
         <CloudWhatsapp v-else-if="shouldShowCloudWhatsapp(selectedProvider)" />
 
         <!-- Other providers -->
-        <Unoapi
-          v-else-if="selectedProvider === PROVIDER_TYPES.UNOAPI"
-        />
+        <Unoapi v-else-if="selectedProvider === PROVIDER_TYPES.UNOAPI" />
 
         <!-- Other providers -->
         <Twilio

@@ -120,7 +120,7 @@ onUnmounted(() => {
       variant="clear"
       color-scheme="secondary"
       icon="call"
-      :disabled="callInfo.id"
+      :disabled="callInfo?.id"
       @click="startCall"
     />
     <woot-button

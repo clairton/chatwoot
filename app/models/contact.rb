@@ -144,19 +144,6 @@ class Contact < ApplicationRecord
       .where.missing(:conversations)
   }
 
-  def save!
-    # 'Channel::TwilioSms', 'Channel::Whatsapp', 'Channel::Sms'
-    transaction do
-      contact_inboxes
-        .select{ |ci| ['Channel::Whatsapp'].include?(ci.inbox.channel_type) }
-        .map{ |ci|
-          ci.source_id = self.phone_number.delete('+').to_s
-          ci.save!
-        }
-      super
-    end
-  end
-
   def get_source_id(inbox_id)
     contact_inboxes.find_by!(inbox_id: inbox_id).source_id
   end
@@ -254,6 +241,13 @@ class Contact < ApplicationRecord
 
   def dispatch_update_event
     Rails.configuration.dispatcher.dispatch(CONTACT_UPDATED, Time.zone.now, contact: self, changed_attributes: previous_changes)
+
+    contact_inboxes
+      .select{ |ci| ['Channel::Whatsapp'].include?(ci.inbox.channel_type) }
+      .map{ |ci|
+        ci.source_id = self.phone_number.delete('+').to_s
+        ci.save!
+      }
   end
 
   def dispatch_destroy_event
