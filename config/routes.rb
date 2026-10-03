@@ -311,6 +311,16 @@ Rails.application.routes.draw do
                 post :initiate
               end
             end
+            resources :sip_calls, only: [:show] do
+              member do
+                post :accept
+                post :terminate
+              end
+              collection do
+                post :initiate
+                get :lookup
+              end
+            end
           end
 
           resources :custom_attribute_definitions, only: [:index, :show, :create, :update, :destroy]

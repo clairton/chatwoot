@@ -2,13 +2,13 @@ module Enterprise::ContactInboxBuilder
   private
 
   def generate_source_id
-    return super unless twilio_voice_inbox?
+    return super unless voice_inbox?
 
     phone_source_id
   end
 
   def phone_source_id
-    return super unless twilio_voice_inbox?
+    return super unless voice_inbox?
 
     return SecureRandom.uuid if @contact.phone_number.blank?
 
@@ -16,7 +16,11 @@ module Enterprise::ContactInboxBuilder
   end
 
   def allowed_channels?
-    super || twilio_voice_inbox?
+    super || voice_inbox?
+  end
+
+  def voice_inbox?
+    twilio_voice_inbox? || @inbox.channel_type == 'Channel::Sip'
   end
 
   def twilio_voice_inbox?
