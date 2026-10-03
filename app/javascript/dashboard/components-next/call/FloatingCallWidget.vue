@@ -4,7 +4,9 @@ import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { useCallSession } from 'dashboard/composables/useCallSession';
 import { setWhatsappCallMuted } from 'dashboard/composables/useWhatsappCallSession';
+import { useSipRegistration } from 'dashboard/composables/useSipCallSession';
 import TwilioVoiceClient from 'dashboard/api/channel/voice/twilioVoiceClient';
+import SipVoiceClient from 'dashboard/api/channel/sip/sipVoiceClient';
 import { frontendURL, conversationUrl } from 'dashboard/helper/URLHelper';
 import { VOICE_CALL_PROVIDERS } from 'dashboard/helper/inbox';
 import { VOICE_CALL_DIRECTION } from 'dashboard/components-next/message/constants';
@@ -29,9 +31,10 @@ const {
   dismissCall,
   formattedCallDuration,
 } = useCallSession();
+useSipRegistration();
 
-// Mute routes by provider: WhatsApp toggles the local mic track, Twilio uses
-// the Voice SDK connection's native mute. Both surface the same button.
+// Mute routes by provider: WhatsApp toggles the local mic track, Twilio and
+// SIP use their client's native mute. All surface the same button.
 const isMuted = ref(false);
 const isWhatsappActive = computed(
   () => activeCall.value?.provider === VOICE_CALL_PROVIDERS.WHATSAPP
@@ -66,6 +69,8 @@ const toggleMute = () => {
   isMuted.value = !isMuted.value;
   if (isWhatsappActive.value) {
     setWhatsappCallMuted(isMuted.value);
+  } else if (activeCall.value?.provider === VOICE_CALL_PROVIDERS.SIP) {
+    SipVoiceClient.setMuted(isMuted.value);
   } else {
     TwilioVoiceClient.setMuted(isMuted.value);
   }

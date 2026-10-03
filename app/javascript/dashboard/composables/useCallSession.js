@@ -10,6 +10,7 @@ import {
   sendWhatsappTerminateBeacon,
   cleanupWhatsappSession,
 } from 'dashboard/composables/useWhatsappCallSession';
+import { useSipCallSession } from 'dashboard/composables/useSipCallSession';
 import {
   handleVoiceCallCreated,
   markCallDismissed,
@@ -25,6 +26,7 @@ import {
 import Timer from 'dashboard/helper/Timer';
 
 const isWhatsappCall = call => call?.provider === VOICE_CALL_PROVIDERS.WHATSAPP;
+const isSipCall = call => call?.provider === VOICE_CALL_PROVIDERS.SIP;
 
 // Globals attached once across all useCallSession() consumers — bubbles in a
 // long thread call this composable many times, and a per-instance Timer +
@@ -82,7 +84,7 @@ const detachGlobalsOnLastUnmount = () => {
 // Build the action surface used by both the root session composable and the
 // lighter useCallActions consumer. All state is module-scoped — the actions
 // don't depend on per-instance refs, so they're cheap to call from anywhere.
-const buildCallActions = ({ callsStore, whatsappSession, t }) => {
+const buildCallActions = ({ callsStore, whatsappSession, sipSession, t }) => {
   const findCall = callSid => callsStore.calls.find(c => c.callSid === callSid);
 
   const endCall = async ({ conversationId, inboxId, callSid }) => {
@@ -91,6 +93,13 @@ const buildCallActions = ({ callsStore, whatsappSession, t }) => {
       // Pass call.callId so a wiped module state (e.g. a prior accept attempt
       // tore down the WebRTC session) doesn't stop us hitting /terminate.
       await whatsappSession.endActiveCall(call?.callId);
+      globalDurationTimer?.stop();
+      callsStore.clearActiveCall();
+      return;
+    }
+
+    if (isSipCall(call)) {
+      await sipSession.endActiveCall(call.callId);
       globalDurationTimer?.stop();
       callsStore.clearActiveCall();
       return;
@@ -116,12 +125,13 @@ const buildCallActions = ({ callsStore, whatsappSession, t }) => {
     // Outbound *WhatsApp* calls have no separate join step — the offer was
     // sent at initiate time and the answer is applied by the cable handler.
     // Routing through acceptIncomingCall here would call prepareInboundAnswer →
-    // cleanup() and destroy the live outbound session. Outbound *Twilio*
-    // calls still need joinConference + joinClientCall (FloatingCallWidget
-    // auto-joins them), so don't short-circuit those.
+    // cleanup() and destroy the live outbound session. Outbound *SIP* calls
+    // are already dialling from the browser. Outbound *Twilio* calls still
+    // need joinConference + joinClientCall (FloatingCallWidget auto-joins
+    // them), so don't short-circuit those.
     if (
       call?.callDirection === VOICE_CALL_DIRECTION.OUTBOUND &&
-      isWhatsappCall(call)
+      (isWhatsappCall(call) || isSipCall(call))
     ) {
       return null;
     }
@@ -134,6 +144,16 @@ const buildCallActions = ({ callsStore, whatsappSession, t }) => {
           sdpOffer: call.sdpOffer,
           iceServers: call.iceServers,
           recordingEnabled: call.recordingEnabled,
+        });
+        callsStore.setCallActive(callSid);
+        globalDurationTimer?.start();
+        return { callId: call.callId };
+      }
+
+      if (isSipCall(call)) {
+        await sipSession.acceptIncomingCall({
+          callSid,
+          callId: call.callId,
         });
         callsStore.setCallActive(callSid);
         globalDurationTimer?.start();
@@ -203,6 +223,14 @@ const buildCallActions = ({ callsStore, whatsappSession, t }) => {
         } else {
           await whatsappSession.rejectIncomingCall(call.callId);
         }
+      } else if (isSipCall(call)) {
+        if (call.callDirection === VOICE_CALL_DIRECTION.OUTBOUND) {
+          await sipSession.endActiveCall(call.callId);
+        } else {
+          // Only this extension stops ringing; the PBX decides what happens
+          // to the call, so nothing is reported to the backend.
+          sipSession.declineIncomingCall(callSid);
+        }
       } else if (call?.inboxId && call?.conversationId) {
         // Twilio incoming reject: agent hasn't joined the Device yet, so
         // endClientCall is a no-op. End the conference server-side instead
@@ -256,6 +284,7 @@ export function useCallSession() {
   const store = useStore();
   const callsStore = useCallsStore();
   const whatsappSession = useWhatsappCallSession();
+  const sipSession = useSipCallSession();
   const { t } = useI18n();
 
   const reactive = buildReactiveSurface(callsStore);
@@ -305,7 +334,12 @@ export function useCallSession() {
 
   onUnmounted(() => detachGlobalsOnLastUnmount());
 
-  const actions = buildCallActions({ callsStore, whatsappSession, t });
+  const actions = buildCallActions({
+    callsStore,
+    whatsappSession,
+    sipSession,
+    t,
+  });
 
   return { ...reactive, ...actions };
 }
@@ -317,10 +351,16 @@ export function useCallSession() {
 export function useCallActions() {
   const callsStore = useCallsStore();
   const whatsappSession = useWhatsappCallSession();
+  const sipSession = useSipCallSession();
   const { t } = useI18n();
 
   const reactive = buildReactiveSurface(callsStore);
-  const actions = buildCallActions({ callsStore, whatsappSession, t });
+  const actions = buildCallActions({
+    callsStore,
+    whatsappSession,
+    sipSession,
+    t,
+  });
 
   return { ...reactive, ...actions };
 }

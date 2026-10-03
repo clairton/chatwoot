@@ -16,6 +16,7 @@ import { useAlert } from 'dashboard/composables';
 import { frontendURL, conversationUrl } from 'dashboard/helper/URLHelper';
 import { useCallsStore } from 'dashboard/stores/calls';
 import { useWhatsappCallSession } from 'dashboard/composables/useWhatsappCallSession';
+import { useSipCallSession } from 'dashboard/composables/useSipCallSession';
 
 import Button from 'dashboard/components-next/button/Button.vue';
 import Dialog from 'dashboard/components-next/dialog/Dialog.vue';
@@ -138,13 +139,39 @@ const startWhatsappCall = async (inboxId, conversationIdHint) => {
   navigateToConversation(conversationId);
 };
 
+const sipCallSession = useSipCallSession();
+
+const startSipCall = async (inboxId, conversationIdHint) => {
+  const response = await sipCallSession.initiateOutboundCall(
+    conversationIdHint
+      ? { inboxId, conversationId: conversationIdHint }
+      : { inboxId, contactId: props.contactId }
+  );
+  if (response?.status === VOICE_CALL_OUTBOUND_INIT_STATUS.LOCKED) return;
+  if (response?.status === VOICE_CALL_OUTBOUND_INIT_STATUS.NO_EXTENSION) {
+    useAlert(t('CONVERSATION.HEADER.SIP_NO_EXTENSION'));
+    return;
+  }
+
+  useAlert(t('CONTACT_PANEL.CALL_INITIATED'));
+  navigateToConversation(response.conversation_id);
+};
+
+// Providers whose calls are placed from the browser; the rest go through the
+// backend dialler below.
+const BROWSER_CALL_STARTERS = {
+  [VOICE_CALL_PROVIDERS.WHATSAPP]: startWhatsappCall,
+  [VOICE_CALL_PROVIDERS.SIP]: startSipCall,
+};
+
 const startCall = async (inboxId, conversationIdHint = null) => {
   if (isCallButtonDisabled.value) return;
 
   const inbox = (inboxesList.value || []).find(i => i.id === inboxId);
-  if (getVoiceCallProvider(inbox) === VOICE_CALL_PROVIDERS.WHATSAPP) {
+  const startBrowserCall = BROWSER_CALL_STARTERS[getVoiceCallProvider(inbox)];
+  if (startBrowserCall) {
     try {
-      await startWhatsappCall(inboxId, conversationIdHint);
+      await startBrowserCall(inboxId, conversationIdHint);
     } catch (error) {
       useAlert(
         error?.response?.data?.error ||

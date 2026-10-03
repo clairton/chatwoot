@@ -42,6 +42,18 @@ export const clearLocalCall = callSid => {
   if (localCallSid === callSid) localCallSid = null;
 };
 
+// A SIP call only rings on the extensions the PBX dialled, so an inbound SIP
+// call is surfaced when its INVITE reaches this browser (useSipCallSession)
+// and not for every agent who receives the account-wide voice_call message.
+const ringingSipCallSids = new Set();
+export const markSipCallRinging = callSid => ringingSipCallSids.add(callSid);
+export const clearSipCallRinging = callSid =>
+  ringingSipCallSids.delete(callSid);
+const isSipCallRingingElsewhere = (provider, callDirection, callSid) =>
+  provider === 'sip' &&
+  callDirection === 'inbound' &&
+  !ringingSipCallSids.has(callSid);
+
 export const isInbound = direction => direction === 'inbound';
 
 const isVoiceCallMessage = message => {
@@ -156,6 +168,7 @@ export function handleVoiceCallCreated(
   }
 
   if (!shouldRingInbound(callDirection, currentUserAvailability)) return;
+  if (isSipCallRingingElsewhere(provider, callDirection, callSid)) return;
 
   const callsStore = useCallsStore();
   callsStore.addCall({
@@ -218,6 +231,7 @@ export function handleVoiceCallUpdated(
 
   if (status === 'ringing') {
     if (!shouldRingInbound(callDirection, currentUserAvailability)) return;
+    if (isSipCallRingingElsewhere(provider, callDirection, callSid)) return;
 
     callsStore.addCall({
       callSid,

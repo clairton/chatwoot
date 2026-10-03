@@ -11,6 +11,7 @@ import {
   VOICE_CALL_OUTBOUND_INIT_STATUS,
 } from 'dashboard/components-next/message/constants';
 import { useWhatsappCallSession } from 'dashboard/composables/useWhatsappCallSession';
+import { useSipCallSession } from 'dashboard/composables/useSipCallSession';
 import { useCallsStore } from 'dashboard/stores/calls';
 import { useMapGetter } from 'dashboard/composables/store';
 import { useAccount } from 'dashboard/composables/useAccount';
@@ -33,6 +34,7 @@ const { t } = useI18n();
 const store = useStore();
 const callsStore = useCallsStore();
 const whatsappCallSession = useWhatsappCallSession();
+const sipCallSession = useSipCallSession();
 const contactsUiFlags = useMapGetter('contacts/getUIFlags');
 const { isCloudFeatureEnabled } = useAccount();
 
@@ -45,20 +47,20 @@ const isVoiceCallInbox = computed(
 const isWhatsappVoiceInbox = computed(
   () => voiceCallProvider.value === VOICE_CALL_PROVIDERS.WHATSAPP
 );
+const isSipVoiceInbox = computed(
+  () => voiceCallProvider.value === VOICE_CALL_PROVIDERS.SIP
+);
+// The provider-specific "an outbound call is being set up" flag.
+const isInitiatingCall = computed(() => {
+  if (isWhatsappVoiceInbox.value) return whatsappCallSession.isInitiating.value;
+  if (isSipVoiceInbox.value) return sipCallSession.isInitiating.value;
+  return !!contactsUiFlags.value?.isInitiatingCall;
+});
 
 const isCallButtonDisabled = computed(() => {
   if (callsStore.hasActiveCall || callsStore.hasIncomingCall) return true;
-  if (isWhatsappVoiceInbox.value) {
-    return whatsappCallSession.isInitiating.value;
-  }
-  return contactsUiFlags.value?.isInitiatingCall || false;
+  return isInitiatingCall.value;
 });
-
-const isCallButtonLoading = computed(() =>
-  isWhatsappVoiceInbox.value
-    ? whatsappCallSession.isInitiating.value
-    : !!contactsUiFlags.value?.isInitiatingCall
-);
 
 const callButtonTooltip = computed(() =>
   isWhatsappVoiceInbox.value
@@ -122,8 +124,25 @@ const startTwilioCall = async () => {
   }
 };
 
+const startSipCall = async () => {
+  try {
+    const response = await sipCallSession.initiateOutboundCall({
+      inboxId: props.inbox?.id,
+      conversationId: props.chat.id,
+    });
+    if (response?.status === VOICE_CALL_OUTBOUND_INIT_STATUS.NO_EXTENSION) {
+      useAlert(t('CONVERSATION.HEADER.SIP_NO_EXTENSION'));
+    }
+  } catch (error) {
+    useAlert(
+      error?.response?.data?.error || t('CONVERSATION.HEADER.VOICE_CALL_FAILED')
+    );
+  }
+};
+
 const startCall = () => {
   if (isWhatsappVoiceInbox.value) return startWhatsappCall();
+  if (isSipVoiceInbox.value) return startSipCall();
   return startTwilioCall();
 };
 </script>
@@ -136,7 +155,7 @@ const startCall = () => {
     ghost
     slate
     icon="i-lucide-phone"
-    :is-loading="isCallButtonLoading"
+    :is-loading="isInitiatingCall"
     :disabled="isCallButtonDisabled"
     @click="startCall"
   />

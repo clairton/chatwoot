@@ -14,6 +14,7 @@ import {
 } from '../constants';
 import { useCallActions } from 'dashboard/composables/useCallSession';
 import { useWhatsappCallSession } from 'dashboard/composables/useWhatsappCallSession';
+import { useSipCallSession } from 'dashboard/composables/useSipCallSession';
 import { useCallsStore } from 'dashboard/stores/calls';
 import { VOICE_CALL_PROVIDERS } from 'dashboard/helper/inbox';
 import { formatDuration } from 'shared/helpers/timeHelper';
@@ -52,6 +53,7 @@ const {
 const { joinCall, endCall, activeCall, hasActiveCall, isJoining } =
   useCallActions();
 const whatsappCallSession = useWhatsappCallSession();
+const sipCallSession = useSipCallSession();
 const callsStore = useCallsStore();
 const contactsUiFlags = useMapGetter('contacts/getUIFlags');
 const isInitiatingCall = computed(
@@ -81,6 +83,7 @@ const isOutbound = computed(() => {
 const isWhatsapp = computed(
   () => call.value?.provider === VOICE_CALL_PROVIDERS.WHATSAPP
 );
+const isSip = computed(() => call.value?.provider === VOICE_CALL_PROVIDERS.SIP);
 const isFailed = computed(() =>
   [
     VOICE_CALL_STATUS.NO_ANSWER,
@@ -211,6 +214,9 @@ const callSid = computed(() => call.value?.providerCallId);
 const canJoinCall = computed(() => {
   if (status.value !== VOICE_CALL_STATUS.RINGING) return false;
   if (isOutbound.value) return false;
+  // A SIP call can only be answered on an extension the PBX is ringing, which
+  // is what the floating widget surfaces.
+  if (isSip.value) return false;
   if (acceptedByAgentId.value) return false;
   if (!callSid.value || !inboxId.value || !conversationId.value) return false;
   if (hasActiveCall.value && activeCall.value?.callSid === callSid.value)
@@ -295,6 +301,16 @@ const handleCallBack = async () => {
         callDirection: VOICE_CALL_DIRECTION.OUTBOUND,
         provider: VOICE_CALL_PROVIDERS.WHATSAPP,
       });
+      return;
+    }
+    if (isSip.value) {
+      const response = await sipCallSession.initiateOutboundCall({
+        inboxId: inboxId.value,
+        conversationId: conversationId.value,
+      });
+      if (response?.status === VOICE_CALL_OUTBOUND_INIT_STATUS.NO_EXTENSION) {
+        useAlert(t('CONVERSATION.HEADER.SIP_NO_EXTENSION'));
+      }
       return;
     }
     const response = await store.dispatch('contacts/initiateCall', {

@@ -13,6 +13,7 @@ export const INBOX_TYPES = {
   SMS: 'Channel::Sms',
   INSTAGRAM: 'Channel::Instagram',
   TIKTOK: 'Channel::Tiktok',
+  SIP: 'Channel::Sip',
 };
 
 // Short channel-type slugs used to identify a channel without leaning on its
@@ -37,6 +38,7 @@ export const CHANNEL_TYPES = {
 export const VOICE_CALL_PROVIDERS = {
   TWILIO: 'twilio',
   WHATSAPP: 'whatsapp',
+  SIP: 'sip',
 };
 
 export const getVoiceCallProvider = inbox => {
@@ -51,6 +53,7 @@ export const getVoiceCallProvider = inbox => {
   if (channelType === INBOX_TYPES.TWILIO) return VOICE_CALL_PROVIDERS.TWILIO;
   if (channelType === INBOX_TYPES.WHATSAPP)
     return VOICE_CALL_PROVIDERS.WHATSAPP;
+  if (channelType === INBOX_TYPES.SIP) return VOICE_CALL_PROVIDERS.SIP;
 
   return null;
 };
@@ -118,6 +121,7 @@ const INBOX_IDENTIFIER_RESOLVERS = {
   [INBOX_TYPES.EMAIL]: inbox => inbox.email,
   [INBOX_TYPES.WHATSAPP]: inbox => inbox.phone_number,
   [INBOX_TYPES.SMS]: inbox => inbox.phone_number,
+  [INBOX_TYPES.SIP]: inbox => inbox.phone_number,
   [INBOX_TYPES.LINE]: inbox => inbox.line_channel_id,
   [INBOX_TYPES.API]: inbox => inbox.inbox_identifier,
   [INBOX_TYPES.TWILIO]: inbox =>

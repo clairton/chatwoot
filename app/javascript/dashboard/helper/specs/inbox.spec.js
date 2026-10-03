@@ -7,6 +7,7 @@ import {
   getInboxVoiceIcon,
   getInboxWarningIconClass,
   getVoiceCallIcon,
+  getVoiceCallProvider,
   searchInboxes,
 } from '../inbox';
 
@@ -277,6 +278,26 @@ describe('#Inbox Helpers', () => {
       expect(getInboxWarningIconClass('Channel::FacebookPage', true)).toEqual(
         'warning'
       );
+    });
+  });
+
+  describe('getVoiceCallProvider', () => {
+    it('returns the sip provider for a voice-enabled SIP inbox', () => {
+      expect(
+        getVoiceCallProvider({
+          channel_type: INBOX_TYPES.SIP,
+          voice_enabled: true,
+        })
+      ).toBe(VOICE_CALL_PROVIDERS.SIP);
+    });
+
+    it('returns null for a SIP inbox without voice enabled', () => {
+      expect(
+        getVoiceCallProvider({
+          channel_type: INBOX_TYPES.SIP,
+          voice_enabled: false,
+        })
+      ).toBeNull();
     });
   });
 

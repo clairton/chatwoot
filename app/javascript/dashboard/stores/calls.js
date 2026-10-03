@@ -1,4 +1,5 @@
 import TwilioVoiceClient from 'dashboard/api/channel/voice/twilioVoiceClient';
+import SipVoiceClient from 'dashboard/api/channel/sip/sipVoiceClient';
 import { cleanupWhatsappSession } from 'dashboard/composables/useWhatsappCallSession';
 import { VOICE_CALL_PROVIDERS } from 'dashboard/helper/inbox';
 import { TERMINAL_STATUSES } from 'dashboard/helper/voice';
@@ -7,6 +8,8 @@ import { defineStore } from 'pinia';
 const teardownByProvider = call => {
   if (call?.provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
     cleanupWhatsappSession();
+  } else if (call?.provider === VOICE_CALL_PROVIDERS.SIP) {
+    SipVoiceClient.hangup();
   } else {
     TwilioVoiceClient.endClientCall();
   }
