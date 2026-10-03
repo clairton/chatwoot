@@ -40,6 +40,19 @@ RSpec.describe Channel::Sip do
     end
   end
 
+  describe '#events_webhook_url' do
+    it 'points the PBX at the events webhook for this channel' do
+      expect(channel.events_webhook_url).to end_with("/sip/voice/events/#{channel.webhook_token}")
+    end
+
+    it 'issues a token for a channel that has none yet' do
+      channel.update_column(:webhook_token, nil) # rubocop:disable Rails/SkipsModelValidations
+
+      expect(channel.events_webhook_url).to end_with("/sip/voice/events/#{channel.reload.webhook_token}")
+      expect(channel.webhook_token).to be_present
+    end
+  end
+
   it 'never records or transcribes, since media stays on the PBX' do
     expect(channel.recording_enabled?).to be false
     expect(channel.transcription_enabled?).to be false

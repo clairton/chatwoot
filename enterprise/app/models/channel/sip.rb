@@ -54,4 +54,10 @@ class Channel::Sip < ApplicationRecord
   def transcription_enabled?
     false
   end
+
+  # Rows created before the token column existed get theirs the first time the URL is needed.
+  def events_webhook_url
+    regenerate_webhook_token if webhook_token.blank?
+    Rails.application.routes.url_helpers.sip_voice_events_url(token: webhook_token)
+  end
 end

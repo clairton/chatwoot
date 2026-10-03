@@ -745,6 +745,12 @@ Rails.application.routes.draw do
     end
   end
 
+  if ChatwootApp.enterprise?
+    namespace :sip do
+      post 'voice/events/:token', to: 'voice#events', as: :voice_events
+    end
+  end
+
   get 'microsoft/callback', to: 'microsoft/callbacks#show'
   get 'google/callback', to: 'google/callbacks#show'
   get 'instagram/callback', to: 'instagram/callbacks#show'

@@ -186,4 +186,5 @@ if resource.channel_type == 'Channel::Sip'
   json.inbound_calls_enabled resource.channel.inbound_calls_enabled?
   json.recording_enabled resource.channel.recording_enabled?
   json.transcription_enabled resource.channel.transcription_enabled?
+  json.events_webhook_url resource.channel.events_webhook_url if Current.account_user&.administrator?
 end
