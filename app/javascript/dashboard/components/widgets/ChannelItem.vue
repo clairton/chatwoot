@@ -54,7 +54,7 @@ const isActive = computed(() => {
     return props.enabledFeatures.channel_tiktok && hasTiktokConfigured.value;
   }
 
-  if (key === 'voice' || key === 'whatsapp_call') {
+  if (['voice', 'whatsapp_call', 'sip'].includes(key)) {
     return props.enabledFeatures.channel_voice;
   }
 
@@ -80,7 +80,9 @@ const isComingSoon = computed(() => {
 });
 
 const isBeta = computed(() => {
-  return ['tiktok', 'voice', 'whatsapp_call'].includes(props.channel.key);
+  return ['tiktok', 'voice', 'whatsapp_call', 'sip'].includes(
+    props.channel.key
+  );
 });
 
 const canRequestTiktokAccess = computed(() => {
@@ -95,7 +97,7 @@ const canRequestTiktokAccess = computed(() => {
 
 const hasVoiceBadge = computed(() => {
   return (
-    ['voice', 'whatsapp_call'].includes(props.channel.key) &&
+    ['voice', 'whatsapp_call', 'sip'].includes(props.channel.key) &&
     !!props.enabledFeatures.channel_voice
   );
 });

@@ -24,6 +24,7 @@ import WeeklyAvailability from './components/WeeklyAvailability.vue';
 import GreetingsEditor from 'shared/components/GreetingsEditor.vue';
 import ConfigurationPage from './settingsPage/ConfigurationPage.vue';
 import VoiceConfigurationPage from './settingsPage/VoiceConfigurationPage.vue';
+import SipConfigurationPage from './settingsPage/SipConfigurationPage.vue';
 import WhatsappCallingPage from './settingsPage/WhatsappCallingPage.vue';
 import CustomerSatisfactionPage from './settingsPage/CustomerSatisfactionPage.vue';
 import CollaboratorsPage from './settingsPage/CollaboratorsPage.vue';
@@ -59,6 +60,7 @@ export default {
     CollaboratorsPage,
     ConfigurationPage,
     VoiceConfigurationPage,
+    SipConfigurationPage,
     WhatsappCallingPage,
     CustomerSatisfactionPage,
     FacebookReauthorize,
@@ -280,6 +282,22 @@ export default {
           {
             key: 'voice-configuration',
             name: this.$t('INBOX_MGMT.TABS.VOICE'),
+          },
+        ];
+      }
+
+      if (
+        this.inbox.channel_type === INBOX_TYPES.SIP &&
+        this.isFeatureEnabledonAccount(
+          this.accountId,
+          FEATURE_FLAGS.CHANNEL_VOICE
+        )
+      ) {
+        visibleToAllChannelTabs = [
+          ...visibleToAllChannelTabs,
+          {
+            key: 'sip-configuration',
+            name: this.$t('INBOX_MGMT.TABS.SIP'),
           },
         ];
       }
@@ -1419,6 +1437,12 @@ export default {
           class="mx-6 max-w-4xl"
         >
           <VoiceConfigurationPage :inbox="inbox" />
+        </div>
+        <div
+          v-if="selectedTabKey === 'sip-configuration'"
+          class="mx-6 max-w-4xl"
+        >
+          <SipConfigurationPage :inbox="inbox" />
         </div>
         <div
           v-if="selectedTabKey === 'calls-configuration'"

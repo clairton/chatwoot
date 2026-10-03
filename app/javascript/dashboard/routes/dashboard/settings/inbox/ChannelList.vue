@@ -101,6 +101,13 @@ const channelList = computed(() => {
   });
 
   channels.push({
+    key: 'sip',
+    title: t('INBOX_MGMT.ADD.AUTH.CHANNEL.SIP.TITLE'),
+    description: t('INBOX_MGMT.ADD.AUTH.CHANNEL.SIP.DESCRIPTION'),
+    icon: 'i-woot-voice',
+  });
+
+  channels.push({
     key: 'whatsapp_call',
     title: t('INBOX_MGMT.ADD.AUTH.CHANNEL.WHATSAPP_CALL.TITLE'),
     description: t('INBOX_MGMT.ADD.AUTH.CHANNEL.WHATSAPP_CALL.DESCRIPTION'),

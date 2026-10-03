@@ -484,6 +484,28 @@
           "ERROR_MESSAGE": "We were not able to create the voice channel"
         }
       },
+      "SIP": {
+        "TITLE": "SIP Channel",
+        "DESC": "Connect your PBX and let each agent take and place calls on their own extension.",
+        "NAME": {
+          "LABEL": "Inbox Name",
+          "PLACEHOLDER": "Enter a name for this inbox",
+          "ERROR": "Inbox name is required"
+        },
+        "URL": {
+          "LABEL": "PBX WebSocket URL",
+          "PLACEHOLDER": "wss://pbx.example.com:8089/ws",
+          "ERROR": "Please provide a WebSocket URL starting with ws:// or wss://"
+        },
+        "PHONE_NUMBER": {
+          "LABEL": "Phone Number (optional)",
+          "PLACEHOLDER": "The number customers call (e.g. +1234567890)"
+        },
+        "SUBMIT_BUTTON": "Create SIP Channel",
+        "API": {
+          "ERROR_MESSAGE": "We were not able to create the SIP channel"
+        }
+      },
       "API_CHANNEL": {
         "TITLE": "API Channel",
         "DESC": "Integrate with API channel and start supporting your customers.",
@@ -621,6 +643,10 @@
           "VOICE": {
             "TITLE": "Voice",
             "DESCRIPTION": "Integrate with Twilio Voice"
+          },
+          "SIP": {
+            "TITLE": "SIP",
+            "DESCRIPTION": "Take calls through your own PBX"
           }
         }
       },
@@ -767,7 +793,25 @@
       "ACCOUNT_HEALTH": "Account Health",
       "CSAT": "CSAT",
       "VOICE": "Voice",
-      "CALLS": "Calls"
+      "CALLS": "Calls",
+      "SIP": "SIP"
+    },
+    "SIP_CONFIGURATION": {
+      "WEBHOOK": {
+        "LABEL": "PBX events webhook",
+        "DESCRIPTION": "Configure your PBX to report call events to this URL. Keep it private: anyone who has it can report calls for this inbox."
+      },
+      "EXTENSIONS": {
+        "TITLE": "Agent extensions",
+        "DESCRIPTION": "Each agent registers with the PBX as their own extension. Leave the password empty to keep the saved one, or clear the SIP URI to remove the extension.",
+        "EMPTY": "Add agents to this inbox to give them an extension.",
+        "URI_PLACEHOLDER": "sip:1001@pbx.example.com",
+        "PASSWORD_PLACEHOLDER": "Password",
+        "SAVED_PASSWORD_PLACEHOLDER": "Saved, type to replace",
+        "SAVE": "Save",
+        "SUCCESS_MESSAGE": "Extension saved",
+        "ERROR_MESSAGE": "Could not save the extension. Check the SIP URI and try again."
+      }
     },
     "VOICE_CONFIGURATION": {
       "ENABLE_VOICE": {
