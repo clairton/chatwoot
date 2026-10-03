@@ -21,6 +21,7 @@ module Enterprise::Channelable
     business_management_token
     twitter_access_token
     twitter_access_token_secret
+    webhook_token
   ].freeze
 
   PROVIDER_CONFIG_AUDITED_KEYS = %w[inbound_calls_enabled recording_enabled transcription_enabled calling_enabled].freeze

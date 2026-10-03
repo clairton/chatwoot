@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_09_29_100000) do
+ActiveRecord::Schema[7.1].define(version: 2026_10_03_100000) do
   # These extensions should be enabled to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -657,6 +657,18 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_29_100000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["line_channel_id"], name: "index_channel_line_on_line_channel_id", unique: true
+  end
+
+  create_table "channel_sip", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.string "url", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "phone_number"
+    t.string "webhook_token"
+    t.jsonb "provider_config", default: {}
+    t.index ["account_id"], name: "index_channel_sip_on_account_id"
+    t.index ["webhook_token"], name: "index_channel_sip_on_webhook_token", unique: true
   end
 
   create_table "channel_sms", force: :cascade do |t|

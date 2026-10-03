@@ -109,6 +109,7 @@ module Enterprise::Api::V1::Accounts::InboxesController
 
   def create_voice_channel
     raise Pundit::NotAuthorizedError unless Current.account.feature_enabled?('channel_voice')
+    return create_sip_channel if params.dig(:channel, :provider) == 'sip'
 
     voice_params = params.require(:channel).permit(
       :phone_number, :provider,
@@ -131,5 +132,9 @@ module Enterprise::Api::V1::Accounts::InboxesController
     # routing SMS to an inbox that never existed, and a Twilio outage must not fail a saved inbox.
     ActiveRecord.after_all_transactions_commit { Channels::Twilio::WebhookSetupJob.perform_later(channel) }
     channel
+  end
+
+  def create_sip_channel
+    Current.account.sip_channels.create!(params.require(:channel).permit(*Channel::Sip::EDITABLE_ATTRS))
   end
 end

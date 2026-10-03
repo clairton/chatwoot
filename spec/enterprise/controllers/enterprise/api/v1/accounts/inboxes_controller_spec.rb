@@ -48,6 +48,46 @@ RSpec.describe 'Enterprise Inboxes API', type: :request do
         expect(Channels::Twilio::WebhookSetupJob).to have_been_enqueued
       end
 
+      it 'creates a SIP voice inbox when the provider is sip' do
+        account.enable_features!('channel_voice')
+
+        post "/api/v1/accounts/#{account.id}/inboxes",
+             headers: admin.create_new_auth_token,
+             params: { name: 'PBX', channel: { type: 'voice', provider: 'sip', url: 'wss://pbx.example.com:8089/ws',
+                                               phone_number: '+5511999990000' } },
+             as: :json
+
+        expect(response).to have_http_status(:success)
+        expect(response.parsed_body).to include(
+          'name' => 'PBX', 'channel_type' => 'Channel::Sip', 'url' => 'wss://pbx.example.com:8089/ws',
+          'phone_number' => '+5511999990000', 'voice_enabled' => true, 'inbound_calls_enabled' => true,
+          'recording_enabled' => false
+        )
+        expect(account.sip_channels.count).to eq(1)
+      end
+
+      it 'rejects a SIP voice inbox without a websocket url' do
+        account.enable_features!('channel_voice')
+
+        post "/api/v1/accounts/#{account.id}/inboxes",
+             headers: admin.create_new_auth_token,
+             params: { name: 'PBX', channel: { type: 'voice', provider: 'sip', url: 'https://pbx.example.com' } },
+             as: :json
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(account.sip_channels.count).to eq(0)
+      end
+
+      it 'does not create a SIP voice inbox without the channel_voice feature' do
+        post "/api/v1/accounts/#{account.id}/inboxes",
+             headers: admin.create_new_auth_token,
+             params: { name: 'PBX', channel: { type: 'voice', provider: 'sip', url: 'wss://pbx.example.com:8089/ws' } },
+             as: :json
+
+        expect(response).to have_http_status(:unauthorized)
+        expect(account.sip_channels.count).to eq(0)
+      end
+
       it 'leaves the twilio number untouched when the inbox fails to save' do
         account.enable_features('channel_voice')
         account.save!
@@ -79,6 +119,19 @@ RSpec.describe 'Enterprise Inboxes API', type: :request do
     end
 
     context 'when administrator' do
+      it 'disables inbound calls on a SIP voice inbox' do
+        account.enable_features!('channel_voice')
+        channel = create(:channel_sip, account: account)
+
+        post "/api/v1/accounts/#{account.id}/inboxes/#{channel.inbox.id}/set_inbound_calls",
+             headers: admin.create_new_auth_token,
+             params: { inbound_calls_enabled: false },
+             as: :json
+
+        expect(response).to have_http_status(:ok)
+        expect(channel.reload.inbound_calls_enabled?).to be false
+      end
+
       it 'disables inbound calls on a Twilio voice inbox' do
         channel = create(:channel_twilio_sms, :with_voice, account: account)
 

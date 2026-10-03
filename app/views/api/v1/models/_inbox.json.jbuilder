@@ -178,3 +178,12 @@ if resource.channel_type == 'Channel::Whatsapp' && resource.channel.respond_to?(
   json.recording_enabled resource.channel.try(:recording_enabled?)
   json.transcription_enabled resource.channel.try(:transcription_enabled?)
 end
+
+## SIP voice channel
+if resource.channel_type == 'Channel::Sip'
+  json.url resource.channel.url
+  json.voice_enabled resource.channel.voice_enabled?
+  json.inbound_calls_enabled resource.channel.inbound_calls_enabled?
+  json.recording_enabled resource.channel.recording_enabled?
+  json.transcription_enabled resource.channel.transcription_enabled?
+end
