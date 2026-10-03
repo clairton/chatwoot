@@ -24,7 +24,7 @@ module Enterprise::Audit::InboxMember
       auditable_type: 'InboxMember',
       action: action,
       associated_id: inbox&.account_id,
-      audited_changes: attributes.except('updated_at', 'created_at'),
+      audited_changes: attributes.except('updated_at', 'created_at', 'data'),
       associated_type: 'Account'
     )
   end

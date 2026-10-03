@@ -3,6 +3,7 @@
 # Table name: inbox_members
 #
 #  id         :integer          not null, primary key
+#  data       :json
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  inbox_id   :integer          not null
@@ -42,3 +43,4 @@ class InboxMember < ApplicationRecord
 end
 
 InboxMember.include_mod_with('Audit::InboxMember')
+InboxMember.include_mod_with('Concerns::InboxMember')
